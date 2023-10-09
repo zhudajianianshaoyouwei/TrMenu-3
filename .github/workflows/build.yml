@@ -5,20 +5,20 @@ name: TrMenu Dev
 
 on:
   push:
-    branches: [ "Beta" ]
+    branches: [ stable/v3 ]
   pull_request:
-    branches: [ "Beta" ]
+    branches: [ stable/v3 ]
 
 jobs:
   releaseJar:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@main
       - name: set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@main
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: 17
+          distribution: temurin
           cache: gradle
 
       - name: Grant execute permission for gradlew
@@ -48,7 +48,7 @@ jobs:
 
         # output jar
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@main
         with:
           name: TrMenu Dev
           path: build/libs/*.jar
