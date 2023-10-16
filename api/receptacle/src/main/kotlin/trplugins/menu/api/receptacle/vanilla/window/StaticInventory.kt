@@ -27,16 +27,12 @@ object StaticInventory {
 
     class Holder(layout: WindowLayout, title: String) : InventoryHolder {
 
-        private val inventory: Inventory
+        private val inventory: Inventory = when (val type = layout.toBukkitType()) {
+            InventoryType.CHEST -> Bukkit.createInventory(this, layout.slotRange.last + 1, title)
+            else -> Bukkit.createInventory(this, type, title)
+        }
         var containerId: Int? = null
             private set
-
-        init {
-            inventory = when (val type = layout.toBukkitType()) {
-                InventoryType.CHEST -> Bukkit.createInventory(this, layout.slotRange.last + 1, title)
-                else -> Bukkit.createInventory(this, type, title)
-            }
-        }
 
         override fun getInventory(): Inventory {
             return inventory

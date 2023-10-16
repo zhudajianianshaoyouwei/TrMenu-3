@@ -82,7 +82,7 @@ object CommandHandler {
         }
     }
 
-    fun generateMainHelper(sender: CommandSender) {
+    private fun generateMainHelper(sender: CommandSender) {
         val proxySender = adaptCommandSender(sender)
         proxySender.sendMessage("")
         TellrawJson()

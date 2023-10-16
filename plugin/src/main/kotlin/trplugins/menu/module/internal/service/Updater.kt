@@ -29,9 +29,9 @@ object Updater {
     private val API_URL = "https://api.github.com/repos/Arasple/${TrMenu.plugin.name}/releases/latest"
     private val DESCRIPTION = TrMenu.plugin.description
     private var NOTIFY = false
-    val CURRENT_VERSION = DESCRIPTION.version.split("-")[0].toDoubleOrNull() ?: -1.0
-    var LATEST_VERSION = -1.0
-    val NOTIFIED = mutableSetOf<UUID>()
+    private val CURRENT_VERSION = DESCRIPTION.version.split("-")[0].toDoubleOrNull() ?: -1.0
+    private var LATEST_VERSION = -1.0
+    private val NOTIFIED = mutableSetOf<UUID>()
 
     @Awake(LifeCycle.INIT)
     fun init() {
@@ -63,6 +63,7 @@ object Updater {
                 }
             }
         } catch (e: Throwable) {
+            e.stackTrace
         }
     }
 

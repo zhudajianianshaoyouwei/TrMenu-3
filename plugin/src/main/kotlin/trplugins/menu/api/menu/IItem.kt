@@ -1,12 +1,10 @@
 package trplugins.menu.api.menu
 
+import org.bukkit.inventory.ItemStack
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.display.item.Item
 import trplugins.menu.module.display.item.Meta
 import trplugins.menu.module.display.texture.Texture
-import org.bukkit.inventory.ItemStack
-import taboolib.platform.util.buildItem
-import taboolib.platform.util.isAir
 
 /**
  * @author Arasple

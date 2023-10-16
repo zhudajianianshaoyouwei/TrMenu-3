@@ -85,11 +85,11 @@ class Assist {
         return Bukkit.getWhitelistedPlayers().removeIf { it.name.equals(player, true) }
     }
 
-    fun getPlayer(player: String): Player? {
+    private fun getPlayer(player: String): Player? {
         return Bukkit.getPlayerExact(player)
     }
 
-    fun getOfflinePlayer(player: String): OfflinePlayer? {
+    private fun getOfflinePlayer(player: String): OfflinePlayer? {
         return Bukkit.getOfflinePlayers().find { it.name.equals(player, true) }
     }
 
@@ -101,7 +101,7 @@ class Assist {
         return Bukkit.getOnlinePlayers().randomOrNull()
     }
 
-    fun getPlayerInventory(player: String): PlayerInventory? {
+    private fun getPlayerInventory(player: String): PlayerInventory? {
         return getPlayer(player)?.inventory
     }
 
@@ -117,7 +117,7 @@ class Assist {
     }
 
     // utils.getEquipment("Arasple", "HEAD")
-    fun getEquipment(player: String, equipmentSlot: String): ItemStack? {
+    private fun getEquipment(player: String, equipmentSlot: String): ItemStack? {
         return getPlayer(player)?.run {
             BukkitEquipment.getItems(this)[BukkitEquipment.fromNMS(equipmentSlot)]
         }
@@ -185,7 +185,7 @@ class Assist {
         return hasItem(getPlayer(player), identify)
     }
 
-    fun hasItem(player: Player?, identify: String): Boolean {
+    private fun hasItem(player: Player?, identify: String): Boolean {
         return player?.let { ItemMatcher.of(identify).hasItem(it) } ?: false
     }
 
@@ -231,7 +231,7 @@ class Assist {
         return hasPoints(player, toInt(points))
     }
 
-    fun hasPoints(player: Player, points: Int): Boolean {
+    private fun hasPoints(player: Player, points: Int): Boolean {
         return HookPlugin.getPlayerPoints().hasPoints(player, points)
     }
 
@@ -267,11 +267,11 @@ class Assist {
         }
     }
 
-    fun toInt(number: String): Int {
+    private fun toInt(number: String): Int {
         return number.toIntOrNull() ?: 0
     }
 
-    fun toDouble(number: String, def: Double = 0.0): Double {
+    private fun toDouble(number: String, def: Double = 0.0): Double {
         return number.toDoubleOrNull() ?: def
     }
 
@@ -279,7 +279,7 @@ class Assist {
         return toRoman(toInt(number))
     }
 
-    fun toRoman(number: Int): String {
+    private fun toRoman(number: Int): String {
         if (number < 1) return ""
         val mapNumber = romanNumbers.floorKey(number)
         return if (mapNumber == number) romanNumbers[number]!! else romanNumbers[mapNumber] + toRoman(number - mapNumber)

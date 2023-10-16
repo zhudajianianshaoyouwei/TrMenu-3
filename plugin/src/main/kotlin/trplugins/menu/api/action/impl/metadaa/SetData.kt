@@ -1,8 +1,6 @@
 package trplugins.menu.api.action.impl.metadaa
 
-import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyPlayer
-import taboolib.common.platform.function.adaptPlayer
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.action.base.ActionBase
 import trplugins.menu.api.action.base.ActionContents

@@ -114,6 +114,7 @@ object CommandDebug : CommandExpression {
                         file = it.getMethod("getFile").also { it.isAccessible = true }.invoke(plugin) as File
                     }
                 } catch (t: Throwable) {
+                    t.stackTrace
                 }
                 val size = (file?.length() ?: 0) / 1024
                 append("· ${plugin.name} - ${plugin.description.version} ($size KB)\n")

@@ -49,7 +49,7 @@ object Heads {
         }
     }
 
-    fun getCustomTextureHead(texture: String): ItemStack {
+    private fun getCustomTextureHead(texture: String): ItemStack {
         return CACHED_SKULLS.computeIfAbsent(texture) {
             modifyTexture(texture, DEFAULT_HEAD.clone())
         }
@@ -116,7 +116,7 @@ object Heads {
 
     private fun encodeTexture(input: String): String {
         val encoder = Base64.getEncoder()
-        return encoder.encodeToString("{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/$input\"}}}".toByteArray())
+        return encoder.encodeToString("{\"textures\":{\"SKIN\":{\"url\":\"https://textures.minecraft.net/texture/$input\"}}}".toByteArray())
     }
 
     private fun fromURL(url: String): String {

@@ -33,7 +33,7 @@ class HookVault : HookAbstract() {
         return economyAPI?.has(player, money) ?: false
     }
 
-    fun getMoney(player: OfflinePlayer): Double {
+    private fun getMoney(player: OfflinePlayer): Double {
         return economyAPI?.getBalance(player) ?: 0.0
     }
 

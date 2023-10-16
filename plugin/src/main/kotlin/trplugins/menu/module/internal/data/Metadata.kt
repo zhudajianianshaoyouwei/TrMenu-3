@@ -70,15 +70,15 @@ object Metadata {
     }
 
     @Suppress("DEPRECATION")
-    fun getLocalePlayer(player: Player): Configuration? {
+    private fun getLocalePlayer(player: Player): Configuration {
         return database.pull(player)
     }
 
     fun loadData(player: Player) {
         val map: MutableMap<String, Any?> = mutableMapOf()
 
-        getLocalePlayer(player)!!.getConfigurationSection("TrMenu.Data")?.let { section ->
-            section.getKeys(true).forEach { key -> map[key] = section.get(key) }
+        getLocalePlayer(player).getConfigurationSection("TrMenu.Data")?.let { section ->
+            section.getKeys(true).forEach { key -> map[key] = section[key] }
         }
 
         data[player.name] = DataMap(map)

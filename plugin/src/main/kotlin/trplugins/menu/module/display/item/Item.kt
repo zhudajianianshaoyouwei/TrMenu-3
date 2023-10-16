@@ -91,7 +91,7 @@ class Item(
                 val new = buildItem(current!!) { name = name(session) }
                 cache[session.id] = new
             } catch (t: Throwable) {
-
+                t.stackTrace
             }
         }
     }

@@ -2,7 +2,6 @@ package trplugins.menu.api.action.impl.send
 
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyPlayer
-import taboolib.common.platform.function.adaptPlayer
 import taboolib.library.xseries.XSound
 import taboolib.module.lang.sendLang
 import trplugins.menu.api.action.ActionHandle

@@ -1,11 +1,10 @@
 package trplugins.menu.module.internal.script.js
 
 import com.google.common.collect.Maps
-import trplugins.menu.module.display.MenuSession
-import trplugins.menu.util.EvalResult
 import org.bukkit.Bukkit
 import taboolib.common5.compileJS
-import trplugins.menu.module.internal.script.FunctionParser
+import trplugins.menu.module.display.MenuSession
+import trplugins.menu.util.EvalResult
 import java.util.function.Function
 import javax.script.CompiledScript
 import javax.script.ScriptContext

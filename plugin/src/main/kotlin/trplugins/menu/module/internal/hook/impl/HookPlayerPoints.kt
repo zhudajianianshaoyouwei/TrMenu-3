@@ -1,12 +1,9 @@
 package trplugins.menu.module.internal.hook.impl
 
-import trplugins.menu.module.internal.hook.HookAbstract
 import org.black_ixx.playerpoints.PlayerPoints
 import org.black_ixx.playerpoints.PlayerPointsAPI
-import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
-import taboolib.common.platform.function.submit
-import java.util.concurrent.TimeUnit
+import trplugins.menu.module.internal.hook.HookAbstract
 
 /**
  * @author Arasple
@@ -20,7 +17,7 @@ class HookPlayerPoints : HookAbstract() {
             return field
         }
 
-    fun getPoints(player: OfflinePlayer): Int {
+    private fun getPoints(player: OfflinePlayer): Int {
         return playerPointsAPI?.look(player.uniqueId) ?: -1
     }
 

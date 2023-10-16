@@ -22,13 +22,13 @@ class Catcher(handle: ActionHandle) : ActionBase(handle) {
     override val regex = "(input)?-?catchers?".toRegex()
 
     val type = "type".toRegex()
-    val start = "before|start".toRegex()
+    private val start = "before|start".toRegex()
     val cancel = "cancel".toRegex()
-    val end = "after|end".toRegex()
+    private val end = "after|end".toRegex()
     val display = "display|name|title".toRegex()
     val bookContent = "content|book".toRegex()
-    val itemLeft = "item-?left".toRegex()
-    val itemRight = "item-?right".toRegex()
+    private val itemLeft = "item-?left".toRegex()
+    private val itemRight = "item-?right".toRegex()
 
     override fun onExecute(contents: ActionContents, player: ProxyPlayer, placeholderPlayer: ProxyPlayer) {
         val inputer: Inputer by contents

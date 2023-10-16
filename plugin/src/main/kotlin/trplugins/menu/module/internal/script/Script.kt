@@ -4,10 +4,9 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.ProxyPlayer
 import trplugins.menu.api.TrMenuAPI
-import trplugins.menu.util.EvalResult
 import trplugins.menu.module.display.MenuSession
-import trplugins.menu.module.display.session
 import trplugins.menu.module.internal.script.js.JavaScriptAgent
+import trplugins.menu.util.EvalResult
 
 /**
  * TrMenu

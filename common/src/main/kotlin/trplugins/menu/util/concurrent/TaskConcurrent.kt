@@ -8,7 +8,7 @@ import java.util.concurrent.Future
  * @author Score2
  * @since 2021/09/28 15:32
  */
-class TaskConcurrent<Task, Result>(val tasks: List<Task>, threads: Int) {
+class TaskConcurrent<Task, Result>(private val tasks: List<Task>, threads: Int) {
 
     private val poolExecutor =
         Executors.newFixedThreadPool(

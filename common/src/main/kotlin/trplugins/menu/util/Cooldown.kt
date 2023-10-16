@@ -2,8 +2,8 @@ package trplugins.menu.util
 
 class Cooldown {
     var plugin: String
-    val packName: String
-    val packSeconds: Long
+    private val packName: String
+    private val packSeconds: Long
     private val data = HashMap<String, Long>()
 
     constructor(n: String, s: Int) {
@@ -26,7 +26,7 @@ class Cooldown {
         return this.getCooldown(player, 0L)
     }
 
-    fun getCooldown(player: String, cutSeconds: Long): Long {
+    private fun getCooldown(player: String, cutSeconds: Long): Long {
         return if (!data.containsKey(player)) {
             0L
         } else {
@@ -39,7 +39,7 @@ class Cooldown {
         return this.isCooldown(player, 0L)
     }
 
-    fun isCooldown(player: String, cutSeconds: Long): Boolean {
+    private fun isCooldown(player: String, cutSeconds: Long): Boolean {
         return if (!data.containsKey(player)) {
             data[player] = System.currentTimeMillis()
             false

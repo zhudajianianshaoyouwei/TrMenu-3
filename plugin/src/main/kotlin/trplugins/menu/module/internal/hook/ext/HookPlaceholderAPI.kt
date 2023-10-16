@@ -19,7 +19,7 @@ import trplugins.menu.util.ignoreCase
  */
 object HookPlaceholderAPI : PlaceholderExpansion {
 
-    val enabledParseJavaScript get() = TrMenu.SETTINGS.getBoolean("Options.Placeholders.JavaScript-Parse", false)
+    private val enabledParseJavaScript get() = TrMenu.SETTINGS.getBoolean("Options.Placeholders.JavaScript-Parse", false)
 
     override val identifier = pluginId
 

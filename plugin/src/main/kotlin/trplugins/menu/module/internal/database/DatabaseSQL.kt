@@ -14,7 +14,7 @@ class DatabaseSQL : Database() {
 
     private val host = TrMenu.SETTINGS.getHost("Database.Type.SQL")
 
-    val table = Table(TrMenu.SETTINGS.getString("Database.Type.SQL.table", "trmenu_user_data")!!, host) {
+    private val table = Table(TrMenu.SETTINGS.getString("Database.Type.SQL.table", "trmenu_user_data")!!, host) {
         add {
             name("user")
             type(ColumnTypeSQL.VARCHAR, 36) {
@@ -27,8 +27,8 @@ class DatabaseSQL : Database() {
         }
     }
 
-    val dataSource = host.createDataSource()
-    val cache = ConcurrentHashMap<String, Configuration>()
+    private val dataSource = host.createDataSource()
+    private val cache = ConcurrentHashMap<String, Configuration>()
 
     init {
         table.workspace(dataSource) { createTable() }.run()

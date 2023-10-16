@@ -7,7 +7,6 @@ import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.Type
 import taboolib.module.nms.ItemTag
 import taboolib.module.nms.ItemTagData
-import trplugins.menu.TrMenu
 import trplugins.menu.TrMenu.actionHandle
 import trplugins.menu.api.menu.ISerializer
 import trplugins.menu.api.reaction.Reactions
@@ -48,7 +47,7 @@ object MenuSerializer : ISerializer {
         val id = file.nameWithoutExtension
         val result = SerialzeResult(SerialzeResult.Type.MENU)
         // 文件格式检测
-        if (!Type.values().any { it.suffixes.any { file.extension.equals(it, true) } }) {
+        if (!Type.entries.any { it.suffixes.any { file.extension.equals(it, true) } }) {
             result.state = SerialzeResult.State.IGNORE
             return result
         }
@@ -58,7 +57,7 @@ object MenuSerializer : ISerializer {
             return result
         }
         // 菜单类型
-        val type = Type.values().find { it.suffixes.any { file.extension.equals(it, true) } }!!
+        val type = Type.entries.find { it.suffixes.any { file.extension.equals(it, true) } }!!
         // 加载菜单配置
         val conf = Configuration.loadFromFile(file, type)
 
@@ -153,7 +152,7 @@ object MenuSerializer : ISerializer {
         val layout = Property.LAYOUT.ofLists(conf)
         val playerInventory = Property.LAYOUT_PLAYER_INVENTORY.ofLists(conf)
         val inventoryType = Property.INVENTORY_TYPE.ofString(conf, "CHEST")
-        val bukkitType = InventoryType.values().find { it.name.equals(inventoryType, true) } ?: InventoryType.CHEST
+        val bukkitType = InventoryType.entries.find { it.name.equals(inventoryType, true) } ?: InventoryType.CHEST
         val rows = Property.SIZE.ofInt(conf, 0).let {
             if (it > 6) return@let it / 9
             else it
@@ -260,7 +259,7 @@ object MenuSerializer : ISerializer {
                 // 图标附加属性
                 Meta(amount, shiny,
                     flags.mapNotNull { flag ->
-                        ItemFlag.values().find { it.name.equals(flag, true) }
+                        ItemFlag.entries.find { it.name.equals(flag, true) }
                     }.toTypedArray(),
                     ItemTag().also { nbt.forEach { (key, value) -> it[key] = ItemTagData.toNBT(value) } }
                 )

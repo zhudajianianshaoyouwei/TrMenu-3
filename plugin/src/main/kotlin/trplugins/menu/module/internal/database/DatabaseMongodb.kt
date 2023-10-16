@@ -12,7 +12,7 @@ import taboolib.module.database.bridge.createBridgeCollection
  */
 class DatabaseMongodb : Database() {
 
-    val collection = createBridgeCollection(
+    private val collection = createBridgeCollection(
         SETTINGS.getString("Database.Type.MongoDB.client") ?: "mongodb://localhost:3307",
         SETTINGS.getString("Database.Type.MongoDB.database") ?: "trixey",
         SETTINGS.getString("Database.Type.MongoDB.collection") ?: "menu",

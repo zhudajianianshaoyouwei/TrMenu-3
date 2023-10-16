@@ -6,7 +6,6 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import taboolib.common.platform.ProxyPlayer
-import taboolib.common.platform.function.adaptPlayer
 import taboolib.library.xseries.XEnchantment
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.action.base.ActionBase
@@ -44,13 +43,13 @@ class EnchantItem(handle: ActionHandle) : ActionBase(handle) {
         }
     }
 
-    fun enchant(any: Any?, enchant: Enchantment?, level: Int) {
+    private fun enchant(any: Any?, enchant: Enchantment?, level: Int) {
         if (any is Array<*>) {
             any.forEach { enchantItem(it as ItemStack?, enchant, level) }
         } else if (any is ItemStack) enchantItem(any, enchant, level)
     }
 
-    fun enchantItem(item: ItemStack?, enchant: Enchantment?, level: Int) {
+    private fun enchantItem(item: ItemStack?, enchant: Enchantment?, level: Int) {
         if (item != null && enchant != null) {
             if (item.type == Material.BOOK) {
                 item.type = Material.ENCHANTED_BOOK

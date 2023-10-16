@@ -13,7 +13,7 @@ import trplugins.menu.module.internal.script.evalScript
  */
 class Icon(
     val id: String,
-    val refresh: Long,
+    private val refresh: Long,
     update: Array<Int>,
     val position: Position,
     val defIcon: IconProperty,

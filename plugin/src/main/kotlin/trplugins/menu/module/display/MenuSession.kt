@@ -170,7 +170,7 @@ class MenuSession(
     /**
      * 取得槽位的图标
      */
-    fun getIcon(slot: Int): Icon? {
+    private fun getIcon(slot: Int): Icon? {
         return activeIcons.find { it.position.currentPosition(this).contains(slot) }
     }
 

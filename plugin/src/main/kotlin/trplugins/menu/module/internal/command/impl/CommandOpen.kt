@@ -78,7 +78,7 @@ object CommandOpen : CommandExpression {
                     }
 
                     menu.open(player, page, MenuOpenEvent.Reason.PLAYER_COMMAND) {
-                        it.agent = if (agent != null ) agent else player
+                        it.agent = agent ?: player
                         if (!Metadata.byBukkit(player, "FORCE_ARGS") || (arguments.isNotEmpty())) {
                             if (arguments.isEmpty()) {
                                 it.arguments = it.implicitArguments.clone()

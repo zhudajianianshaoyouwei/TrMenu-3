@@ -33,7 +33,7 @@ class ActionHandle(
         register(*runningClasses.toTypedArray())
     }
 
-    fun register(vararg classes: Class<*>) {
+    private fun register(vararg classes: Class<*>) {
         classes.forEach { `class` ->
             if (Modifier.isAbstract(`class`.modifiers)) return@forEach
             if (`class`.superclass != ActionBase::class.java) return@forEach
@@ -54,7 +54,7 @@ class ActionHandle(
         }
     }
 
-    fun unregister(vararg names: String) {
+    private fun unregister(vararg names: String) {
         return unregister(*names.map { getRegisteredAction(it) }.toTypedArray())
     }
 
@@ -65,7 +65,7 @@ class ActionHandle(
     fun getRegisteredAction(key: String): ActionBase =
         registries.find { key.lowercase() == it.lowerName || it.regex.matches(key.lowercase()) } ?: defaultAction
 
-    val defaultAction by lazy { registries.find { it.name.equals(default, true) }!! }
+    private val defaultAction by lazy { registries.find { it.name.equals(default, true) }!! }
 
     fun runAction(player: ProxyPlayer, actions: List<String>) {
         runAction(player, ActionEntry.of(this, actions))

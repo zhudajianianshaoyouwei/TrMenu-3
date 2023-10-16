@@ -1,17 +1,15 @@
 package trplugins.menu.module.internal.script
 
+import org.bukkit.entity.Player
+import taboolib.common.util.subList
 import trplugins.menu.api.TrMenuAPI
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.module.internal.script.js.JavaScriptAgent
 import trplugins.menu.util.Regexs
 import trplugins.menu.util.collections.Variables
-import trplugins.menu.util.ignoreCase
 import trplugins.menu.util.print
-import org.bukkit.entity.Player
-import taboolib.common.util.subList
-import taboolib.module.configuration.Configuration
-import trplugins.menu.module.internal.hook.HookPlugin
 
 /**
  * @author Arasple

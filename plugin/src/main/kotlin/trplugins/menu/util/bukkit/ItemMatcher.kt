@@ -174,7 +174,7 @@ class ItemMatcher(private val matcher: Set<Match>) {
 
             // Trait, Opposite
             fun of(type: String): Pair<TraitType, Boolean>? {
-                val trait = values().find { it.regex.matches(type.removePrefix("!")) } ?: return null
+                val trait = entries.find { it.regex.matches(type.removePrefix("!")) } ?: return null
                 val oppose = type.first() == '!'
                 return Pair(trait, oppose)
             }

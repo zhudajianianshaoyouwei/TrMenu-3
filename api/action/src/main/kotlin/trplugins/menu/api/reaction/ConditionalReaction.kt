@@ -26,7 +26,7 @@ class ConditionalReaction(handle: ActionHandle,
         else deny.getActions(player)
     }
 
-    fun evalCondition(player: ProxyPlayer): Boolean {
+    private fun evalCondition(player: ProxyPlayer): Boolean {
         return if (hasCondition) handle.conditionParser.apply(player, condition).asBoolean()
         else true
     }

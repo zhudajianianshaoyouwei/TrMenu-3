@@ -30,7 +30,7 @@ class DatabaseSQLite : Database() {
         target.getHost()
     }
 
-    val table = Table(TrMenu.SETTINGS.getString("Database.Type.SQLite.table", "data")!!, host) {
+    private val table = Table(TrMenu.SETTINGS.getString("Database.Type.SQLite.table", "data")!!, host) {
         add {
             name("user")
             type(ColumnTypeSQLite.TEXT, 36) {
@@ -43,8 +43,8 @@ class DatabaseSQLite : Database() {
         }
     }
 
-    val dataSource = host.createDataSource()
-    val cache = ConcurrentHashMap<String, Configuration>()
+    private val dataSource = host.createDataSource()
+    private val cache = ConcurrentHashMap<String, Configuration>()
 
     init {
         table.workspace(dataSource) { createTable(true) }.run()

@@ -98,14 +98,14 @@ open class WindowReceptacle(var type: WindowLayout, title: String = type.toBukki
         }
     }
 
-    internal fun initializationPackets() {
+    private fun initializationPackets() {
         if (viewer != null) {
             nmsProxy<NMS>().sendWindowsOpen(viewer!!, title = title, type = type)
             refresh()
         }
     }
 
-    internal fun setupPlayerInventorySlots() {
+    private fun setupPlayerInventorySlots() {
         if (hidePlayerInventory || viewer == null) {
             return
         }

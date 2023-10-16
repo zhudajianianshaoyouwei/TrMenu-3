@@ -70,7 +70,7 @@ object Hex {
      * @param message The message
      * @return A color-replaced message
      */
-    fun colorify(message: String): String {
+    private fun colorify(message: String): String {
         var parsed = message
         parsed = parseRainbow(parsed)
         parsed = parseGradients(parsed)
@@ -116,14 +116,13 @@ object Hex {
             var contentLength = content.length
             val chars = content.toCharArray()
             for (i in 0 until chars.size - 1) if (chars[i] == '&' && "KkLlMmNnOoRr".indexOf(chars[i + 1]) > -1) contentLength -= 2
-            val length = if (looping) Math.min(contentLength, CHARS_UNTIL_LOOP) else contentLength
-            var rainbow: ColorGenerator
-            rainbow = if (speed == -1) {
+            val length = if (looping) contentLength.coerceAtMost(CHARS_UNTIL_LOOP) else contentLength
+            val rainbow: ColorGenerator = if (speed == -1) {
                 Rainbow(length, saturation, brightness)
             } else {
                 AnimatedRainbow(length, saturation, brightness, speed)
             }
-            var compoundedFormat: String = "" // Carry the format codes through the rainbow gradient
+            var compoundedFormat = "" // Carry the format codes through the rainbow gradient
             var i = 0
             while (i < chars.size) {
                 val c = chars[i]
@@ -173,7 +172,7 @@ object Hex {
             var contentLength = content.length
             val chars = content.toCharArray()
             for (i in 0 until chars.size - 1) if (chars[i] == '&' && "KkLlMmNnOoRr".indexOf(chars[i + 1]) > -1) contentLength -= 2
-            val length = if (looping) Math.min(contentLength, CHARS_UNTIL_LOOP) else contentLength
+            val length = if (looping) contentLength.coerceAtMost(CHARS_UNTIL_LOOP) else contentLength
             val gradient: ColorGenerator = if (speed == -1) {
                 Gradient(hexSteps, length)
             } else {
@@ -204,7 +203,7 @@ object Hex {
         return parsed
     }
 
-    internal fun parseHex(message: String): String {
+    private fun parseHex(message: String): String {
         var parsed = message
         for (pattern: Pattern in HEX_PATTERNS) {
             var matcher = pattern.matcher(parsed)
@@ -262,7 +261,7 @@ object Hex {
         if (MinecraftVersion.majorLegacy >= 11600) return ChatColor.of(color).toString()
         var minDist = Int.MAX_VALUE
         var legacy = ChatColor.WHITE
-        for (mapping: ChatColorHexMapping in ChatColorHexMapping.values()) {
+        for (mapping: ChatColorHexMapping in ChatColorHexMapping.entries) {
             val r = mapping.red - color.red
             val g = mapping.green - color.green
             val b = mapping.blue - color.blue
@@ -336,7 +335,7 @@ object Hex {
             return color
         }
 
-        private class TwoStopGradient internal constructor(
+        private class TwoStopGradient(
             private val startColor: Color,
             private val endColor: Color,
             private val lowerRange: Float,
@@ -393,9 +392,9 @@ object Hex {
      */
     open class Rainbow(totalColors: Int, saturation: Float, brightness: Float) :
         ColorGenerator {
-        protected val hueStep: Float
-        protected val saturation: Float
-        protected val brightness: Float
+        private val hueStep: Float
+        private val saturation: Float
+        private val brightness: Float
         protected var hue: Float
         override fun next(): Color {
             val color = Color.getHSBColor(hue, saturation, brightness)

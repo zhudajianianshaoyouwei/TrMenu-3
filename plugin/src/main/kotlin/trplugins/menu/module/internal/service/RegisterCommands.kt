@@ -50,7 +50,7 @@ object RegisterCommands {
                         suggestion<Player>(uncheck = true) { _, _ ->
                             argument?.getKeys(false)?.toList()
                         }
-                        execute<Player> { player, context, argument ->
+                        execute<Player> { player, _, argument ->
                             val args = if (argument.contains(" ")) argument.split(" ") else listOf(argument)
                             val session = MenuSession.getSession(player)
                             if (args.isNotEmpty()) {

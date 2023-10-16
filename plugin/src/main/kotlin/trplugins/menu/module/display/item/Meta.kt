@@ -45,7 +45,7 @@ class Meta(
     }
 
     fun nbt(session: MenuSession, itemStack: ItemStack): ItemMeta? {
-        if (nbt != null && !nbt.isEmpty()) {
+        if (!nbt.isNullOrEmpty()) {
             val nbt = if (isNBTDynamic) ItemTag.fromLegacyJson(session.parse(nbt.toJson())) else nbt
             val tag = ItemTag()
             tag.putAll(itemStack.getItemTag())

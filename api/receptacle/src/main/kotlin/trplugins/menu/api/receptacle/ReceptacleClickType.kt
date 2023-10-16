@@ -75,11 +75,11 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
         return this == LEFT || this == SHIFT_LEFT || this == DOUBLE_CLICK
     }
 
-    fun isShiftClick(): Boolean {
+    private fun isShiftClick(): Boolean {
         return this == SHIFT_LEFT || this == SHIFT_RIGHT
     }
 
-    fun isKeyboardClick(): Boolean {
+    private fun isKeyboardClick(): Boolean {
         return isNumberKeyClick() || this == DROP || this == CONTROL_DROP
     }
 
@@ -87,11 +87,11 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
         return this.name.startsWith("NUMBER_KEY") || this == OFFHAND
     }
 
-    fun isDoubleClick(): Boolean {
+    private fun isDoubleClick(): Boolean {
         return this == DOUBLE_CLICK
     }
 
-    fun isCreativeAction(): Boolean {
+    private fun isCreativeAction(): Boolean {
         return this == MIDDLE || this == MIDDLE_MOUSE_DRAG_ADD
     }
 
@@ -103,8 +103,8 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
 
         private val modes = arrayOf("PICKUP", "QUICK_MOVE", "SWAP", "CLONE", "THROW", "QUICK_CRAFT", "PICKUP_ALL")
 
-        fun matchesFirst(string: String): ReceptacleClickType {
-            return values().find { it.name.equals(string, true) } ?: ALL
+        private fun matchesFirst(string: String): ReceptacleClickType {
+            return entries.find { it.name.equals(string, true) } ?: ALL
         }
 
         fun matches(string: String): Set<ReceptacleClickType> {
@@ -125,7 +125,7 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
                     else -> UNKNOWN
                 }
             }
-            return values().find { it.equals(mode, button) }
+            return entries.find { it.equals(mode, button) }
         }
     }
 }

@@ -29,9 +29,9 @@ import java.util.function.Consumer
 class InputBook(
     val player: Player,
     val display: String,
-    val disposable: Boolean,
-    val origin: List<String>,
-    val catcher: Consumer<List<String>>
+    private val disposable: Boolean,
+    private val origin: List<String>,
+    private val catcher: Consumer<List<String>>
 ) {
 
     private val book = buildBook {

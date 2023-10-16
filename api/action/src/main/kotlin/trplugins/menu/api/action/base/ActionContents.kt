@@ -1,7 +1,5 @@
 package trplugins.menu.api.action.base
 
-import kotlin.reflect.KProperty
-
 /**
  * TrMenu
  * trplugins.menu.api.action.base.ActionContent

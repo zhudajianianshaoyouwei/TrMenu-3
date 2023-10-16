@@ -14,7 +14,6 @@ import trplugins.menu.TrMenu
 import trplugins.menu.TrMenu.actionHandle
 import trplugins.menu.api.reaction.Reactions
 import trplugins.menu.module.display.MenuSession
-import trplugins.menu.module.display.texture.Texture
 import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.inputer.inputs.InputAnvil
 import trplugins.menu.module.internal.inputer.inputs.InputBook
@@ -133,7 +132,7 @@ class Inputer(private val stages: CycleList<Catcher>) {
         companion object {
 
             fun of(name: String): Type {
-                return values().find { it.name.equals(name, true) } ?: CHAT
+                return entries.find { it.name.equals(name, true) } ?: CHAT
             }
 
         }

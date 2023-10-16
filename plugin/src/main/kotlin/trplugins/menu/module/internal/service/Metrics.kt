@@ -16,7 +16,7 @@ import taboolib.module.metrics.charts.*
 object Metrics {
 
     private val B_STATS: Metrics by lazy { Metrics(5742, pluginVersion, Platform.BUKKIT) }
-    var menuOpenCounts = 0
+    private var menuOpenCounts = 0
         get() {
             val count = field
             field = 0
