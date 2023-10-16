@@ -1,3 +1,5 @@
+import java.util.*
+
 val taboolibVersion: String by project
 
 plugins {
@@ -22,9 +24,9 @@ tasks.jar {
 tasks.build {
     doLast {
         val plugin = project(":plugin")
-        val file = file("${plugin.buildDir}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
+        val file = file("${plugin.layout.buildDirectory}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
 
-        file?.copyTo(file("$buildDir/libs/${project.name}-$version.jar"), true)
+        file?.copyTo(file("${layout.buildDirectory}/libs/${project.name}-$version.jar"), true)
     }
     dependsOn(project(":plugin").tasks.build)
 }
@@ -44,15 +46,15 @@ subprojects {
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
-    configure<JavaPluginConvention> {
+    configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
     val archiveName = if (project == rootProject)
-        rootProject.name.toLowerCase()
+        rootProject.name.lowercase(Locale.getDefault())
     else
-        "${rootProject.name.toLowerCase()}-${project.name.toLowerCase()}"
+        "${rootProject.name.lowercase(Locale.getDefault())}-${project.name.lowercase(Locale.getDefault())}"
 
     val sourceSets = extensions.getByName("sourceSets") as SourceSetContainer
 

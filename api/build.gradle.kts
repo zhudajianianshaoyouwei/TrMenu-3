@@ -1,3 +1,3 @@
 gradle.buildFinished {
-    buildDir.deleteRecursively()
+    delete(layout.buildDirectory)
 }

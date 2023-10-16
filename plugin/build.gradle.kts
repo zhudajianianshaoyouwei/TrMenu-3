@@ -1,3 +1,5 @@
+import java.util.*
+
 val taboolibVersion: String by rootProject
 
 plugins {
@@ -42,7 +44,7 @@ taboolib {
             name("Triton").optional(true)
         }
     }
-    relocate("trplugins.menu", group.toString().toLowerCase())
+    relocate("trplugins.menu", group.toString().lowercase(Locale.getDefault()))
 
     classifier = null
     version = taboolibVersion
@@ -70,11 +72,11 @@ dependencies {
     // Server Core
     compileOnly("ink.ptms.core:v12002:12002-minimize:mapped")
     compileOnly("ink.ptms.core:v12002:12002-minimize:universal")
-    compileOnly("ink.ptms.core:v11903:11903-minimize:mapped")
-    compileOnly("ink.ptms.core:v11903:11903-minimize:universal")
+    compileOnly("ink.ptms.core:v11904:11904-minimize:mapped")
+    compileOnly("ink.ptms.core:v11904:11904-minimize:universal")
     compileOnly("ink.ptms.core:v11701:11701-minimize:mapped")
     compileOnly("ink.ptms.core:v11701:11701-minimize:universal")
-    compileOnly("ink.ptms.core:v11604:11604")
+    compileOnly("ink.ptms.core:v11605:11605")
 
     // Hook Plugins
     compileOnly("me.clip:placeholderapi:2.11.4") { isTransitive = false }
