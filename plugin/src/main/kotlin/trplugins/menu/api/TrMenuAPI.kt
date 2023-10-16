@@ -11,6 +11,9 @@ import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.onlinePlayers
 import taboolib.common.platform.function.pluginId
 import taboolib.module.kether.KetherShell
+import taboolib.module.kether.KetherShell.eval
+import taboolib.module.kether.ScriptContext
+import taboolib.module.kether.ScriptOptions
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException

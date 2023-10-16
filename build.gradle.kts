@@ -3,7 +3,7 @@ val taboolibVersion: String by project
 plugins {
     id("org.gradle.java")
     id("org.gradle.maven-publish")
-    kotlin("jvm") version "1.8.0" apply false
+    kotlin("jvm") version "1.9.10" apply false
     id("io.izzel.taboolib") version "1.56" apply false
 }
 
@@ -45,8 +45,8 @@ subprojects {
         options.encoding = "UTF-8"
     }
     configure<JavaPluginConvention> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     val archiveName = if (project == rootProject)
