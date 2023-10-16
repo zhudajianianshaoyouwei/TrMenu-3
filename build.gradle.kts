@@ -24,9 +24,9 @@ tasks.jar {
 tasks.build {
     doLast {
         val plugin = project(":plugin")
-        val file = file("${plugin.layout.buildDirectory}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
+        val file = file("${plugin.layout.buildDirectory.get()}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
 
-        file?.copyTo(file("${layout.buildDirectory}/libs/${project.name}-$version.jar"), true)
+        file?.copyTo(file("${layout.buildDirectory.get()}/libs/${project.name}-$version.jar"), true)
     }
     dependsOn(project(":plugin").tasks.build)
 }

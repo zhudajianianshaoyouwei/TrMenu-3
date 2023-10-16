@@ -1,3 +1,3 @@
 gradle.buildFinished {
-    delete(layout.buildDirectory)
+    delete(layout.buildDirectory.get())
 }
