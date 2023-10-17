@@ -126,7 +126,7 @@ object ItemHelper {
         return when (item.lowercase()) {
             "all", "inv" -> inv.contents
             "armor" -> inv.armorContents
-            "hand", "mainhand" -> inv.itemInHand
+            "hand", "mainhand" -> inv.itemInMainHand
             "offhand" -> inv.itemInOffHand
             "helmet" -> inv.armorContents[3]
             "chestplate" -> inv.armorContents[2]

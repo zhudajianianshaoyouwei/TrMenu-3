@@ -13,7 +13,6 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.bukkit.inventory.meta.SkullMeta
-import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.common.util.Strings.similarDegree
 import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.MinecraftVersion
@@ -24,7 +23,6 @@ import taboolib.platform.util.buildItem
  * @date 2021/1/24 11:50
  */
 class Texture(
-    val raw: String,
     val type: TextureType,
     val texture: String,
     val dynamic: Boolean,
@@ -141,7 +139,7 @@ class Texture(
                     if (!dynamic) static = ItemHelper.fromJson(texture)!!
                 }
             }
-            return Texture(raw, type, texture, dynamic, static, meta)
+            return Texture(type, texture, dynamic, static, meta)
         }
 
         private fun parseMaterial(material: String): ItemStack {
