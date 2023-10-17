@@ -3,7 +3,7 @@ package trplugins.menu.api.action
 import taboolib.common.io.runningClasses
 import taboolib.common.platform.ProxyPlayer
 import taboolib.common.platform.function.submit
-import taboolib.common.reflect.Reflex.Companion.invokeConstructor
+import taboolib.library.reflex.Reflex.Companion.invokeConstructor
 import trplugins.menu.api.action.base.ActionBase
 import trplugins.menu.api.action.base.ActionEntry
 import trplugins.menu.api.action.impl.logic.Break

@@ -13,7 +13,7 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.bukkit.inventory.meta.SkullMeta
-import taboolib.common.reflect.Reflex.Companion.invokeMethod
+import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.common.util.Strings.similarDegree
 import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.MinecraftVersion
