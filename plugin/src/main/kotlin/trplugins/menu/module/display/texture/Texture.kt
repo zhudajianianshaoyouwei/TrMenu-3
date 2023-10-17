@@ -157,7 +157,7 @@ class Texture(
                             this.material = Material::class.java.invokeMethod<Material>(
                                 "getMaterial",
                                 id.toInt(),
-                                fixed = true
+                                isStatic = true
                             )!!
                             this.damage = data
                         } catch (t: Throwable) {
