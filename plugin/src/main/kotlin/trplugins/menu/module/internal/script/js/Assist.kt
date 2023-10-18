@@ -19,7 +19,7 @@ import org.bukkit.inventory.PlayerInventory
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.util.random
 import taboolib.library.xseries.XMaterial
-import taboolib.module.chat.TellrawJson
+import taboolib.module.chat.Components
 import taboolib.module.nms.ItemTagData
 import taboolib.module.nms.getI18nName
 import taboolib.module.nms.getItemTag
@@ -170,8 +170,8 @@ class Assist {
         return ItemBuilder(XMaterial.STONE)
     }
 
-    fun getTellraw(): TellrawJson {
-        return TellrawJson()
+    fun getTellraw(): Components {
+        return Components
     }
 
     fun getItemName(itemStack: ItemStack): String? {

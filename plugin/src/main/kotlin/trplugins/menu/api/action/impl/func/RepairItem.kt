@@ -33,7 +33,6 @@ class RepairItem(handle: ActionHandle) : ActionBase(handle) {
         } else if (any is ItemStack) repairItem(any)
     }
 
-    @Suppress("DEPRECATION")
     private fun repairItem(item: ItemStack?) {
         if (item == null || item.type == Material.AIR || item.type.isBlock || item.type.isEdible || item.type.maxDurability <= 0 || item.durability == (0).toShort())
             return

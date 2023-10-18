@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.command.subCommand
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.submit
+import taboolib.common5.cbyte
 import taboolib.library.xseries.XSound
 import taboolib.module.nms.getItemTag
 import taboolib.platform.util.isAir
@@ -38,7 +39,7 @@ object CommandItem : CommandExpression {
                 listOf("toJson", "fromJson", "save", "get", "del", "delete")
             }
             // Method
-            execute<Player> { player, context, argument ->
+            execute<Player> { player, _, argument ->
                 if (!argument.equals("toJson", ignoreCase = true)) {
                     return@execute
                 }
@@ -59,7 +60,7 @@ object CommandItem : CommandExpression {
 
                     val item = BukkitEquipment.getItems(player)[BukkitEquipment.HAND]
 
-                    when (context.argument(-1)?.lowercase()) {
+                    when (context.argument(-1).lowercase()) {
                         "fromjson" -> fromJson(player, argument)
                         "get" -> ItemRepository.itemStacks[argument]?.let {
                             player.inventory.addItem(it).values.forEach { e ->
@@ -90,7 +91,7 @@ object CommandItem : CommandExpression {
         }
         val json = JsonObject()
         json.addProperty("type", item.type.name)
-        json.addProperty("data", item.data!!.data)
+        json.addProperty("data", item.data!!.cbyte)
         json.addProperty("amount", item.amount)
         json.add("meta", Gson().toJsonTree(item.getItemTag()))
         val stringJson = json.toString()

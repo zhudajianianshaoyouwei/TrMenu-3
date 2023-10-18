@@ -42,9 +42,9 @@ object ItemHelper {
 
     fun deserializePattern(builder: ItemBuilder, string: String) {
         builder.patterns.clear()
-        builder.patterns.addAll(string.split(",").let {
+        builder.patterns.addAll(string.split(",").let { it ->
             val patterns = mutableListOf<Pattern>()
-            it.forEach {
+            it.forEach { it ->
                 val type = it.split(" ")
                 if (type.size == 1) {
                     builder.finishing = {

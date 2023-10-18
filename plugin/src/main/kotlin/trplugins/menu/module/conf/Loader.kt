@@ -55,7 +55,7 @@ object Loader {
 
         val errors = mutableListOf<String>()
 
-        val files = mutableListOf<File>().also {
+        val files = mutableListOf<File>().also { it ->
             it.addAll(filterMenuFiles(folder))
             it.addAll(TrMenu.SETTINGS.getStringList("Loader.Menu-Files").flatMap { filterMenuFiles(File(it)) })
         }
@@ -125,7 +125,7 @@ object Loader {
             FileListener.listener(file) {
                 val start = System.currentTimeMillis()
                 val reload = try {
-                    MenuSerializer.serializeMenu(file).also {
+                    MenuSerializer.serializeMenu(file).also { it ->
                         if (!it.succeed()) {
                             console().sendLang(
                                 "Menu-Loader-Failed",

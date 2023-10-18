@@ -1,5 +1,4 @@
 @file:SuppressWarnings("unchecked")
-@file:Suppress("DEPRECATION")
 
 package trplugins.menu.util
 

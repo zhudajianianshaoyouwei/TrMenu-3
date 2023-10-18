@@ -47,7 +47,7 @@ object MenuSerializer : ISerializer {
         val id = file.nameWithoutExtension
         val result = SerialzeResult(SerialzeResult.Type.MENU)
         // 文件格式检测
-        if (!Type.entries.any { it.suffixes.any { file.extension.equals(it, true) } }) {
+        if (!Type.entries.any { it -> it.suffixes.any { file.extension.equals(it, true) } }) {
             result.state = SerialzeResult.State.IGNORE
             return result
         }
@@ -57,7 +57,7 @@ object MenuSerializer : ISerializer {
             return result
         }
         // 菜单类型
-        val type = Type.entries.find { it.suffixes.any { file.extension.equals(it, true) } }!!
+        val type = Type.entries.find { it -> it.suffixes.any { file.extension.equals(it, true) } }!!
         // 加载菜单配置
         val conf = Configuration.loadFromFile(file, type)
 
@@ -177,7 +177,7 @@ object MenuSerializer : ISerializer {
     override fun serializeIcons(conf: Configuration, layout: MenuLayout): SerialzeResult {
         val result = SerialzeResult(SerialzeResult.Type.ICON)
         val icons = Property.ICONS.ofMap(conf).map { (id, value) ->
-            val section = Property.asSection(value).let {
+            val section = Property.asSection(value).let { it ->
                 if (it !is Configuration) return@let null
                 return@let Configuration.loadFromString(it.saveToString().split("\n").joinToString("\n") {
 //                    VariableReader("@", "@")

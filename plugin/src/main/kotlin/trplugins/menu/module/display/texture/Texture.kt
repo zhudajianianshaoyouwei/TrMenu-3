@@ -23,6 +23,7 @@ import taboolib.platform.util.buildItem
  * @date 2021/1/24 11:50
  */
 class Texture(
+    val raw: String,
     val type: TextureType,
     val texture: String,
     val dynamic: Boolean,
@@ -139,7 +140,7 @@ class Texture(
                     if (!dynamic) static = ItemHelper.fromJson(texture)!!
                 }
             }
-            return Texture(type, texture, dynamic, static, meta)
+            return Texture(raw, type, texture, dynamic, static, meta)
         }
 
         private fun parseMaterial(material: String): ItemStack {

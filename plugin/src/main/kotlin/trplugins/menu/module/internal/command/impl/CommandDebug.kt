@@ -110,7 +110,7 @@ object CommandDebug : CommandExpression {
             Bukkit.getPluginManager().plugins.sortedBy { it.name }.forEach { plugin ->
                 var file: File? = null
                 try {
-                    Class.forName("org.bukkit.plugin.java.JavaPlugin").also {
+                    Class.forName("org.bukkit.plugin.java.JavaPlugin").also { it ->
                         file = it.getMethod("getFile").also { it.isAccessible = true }.invoke(plugin) as File
                     }
                 } catch (t: Throwable) {

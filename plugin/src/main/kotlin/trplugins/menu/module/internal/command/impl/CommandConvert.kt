@@ -24,12 +24,12 @@ object CommandConvert : CommandExpression {
     override val command = subCommand {
         // menu
         dynamic {
-            suggestion<CommandSender> { sender, context ->
+            suggestion<CommandSender> { _, _ ->
                 Menu.menus.map { it.id }
             }
             // type
             dynamic {
-                suggestion<CommandSender>(uncheck = true) { sender, context ->
+                suggestion<CommandSender>(uncheck = true) { _, _ ->
                     Type.entries.map { it.name }
                 }
 

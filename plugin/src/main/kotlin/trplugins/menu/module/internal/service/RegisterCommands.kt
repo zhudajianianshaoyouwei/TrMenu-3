@@ -54,7 +54,7 @@ object RegisterCommands {
                             val args = if (argument.contains(" ")) argument.split(" ") else listOf(argument)
                             val session = MenuSession.getSession(player)
                             if (args.isNotEmpty()) {
-                                subReactions[args[0]]?.let {
+                                subReactions[args[0]]?.let { it ->
                                     if (args.size > 1) session.arguments = args.toMutableList().also { it.removeAt(0) }.toTypedArray()
                                     it.eval(adaptPlayer(player))
                                 }
@@ -64,7 +64,7 @@ object RegisterCommands {
                             }
                         }
                     }
-                    execute<Player> { player, context, argument ->
+                    execute<Player> { player, _, _ ->
                         val session = MenuSession.getSession(player)
                         session.arguments = arrayOf()
                         reactions.eval(adaptPlayer(player))

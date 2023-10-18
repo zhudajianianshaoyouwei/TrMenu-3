@@ -1,4 +1,4 @@
-import java.util.*
+import java.util.Locale
 
 val taboolibVersion: String by rootProject
 
@@ -32,6 +32,7 @@ taboolib {
         }
         dependencies {
             name("PlaceholderAPI").optional(true)
+            name("Zaphkiel").optional(true)
             name("Skulls").optional(true)
             name("Vault").optional(true)
             name("PlayerPoints").optional(true)
@@ -39,7 +40,7 @@ taboolib {
             name("Oraxen").optional(true)
             name("SkinsRestorer").optional(true)
             name("ItemsAdder").optional(true)
-            name("floodgate-bukkit").optional(true)
+            name("floodgate").optional(true)
             name("FastScript").optional(true)
             name("Triton").optional(true)
         }
@@ -72,7 +73,7 @@ dependencies {
     // Server Core
     compileOnly("ink.ptms.core:v12002:12002-minimize:mapped")
     compileOnly("ink.ptms.core:v12002:12002-minimize:universal")
-    compileOnly("ink.ptms.core:v11904:11904-minimize:mapped")
+    compileOnly("ink.ptms.core:v11904:11904-minimize:mapped") // TODO
     compileOnly("ink.ptms.core:v11904:11904-minimize:universal")
     compileOnly("ink.ptms.core:v11701:11701-minimize:mapped")
     compileOnly("ink.ptms.core:v11701:11701-minimize:universal")
@@ -82,14 +83,15 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.4") { isTransitive = false }
     compileOnly("ink.ptms:Zaphkiel:2.0.10") { isTransitive = false }
     compileOnly("ca.tweetzy:skulls:3.10.0") { isTransitive = false }
-    compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.0-SNAPSHOT") { isTransitive = false }
-    compileOnly("com.github.oraxen:oraxen:v1.162.0") { isTransitive = false }
-    compileOnly("org.black_ixx:playerpoints:3.2.6") { isTransitive = false }
     compileOnly("com.github.MilkBowl:VaultAPI:8bad2c4") { isTransitive = false }
+    compileOnly("org.black_ixx:playerpoints:3.2.6") { isTransitive = false }
+    compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") { isTransitive = false }
+    compileOnly("com.github.oraxen:oraxen:v1.162.0") { isTransitive = false }
+    compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.0-SNAPSHOT") { isTransitive = false }
+    compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1") { isTransitive = false }
+    compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:core:v3.9.0") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:api:v3.9.0") { isTransitive = false }
-    compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") { isTransitive = false }
-    compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1") { isTransitive = false }
 
     compileOnly(fileTree("libs"))
 }

@@ -14,7 +14,6 @@ object Performance {
         return Mirror.report(sender, opt)
     }
 
-    @Suppress("DEPRECATION")
     inline fun check(id: String, func: () -> Unit) {
         Mirror.mirrorData.computeIfAbsent(id) { Mirror.MirrorData() }.define()
         func()

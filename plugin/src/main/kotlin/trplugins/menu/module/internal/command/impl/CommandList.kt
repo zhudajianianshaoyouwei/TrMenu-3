@@ -15,11 +15,11 @@ object CommandList : CommandExpression {
 
     // trm list [filter]
     override val command = subCommand {
-        execute<CommandSender> { sender, context, argument ->
+        execute<CommandSender> { sender, _, _ ->
             find(sender, null)
         }
         dynamic(optional = true) {
-            execute<CommandSender> { sender, context, argument ->
+            execute<CommandSender> { sender, _, argument ->
                 find(sender, argument)
             }
         }

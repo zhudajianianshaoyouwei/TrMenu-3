@@ -39,7 +39,7 @@ object Metrics {
                 val value = mutableMapOf<String, Int>()
 
                 Menu.menus
-                    .flatMap {
+                    .flatMap { it ->
                         it.layout.layouts.filter { it.type == InventoryType.CHEST }
                     }.forEach {
                         value[it.rows.toString()] = value.computeIfAbsent(it.rows.toString()) { 0 } + 1
@@ -52,7 +52,7 @@ object Metrics {
                 val value = mutableMapOf<String, Int>()
 
                 Menu.menus
-                    .flatMap {
+                    .flatMap { it ->
                         val list = it.icons.map { icon -> icon.defIcon.display }.toMutableList()
                         list.addAll(it.icons.flatMap { icon -> icon.subs.elements.map { sub -> sub.display } })
                         list.flatMap { it.texture.elements }

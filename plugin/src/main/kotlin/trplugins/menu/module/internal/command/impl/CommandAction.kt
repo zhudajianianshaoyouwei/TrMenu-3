@@ -20,7 +20,7 @@ object CommandAction : CommandExpression {
     override val command = subCommand {
         // player
         dynamic {
-            suggestion<CommandSender>(uncheck = true) { sender, context ->
+            suggestion<CommandSender>(uncheck = true) { _, _ ->
                 Bukkit.getOnlinePlayers().map { it.name }
             }
             // Action

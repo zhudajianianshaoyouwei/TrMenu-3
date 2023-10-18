@@ -24,7 +24,7 @@ class KetherMathCheck(val type: Type, val menu: ParsedAction<*>?) : BaseAction<A
     }
 
     override fun process(context: QuestContext.Frame): CompletableFuture<Any>? {
-        return menu?.let {
+        return menu?.let { it ->
             context.newFrame(it).run<String>().thenApply {
                 when (type) {
                     Type.INT -> it.toIntOrNull() != null

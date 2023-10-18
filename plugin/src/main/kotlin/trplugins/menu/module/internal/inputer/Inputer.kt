@@ -34,7 +34,6 @@ import java.util.function.Function
 class Inputer(private val stages: CycleList<Catcher>) {
 
     fun startInput(session: MenuSession) {
-        @Suppress("DEPRECATION")
         Metadata.getMeta(session).data.let { map ->
             map.keys.filter { it.startsWith("input") }.forEach { key -> map.remove(key) }
         }

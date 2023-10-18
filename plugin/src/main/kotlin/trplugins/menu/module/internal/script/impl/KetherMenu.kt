@@ -33,7 +33,7 @@ class KetherMenu(val type: Type, val menu: ParsedAction<*>?) : BaseAction<Void>(
 
         when (type) {
             Type.CLOSE -> session?.close(closePacket = true, updateInventory = true)
-            Type.PAGE -> menu?.let {
+            Type.PAGE -> menu?.let { it ->
                 context.newFrame(it).run<Int>().thenApply {
                     val menu = session?.menu ?: return@thenApply false
                     val page = min(it.coerceAtLeast(0), menu.layout.getSize() - 1)
@@ -41,7 +41,7 @@ class KetherMenu(val type: Type, val menu: ParsedAction<*>?) : BaseAction<Void>(
                     menu.page(viewer, page)
                 }
             }
-            Type.OPEN -> menu?.let {
+            Type.OPEN -> menu?.let { it ->
                 context.newFrame(it).run<String>().thenApply {
                     TrMenuAPI.getMenuById(it)?.open(context.viewer(), reason = MenuOpenEvent.Reason.CONSOLE)
                 }

@@ -2,7 +2,7 @@ package trplugins.menu.api.action.impl.send
 
 import taboolib.common.platform.ProxyPlayer
 import taboolib.module.chat.HexColor
-import taboolib.module.chat.TellrawJson
+import taboolib.module.chat.Components
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.action.base.ActionBase
 import trplugins.menu.api.action.base.ActionContents
@@ -32,7 +32,7 @@ class Tellraw(handle: ActionHandle) : ActionBase(handle) {
         if (kotlin.runCatching { jsonParser.parse(raw) }.isSuccess) {
             json = raw
         } else {
-            val tellraw = TellrawJson()
+            val tellraw = Components.empty()
 
             Variables(raw, matcher) { it[1] }.element.forEach { result ->
 
@@ -49,9 +49,9 @@ class Tellraw(handle: ActionHandle) : ActionBase(handle) {
                         val (type, content) = it
                         when (type.lowercase()) {
                             "hover" -> tellraw.hoverText(content.replace("\\n", "\n"))
-                            "suggest" -> tellraw.suggestCommand(content)
-                            "command", "execute" -> tellraw.runCommand(content)
-                            "url", "open_url" -> tellraw.openURL(content)
+                            "suggest" -> tellraw.clickSuggestCommand(content)
+                            "command", "execute" -> tellraw.clickRunCommand(content)
+                            "url", "open_url" -> tellraw.clickOpenURL(content)
                         }
                     }
                 } else tellraw.append(HexColor.translate(result.value))

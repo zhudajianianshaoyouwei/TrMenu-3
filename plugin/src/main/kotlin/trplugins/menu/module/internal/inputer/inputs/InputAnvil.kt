@@ -89,7 +89,7 @@ class InputAnvil(
             val input = inputs[e.player] ?: return
             val inputText = e.packet.source.getProperty<String>("a")!!
 
-            input.receptacle.getElement(2)?.let {
+            input.receptacle.getElement(2)?.let { it ->
                 it.itemMeta?.let {
                     if (!it.hasDisplayName()) return@let
                     it.setDisplayName(

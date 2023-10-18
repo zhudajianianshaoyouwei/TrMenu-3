@@ -6,7 +6,6 @@ import taboolib.library.kether.LocalizedException
 import taboolib.module.kether.KetherShell.eval
 import taboolib.module.kether.ScriptOptions
 import trplugins.menu.module.display.Menu
-import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.EvalResult
 import java.util.concurrent.CompletableFuture

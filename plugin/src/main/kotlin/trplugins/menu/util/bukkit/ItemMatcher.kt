@@ -124,7 +124,6 @@ class ItemMatcher(private val matcher: Set<Match>) {
             val materialMatch = opposition(oppose(material), material == null || itemStack.type.name.equals(material.second, true))
 
             val damage = getTrait(DATA)?.let { Pair(it.first, it.second.toShortOrNull()) }
-            @Suppress("DEPRECATION")
             val damageMatch = opposition(oppose(damage), damage == null || itemStack.durability == damage.second)
 
             val modelData = getTrait(MODEL_DATA)?.let { Pair(it.first, it.second.toIntOrNull()) }

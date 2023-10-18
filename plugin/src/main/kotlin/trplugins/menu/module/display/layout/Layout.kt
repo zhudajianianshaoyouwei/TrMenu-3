@@ -106,7 +106,6 @@ class Layout(
         private const val BLANK_CHAR = " "
         private val BLANK_LINE = BLANK_CHAR.repeat(9)
 
-        @Suppress("DEPRECATION")
         fun listKeys(line: String): List<Any> {
             return Variables(line, Regexs.ICON_KEY).element.flatMap {
                 if (it.isVariable) listOf(it.value)

@@ -69,7 +69,6 @@ object Metadata {
         database.push(player)
     }
 
-    @Suppress("DEPRECATION")
     private fun getLocalePlayer(player: Player): Configuration {
         return database.pull(player)
     }

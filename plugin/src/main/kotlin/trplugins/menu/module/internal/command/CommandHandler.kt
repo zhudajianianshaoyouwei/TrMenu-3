@@ -7,7 +7,7 @@ import taboolib.common.platform.command.CommandHeader
 import taboolib.common.platform.command.mainCommand
 import taboolib.common.platform.command.subCommand
 import taboolib.common.platform.function.adaptCommandSender
-import taboolib.module.chat.TellrawJson
+import taboolib.module.chat.Components
 import taboolib.module.nms.MinecraftVersion
 import taboolib.platform.util.asLangText
 import trplugins.menu.module.internal.command.impl.*
@@ -73,10 +73,10 @@ object CommandHandler {
                 return@execute
             }
             sender.sendMessage("§8[§3Tr§bMenu§8] §cERROR §3| Args §6$argument §3not found.")
-            TellrawJson()
+            Components.empty()
                 .append("§8[§3Tr§bMenu§8] §bINFO §3| Type ").append("§f/trmenu help")
                 .hoverText("§f/trmenu help §8- §7more help...")
-                .suggestCommand("/trmenu help")
+                .clickSuggestCommand("/trmenu help")
                 .append("§3 for help.")
                 .sendTo(adaptCommandSender(sender))
         }
@@ -85,7 +85,7 @@ object CommandHandler {
     private fun generateMainHelper(sender: CommandSender) {
         val proxySender = adaptCommandSender(sender)
         proxySender.sendMessage("")
-        TellrawJson()
+        Components.empty()
             .append("  ").append("§3TrMenu")
             .hoverText("§7TrMenu is modern and advanced Minecraft trplugins.menu-plugin")
             .append(" ").append("§f${TrMenu.plugin.description.version}")
@@ -94,23 +94,23 @@ object CommandHandler {
                 §7NMS version: §b${MinecraftVersion.minecraftVersion}
             """.trimIndent()).sendTo(proxySender)
         proxySender.sendMessage("")
-        TellrawJson()
+        Components.empty()
             .append("  §7${sender.asLangText("Command-Help-Type")}: ").append("§f/trmenu §8[...]")
             .hoverText("§f/trmenu §8[...]")
-            .suggestCommand("/trmenu ")
+            .clickSuggestCommand("/trmenu ")
             .sendTo(proxySender)
         proxySender.sendMessage("  §7${sender.asLangText("Command-Help-Args")}:")
 
-        javaClass.declaredFields.forEach {
+        javaClass.declaredFields.forEach { it ->
             if (!it.isAnnotationPresent(AppearHelper::class.java)) return@forEach
             val name = it.name
             val regularName = name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
             val desc = sender.asLangText("Command-$regularName-Description")
 
-            TellrawJson()
+            Components.empty()
                 .append("    §8- ").append("§f$name")
                 .hoverText("§f/trmenu $name §8- §7$desc")
-                .suggestCommand("/trmenu $name ")
+                .clickSuggestCommand("/trmenu $name ")
                 .sendTo(proxySender)
             proxySender.sendMessage("      §7$desc")
         }
