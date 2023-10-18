@@ -73,7 +73,8 @@ object Heads {
      */
     private fun playerTexture(name: String, block: (String) -> Unit): Unit? {
         when {
-            HookPlugin.getSkinsRestorer().isHooked -> {
+            // Dreeam - Still need way to hook SkinsRestorer API under proxy, the check below still cant check if server under Velocity modern forwarding
+            HookPlugin.getSkinsRestorer().isHooked && !org.spigotmc.SpigotConfig.bungee -> {
                 HookPlugin.getSkinsRestorer().getPlayerSkinTexture(name)?.also(block) ?: return null
             }
             Bukkit.getPlayer(name)?.isOnline == true -> {
@@ -81,7 +82,6 @@ object Heads {
                     ?.find { it.value != null }?.value
                     ?.also(block)
                     ?: return null
-
             }
             else -> {
                 submit(async = true) {

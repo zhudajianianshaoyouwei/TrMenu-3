@@ -12,7 +12,11 @@ class HookSkinsRestorer : HookAbstract() {
 
     private val skinsRestorer: SkinsRestorer? =
         if (isHooked) {
-            SkinsRestorerProvider.get()
+            try {
+                SkinsRestorerProvider.get()
+            } catch (e: IllegalStateException) {
+                null
+            }
         } else {
             null
         }
@@ -23,7 +27,7 @@ class HookSkinsRestorer : HookAbstract() {
 
     fun getPlayerSkinTexture(name: String): String? {
         skinsRestorer?.let {
-            if (it.skinStorage.findOrCreateSkinData(name).isEmpty) {
+            if (it.skinStorage.findOrCreateSkinData(name).isEmpty || it.skinStorage.findOrCreateSkinData(name) == null) {
                 return null
             }
 
