@@ -26,7 +26,7 @@ abstract class PlatformProvider {
             if (provider != null) {
                 return
             }
-            provider = if (Bukkit.getPluginManager().getPlugin("floodgate-bukkit") != null || Bukkit.getPluginManager().getPlugin("floodgate") != null) {
+            provider = if (Bukkit.getPluginManager().getPlugin("floodgate") != null) {
                 // Use floodgate api by default
                 object : PlatformProvider() {
                     override fun isBedrockPlayer(player: Player): Boolean {
