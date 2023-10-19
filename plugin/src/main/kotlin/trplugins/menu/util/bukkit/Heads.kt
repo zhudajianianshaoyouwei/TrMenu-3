@@ -4,7 +4,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.mojang.authlib.GameProfile
 import com.mojang.authlib.properties.Property
-import trplugins.menu.module.internal.hook.HookPlugin
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
@@ -13,7 +12,9 @@ import taboolib.common.platform.function.submit
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.library.reflex.Reflex.Companion.setProperty
+import taboolib.library.xseries.ReflectionUtils
 import taboolib.library.xseries.XMaterial
+import trplugins.menu.module.internal.hook.HookPlugin
 import java.net.URL
 import java.util.*
 
@@ -31,6 +32,10 @@ object Heads {
     private val DEFAULT_HEAD = XMaterial.PLAYER_HEAD.parseItem()!!
     private val CACHED_PLAYER_TEXTURE = mutableMapOf<String, String?>()
     private val CACHED_SKULLS = mutableMapOf<String, ItemStack>()
+
+    private val NULLABILITY_RECORD_UPDATE: Boolean = ReflectionUtils.VERSION == "v1_20_R2"
+    private val GAME_PROFILE_EMPTY_UUID = if (NULLABILITY_RECORD_UPDATE) UUID(0, 0) else UUID.randomUUID()
+    private val GAME_PROFILE_EMPTY_NAME = if (NULLABILITY_RECORD_UPDATE) "" else "null"
 
     fun cacheSize(): Pair<Int, Int> {
         return CACHED_SKULLS.size to CACHED_PLAYER_TEXTURE.size
@@ -105,7 +110,7 @@ object Heads {
 
     private fun modifyTexture(input: String, itemStack: ItemStack): ItemStack {
         val meta = itemStack.itemMeta as SkullMeta
-        val profile = GameProfile(UUID.randomUUID(), null)
+        val profile = GameProfile(GAME_PROFILE_EMPTY_UUID, GAME_PROFILE_EMPTY_NAME)
         val texture = if (input.length in 60..100) encodeTexture(input) else input
 
         profile.properties.put("textures", Property("textures", texture, "TrMenu_TexturedSkull"))
