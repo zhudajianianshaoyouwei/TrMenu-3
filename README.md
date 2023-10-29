@@ -1,4 +1,4 @@
-![](https://attachment.mcbbs.net/data/myattachment/forum/202108/17/142921rll20j5kie5kzk1f.gif)
+![](142921rll20j5kie5kzk1f.gif)
 
 ![](https://img.shields.io/github/last-commit/Winds-Studio/TrMenu?logo=artstation&style=for-the-badge&color=9266CC)![](https://img.shields.io/github/issues/Winds-Studio/TrMenu?style=for-the-badge&logo=slashdot)![](https://img.shields.io/github/release/Winds-Studio/TrMenu?style=for-the-badge&color=00C58E&logo=ionic)
 

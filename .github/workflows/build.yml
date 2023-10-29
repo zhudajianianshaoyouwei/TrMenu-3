@@ -3,8 +3,6 @@ name: TrMenu Dev
 on:
   push:
     branches: [ stable/v3 ]
-  pull_request:
-    branches: [ stable/v3 ]
 
 jobs:
   releaseJar:
@@ -16,16 +14,17 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-          cache: gradle
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
 
-        # output jar
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@main
+      - name: Upload TrMenu
+        uses: marvinpinto/action-automatic-releases@master
         with:
-          name: TrMenu Dev
-          path: build/libs/*.jar
+          title: "TrMenu"
+          automatic_release_tag: "trmenu"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          files: "build/libs/*.jar"
+          prerelease: true
