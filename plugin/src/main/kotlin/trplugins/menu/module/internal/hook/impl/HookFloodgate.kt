@@ -12,7 +12,6 @@ class HookFloodgate : HookAbstract() {
 
     fun isBedrockPlayer(player: Player): Boolean {
        return if (checkHooked()) FloodgateApi.getInstance().isFloodgatePlayer(player.uniqueId) else false
-//        return false
     }
 
     override fun getPluginName(): String {
