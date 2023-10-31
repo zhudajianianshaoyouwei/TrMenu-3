@@ -1,12 +1,12 @@
 package trplugins.menu.module.internal.listener
 
-import trplugins.menu.module.display.Menu
-import trplugins.menu.module.display.MenuSession
-import trplugins.menu.module.internal.data.Metadata
 import org.bukkit.event.player.PlayerQuitEvent
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submit
 import trplugins.menu.api.receptacle.setViewingReceptacle
+import trplugins.menu.module.display.Menu
+import trplugins.menu.module.display.MenuSession
+import trplugins.menu.module.internal.data.Metadata
 
 /**
  * @author Arasple

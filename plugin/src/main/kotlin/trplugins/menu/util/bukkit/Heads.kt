@@ -15,7 +15,8 @@ import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.library.xseries.XMaterial
 import trplugins.menu.module.internal.hook.HookPlugin
 import java.net.URL
-import java.util.*
+import java.util.Base64
+import java.util.UUID
 
 /**
  * @author Arasple

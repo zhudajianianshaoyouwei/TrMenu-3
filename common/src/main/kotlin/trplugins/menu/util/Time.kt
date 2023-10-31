@@ -2,7 +2,7 @@ package trplugins.menu.util
 
 import java.text.SimpleDateFormat
 import java.time.Duration
-import java.util.*
+import java.util.Locale
 
 /**
  * @author Arasple

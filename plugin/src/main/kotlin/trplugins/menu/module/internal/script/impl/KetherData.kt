@@ -1,15 +1,15 @@
 package trplugins.menu.module.internal.script.impl
 
+import taboolib.library.kether.ArgTypes
+import taboolib.library.kether.LocalizedException
+import taboolib.library.kether.ParsedAction
+import taboolib.library.kether.QuestContext
+import taboolib.module.kether.KetherParser
+import taboolib.module.kether.scriptParser
 import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.script.kether.BaseAction
 import trplugins.menu.module.internal.script.kether.EditType
 import trplugins.menu.module.internal.script.kether.EditType.*
-import taboolib.library.kether.ParsedAction
-import taboolib.library.kether.ArgTypes
-import taboolib.library.kether.LocalizedException
-import taboolib.library.kether.QuestContext
-import taboolib.module.kether.KetherParser
-import taboolib.module.kether.scriptParser
 import java.util.concurrent.CompletableFuture
 
 /**

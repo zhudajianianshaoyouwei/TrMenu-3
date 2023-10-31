@@ -1,10 +1,9 @@
 package trplugins.menu.module.internal.command.impl
 
-import trplugins.menu.module.internal.command.CommandExpression
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import taboolib.common.platform.function.console
 import taboolib.common.platform.command.subCommand
+import taboolib.common.platform.function.console
 import taboolib.library.xseries.XMaterial
 import taboolib.library.xseries.XSound
 import taboolib.module.lang.asLangText
@@ -12,8 +11,9 @@ import taboolib.module.lang.asLangTextList
 import taboolib.platform.util.asLangText
 import taboolib.platform.util.buildItem
 import taboolib.platform.util.sendLang
-import trplugins.menu.api.receptacle.vanilla.window.ChestInventory
 import trplugins.menu.api.receptacle.ReceptacleClickType
+import trplugins.menu.api.receptacle.vanilla.window.ChestInventory
+import trplugins.menu.module.internal.command.CommandExpression
 
 /**
  * @author Arasple

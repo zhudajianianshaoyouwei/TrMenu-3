@@ -1,8 +1,8 @@
 package trplugins.menu.api.menu
 
+import taboolib.module.configuration.Configuration
 import trplugins.menu.module.conf.prop.SerialzeResult
 import trplugins.menu.module.display.layout.MenuLayout
-import taboolib.module.configuration.Configuration
 import java.io.File
 
 /**

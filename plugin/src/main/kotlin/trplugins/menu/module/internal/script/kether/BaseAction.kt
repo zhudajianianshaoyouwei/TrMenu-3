@@ -1,11 +1,11 @@
 package trplugins.menu.module.internal.script.kether
 
-import trplugins.menu.module.display.MenuSession
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import taboolib.library.kether.QuestAction
 import taboolib.library.kether.QuestContext
 import taboolib.module.kether.ScriptContext
+import trplugins.menu.module.display.MenuSession
 import java.util.concurrent.CompletableFuture
 
 /**

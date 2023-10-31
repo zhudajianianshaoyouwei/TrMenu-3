@@ -2,11 +2,11 @@ package trplugins.menu.api.receptacle
 
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryType
-import org.bukkit.event.inventory.InventoryType.*
+import org.bukkit.event.inventory.InventoryType.CHEST
 import trplugins.menu.api.receptacle.vanilla.window.ChestInventory
 import trplugins.menu.api.receptacle.vanilla.window.WindowLayout
 import trplugins.menu.api.receptacle.vanilla.window.WindowReceptacle
-import java.util.*
+import java.util.UUID
 
 private val viewingReceptacleMap = HashMap<UUID, Receptacle<*>>()
 

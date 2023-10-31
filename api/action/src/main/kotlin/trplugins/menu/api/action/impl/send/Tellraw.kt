@@ -1,8 +1,8 @@
 package trplugins.menu.api.action.impl.send
 
 import taboolib.common.platform.ProxyPlayer
-import taboolib.module.chat.HexColor
 import taboolib.module.chat.Components
+import taboolib.module.chat.HexColor
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.action.base.ActionBase
 import trplugins.menu.api.action.base.ActionContents

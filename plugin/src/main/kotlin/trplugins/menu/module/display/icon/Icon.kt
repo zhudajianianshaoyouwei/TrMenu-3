@@ -1,11 +1,11 @@
 package trplugins.menu.module.display.icon
 
+import taboolib.common.platform.function.submit
 import trplugins.menu.api.menu.IIcon
 import trplugins.menu.module.display.MenuSession
+import trplugins.menu.module.internal.script.evalScript
 import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.collections.IndivList
-import taboolib.common.platform.function.submit
-import trplugins.menu.module.internal.script.evalScript
 
 /**
  * @author Arasple

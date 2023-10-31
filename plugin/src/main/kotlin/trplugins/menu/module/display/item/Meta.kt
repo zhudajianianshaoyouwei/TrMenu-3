@@ -1,14 +1,14 @@
 package trplugins.menu.module.display.item
 
-import trplugins.menu.module.display.MenuSession
-import trplugins.menu.util.Regexs
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import taboolib.module.nms.ItemTag
 import taboolib.module.nms.getItemTag
 import taboolib.platform.util.ItemBuilder
+import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.script.evalScript
+import trplugins.menu.util.Regexs
 
 /**
  * @author Arasple

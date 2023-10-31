@@ -1,8 +1,8 @@
 package trplugins.menu.api.event
 
+import taboolib.platform.type.BukkitProxyEvent
 import trplugins.menu.module.display.Menu
 import trplugins.menu.module.display.MenuSession
-import taboolib.platform.type.BukkitProxyEvent
 
 /**
  * @author Arasple

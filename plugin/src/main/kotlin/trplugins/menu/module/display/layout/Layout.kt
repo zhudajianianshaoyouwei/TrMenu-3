@@ -3,8 +3,8 @@ package trplugins.menu.module.display.layout
 import org.bukkit.event.inventory.InventoryType
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.submit
-import trplugins.menu.api.receptacle.vanilla.window.ChestInventory
 import trplugins.menu.api.receptacle.createReceptacle
+import trplugins.menu.api.receptacle.vanilla.window.ChestInventory
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.service.Performance

@@ -4,7 +4,7 @@ import net.md_5.bungee.api.ChatColor
 import org.bukkit.command.CommandSender
 import taboolib.module.nms.MinecraftVersion
 import java.awt.Color
-import java.util.*
+import java.util.Arrays
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.stream.Collectors

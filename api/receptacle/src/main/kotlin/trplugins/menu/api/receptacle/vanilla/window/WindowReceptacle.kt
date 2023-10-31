@@ -4,7 +4,9 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.function.submit
 import taboolib.module.nms.nmsProxy
-import trplugins.menu.api.receptacle.*
+import trplugins.menu.api.receptacle.Receptacle
+import trplugins.menu.api.receptacle.ReceptacleInteractEvent
+import trplugins.menu.api.receptacle.setViewingReceptacle
 
 /**
  * @author Arasple

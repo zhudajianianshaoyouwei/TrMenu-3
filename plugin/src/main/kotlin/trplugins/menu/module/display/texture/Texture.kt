@@ -1,5 +1,13 @@
 package trplugins.menu.module.display.texture
 
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.LeatherArmorMeta
+import org.bukkit.inventory.meta.SkullMeta
+import taboolib.common.util.Strings.similarDegree
+import taboolib.library.xseries.XMaterial
+import taboolib.module.nms.MinecraftVersion
+import taboolib.platform.util.buildItem
 import trplugins.menu.api.menu.ITexture
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.hook.HookPlugin
@@ -9,14 +17,6 @@ import trplugins.menu.module.internal.item.ItemSource
 import trplugins.menu.util.Regexs
 import trplugins.menu.util.bukkit.Heads
 import trplugins.menu.util.bukkit.ItemHelper
-import org.bukkit.Material
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.LeatherArmorMeta
-import org.bukkit.inventory.meta.SkullMeta
-import taboolib.common.util.Strings.similarDegree
-import taboolib.library.xseries.XMaterial
-import taboolib.module.nms.MinecraftVersion
-import taboolib.platform.util.buildItem
 
 /**
  * @author Arasple

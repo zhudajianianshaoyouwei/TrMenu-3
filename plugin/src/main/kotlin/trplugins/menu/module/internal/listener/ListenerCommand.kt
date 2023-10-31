@@ -1,10 +1,10 @@
 package trplugins.menu.module.internal.listener
 
-import trplugins.menu.api.event.MenuOpenEvent
-import trplugins.menu.module.display.Menu
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
+import trplugins.menu.api.event.MenuOpenEvent
+import trplugins.menu.module.display.Menu
 
 
 /**

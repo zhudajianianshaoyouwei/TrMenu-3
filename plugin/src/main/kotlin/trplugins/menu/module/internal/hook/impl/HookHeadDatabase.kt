@@ -1,10 +1,10 @@
 package trplugins.menu.module.internal.hook.impl
 
-import trplugins.menu.module.internal.hook.HookAbstract
 import me.arcaniax.hdb.api.HeadDatabaseAPI
 import org.bukkit.inventory.ItemStack
 import taboolib.library.xseries.XMaterial
 import taboolib.platform.util.buildItem
+import trplugins.menu.module.internal.hook.HookAbstract
 
 /**
  * @author Arasple

@@ -1,12 +1,12 @@
 package trplugins.menu.module.internal.database
 
-import trplugins.menu.TrMenu
 import org.bukkit.entity.Player
 import taboolib.module.configuration.Configuration
 import taboolib.module.database.ColumnOptionSQL
 import taboolib.module.database.ColumnTypeSQL
 import taboolib.module.database.Table
 import taboolib.module.database.getHost
+import trplugins.menu.TrMenu
 import java.util.concurrent.ConcurrentHashMap
 
 // Almost a total copy from DatabaseSQLite

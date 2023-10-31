@@ -17,7 +17,7 @@ import trplugins.menu.TrMenu
 import java.io.BufferedInputStream
 import java.net.URL
 import java.nio.charset.StandardCharsets
-import java.util.*
+import java.util.UUID
 
 /**
  * @author Arasple

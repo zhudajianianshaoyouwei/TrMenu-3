@@ -1,15 +1,15 @@
 package trplugins.menu.module.internal.command.impl
 
-import trplugins.menu.api.TrMenuAPI
-import trplugins.menu.api.event.MenuOpenEvent
-import trplugins.menu.module.display.Menu
-import trplugins.menu.module.internal.command.CommandExpression
-import trplugins.menu.module.internal.data.Metadata
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import taboolib.common.platform.command.subCommand
 import taboolib.platform.util.sendLang
+import trplugins.menu.api.TrMenuAPI
+import trplugins.menu.api.event.MenuOpenEvent
+import trplugins.menu.module.display.Menu
+import trplugins.menu.module.internal.command.CommandExpression
+import trplugins.menu.module.internal.data.Metadata
 
 /**
  * @author Arasple

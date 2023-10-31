@@ -1,7 +1,5 @@
 package trplugins.menu.util.bukkit
 
-import trplugins.menu.module.internal.service.Performance
-import trplugins.menu.util.bukkit.ItemMatcher.TraitType.*
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
@@ -9,6 +7,8 @@ import taboolib.library.xseries.XMaterial
 import taboolib.module.chat.colored
 import taboolib.platform.util.hasItem
 import taboolib.platform.util.takeItem
+import trplugins.menu.module.internal.service.Performance
+import trplugins.menu.util.bukkit.ItemMatcher.TraitType.*
 
 /**
  * @author Arasple

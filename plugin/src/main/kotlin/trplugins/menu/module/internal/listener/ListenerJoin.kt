@@ -1,10 +1,10 @@
 package trplugins.menu.module.internal.listener
 
-import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.util.bukkit.Heads
 import org.bukkit.event.player.PlayerJoinEvent
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submit
+import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.util.bukkit.Heads
 
 /**
  * @author Arasple

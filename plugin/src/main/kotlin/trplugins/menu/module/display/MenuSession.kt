@@ -1,22 +1,22 @@
 package trplugins.menu.module.display
 
-import trplugins.menu.module.display.layout.Layout
-import trplugins.menu.api.event.MenuCloseEvent
-import trplugins.menu.module.display.icon.Icon
-import trplugins.menu.module.display.icon.IconProperty
-import trplugins.menu.module.internal.script.FunctionParser
-import trplugins.menu.module.internal.service.Performance
-import trplugins.menu.util.parseGradients
-import trplugins.menu.util.parseRainbow
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyPlayer
 import taboolib.common.platform.service.PlatformExecutor
 import taboolib.common.util.replaceWithOrder
 import taboolib.module.chat.colored
 import taboolib.platform.compat.replacePlaceholder
+import trplugins.menu.api.event.MenuCloseEvent
 import trplugins.menu.api.receptacle.vanilla.window.WindowReceptacle
+import trplugins.menu.module.display.icon.Icon
+import trplugins.menu.module.display.icon.IconProperty
+import trplugins.menu.module.display.layout.Layout
+import trplugins.menu.module.internal.script.FunctionParser
+import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.ignoreCase
-import java.util.*
+import trplugins.menu.util.parseGradients
+import trplugins.menu.util.parseRainbow
+import java.util.UUID
 
 /**
  * @author Arasple

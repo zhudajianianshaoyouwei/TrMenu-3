@@ -1,5 +1,13 @@
 package trplugins.menu.module.internal.command.impl
 
+import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
+import taboolib.common.platform.command.subCommand
+import taboolib.common.platform.function.adaptCommandSender
+import taboolib.common.platform.function.pluginVersion
+import taboolib.common.platform.function.submit
+import taboolib.module.chat.HexColor
 import trplugins.menu.TrMenu
 import trplugins.menu.api.TrMenuAPI
 import trplugins.menu.module.display.Menu
@@ -11,14 +19,6 @@ import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.Time
 import trplugins.menu.util.bukkit.Heads
 import trplugins.menu.util.net.Paster
-import org.bukkit.Bukkit
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
-import taboolib.common.platform.function.adaptCommandSender
-import taboolib.common.platform.command.subCommand
-import taboolib.common.platform.function.pluginVersion
-import taboolib.common.platform.function.submit
-import taboolib.module.chat.HexColor
 import java.io.File
 
 /**

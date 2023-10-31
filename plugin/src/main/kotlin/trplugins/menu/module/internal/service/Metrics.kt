@@ -1,13 +1,14 @@
 package trplugins.menu.module.internal.service
 
-import trplugins.menu.module.display.Menu
 import org.bukkit.event.inventory.InventoryType
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.Platform
 import taboolib.common.platform.function.pluginVersion
 import taboolib.module.metrics.Metrics
-import taboolib.module.metrics.charts.*
+import taboolib.module.metrics.charts.AdvancedPie
+import taboolib.module.metrics.charts.SingleLineChart
+import trplugins.menu.module.display.Menu
 
 /**
  * @author Arasple

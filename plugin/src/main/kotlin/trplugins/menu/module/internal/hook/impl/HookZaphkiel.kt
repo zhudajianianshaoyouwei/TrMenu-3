@@ -1,11 +1,11 @@
 package trplugins.menu.module.internal.hook.impl
 
 import ink.ptms.zaphkiel.ZaphkielAPI
-import trplugins.menu.module.internal.hook.HookAbstract
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.library.xseries.XMaterial
 import taboolib.platform.util.buildItem
+import trplugins.menu.module.internal.hook.HookAbstract
 
 class HookZaphkiel: HookAbstract() {
 

@@ -1,10 +1,10 @@
 package trplugins.menu.module.internal.database
 
-import trplugins.menu.TrMenu.SETTINGS
 import org.bukkit.entity.Player
 import taboolib.module.configuration.Configuration
 import taboolib.module.database.bridge.Index
 import taboolib.module.database.bridge.createBridgeCollection
+import trplugins.menu.TrMenu.SETTINGS
 
 /**
  * @Author sky

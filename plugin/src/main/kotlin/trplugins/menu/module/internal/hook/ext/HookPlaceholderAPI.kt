@@ -1,16 +1,16 @@
 package trplugins.menu.module.internal.hook.ext
 
-import trplugins.menu.api.event.MenuOpenEvent
-import trplugins.menu.module.display.Menu
-import trplugins.menu.module.display.MenuSession
-import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.module.internal.script.js.JavaScriptAgent
 import org.bukkit.entity.Player
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.pluginId
 import taboolib.platform.compat.PlaceholderExpansion
 import taboolib.platform.util.sendLang
 import trplugins.menu.TrMenu
+import trplugins.menu.api.event.MenuOpenEvent
+import trplugins.menu.module.display.Menu
+import trplugins.menu.module.display.MenuSession
+import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.script.js.JavaScriptAgent
 import trplugins.menu.util.ignoreCase
 
 /**

@@ -1,8 +1,8 @@
 package trplugins.menu.module.internal.hook.impl
 
-import trplugins.menu.module.internal.hook.HookAbstract
 import org.bukkit.entity.Player
 import org.geysermc.floodgate.api.FloodgateApi
+import trplugins.menu.module.internal.hook.HookAbstract
 
 /**
  * @author Arasple

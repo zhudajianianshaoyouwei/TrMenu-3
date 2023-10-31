@@ -1,7 +1,7 @@
 package trplugins.menu.api.menu
 
-import trplugins.menu.module.display.MenuSession
 import org.bukkit.inventory.ItemStack
+import trplugins.menu.module.display.MenuSession
 
 /**
  * @author Arasple

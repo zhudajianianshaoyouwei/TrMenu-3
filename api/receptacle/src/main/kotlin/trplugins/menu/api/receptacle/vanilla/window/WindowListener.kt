@@ -9,7 +9,10 @@ import taboolib.common.platform.function.submit
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.PacketReceiveEvent
 import taboolib.module.nms.nmsProxy
-import trplugins.menu.api.receptacle.*
+import trplugins.menu.api.receptacle.ReceptacleClickType
+import trplugins.menu.api.receptacle.ReceptacleCloseEvent
+import trplugins.menu.api.receptacle.ReceptacleInteractEvent
+import trplugins.menu.api.receptacle.getViewingReceptacle
 import trplugins.menu.api.receptacle.vanilla.window.StaticInventory.staticContainerId
 
 @PlatformSide([Platform.BUKKIT])

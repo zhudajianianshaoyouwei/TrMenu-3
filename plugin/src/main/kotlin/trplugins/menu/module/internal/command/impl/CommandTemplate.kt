@@ -1,10 +1,5 @@
 package trplugins.menu.module.internal.command.impl
 
-import trplugins.menu.module.display.layout.MenuLayout
-import trplugins.menu.module.display.texture.Texture
-import trplugins.menu.module.internal.command.CommandExpression
-import trplugins.menu.util.Time
-import trplugins.menu.util.net.Paster
 import org.apache.commons.lang3.math.NumberUtils
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -18,6 +13,11 @@ import taboolib.module.configuration.Configuration
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Basic
 import taboolib.platform.util.sendLang
+import trplugins.menu.module.display.layout.MenuLayout
+import trplugins.menu.module.display.texture.Texture
+import trplugins.menu.module.internal.command.CommandExpression
+import trplugins.menu.util.Time
+import trplugins.menu.util.net.Paster
 
 /**
  * @author Arasple

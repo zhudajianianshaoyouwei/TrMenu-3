@@ -1,6 +1,5 @@
 package trplugins.menu.module.internal.inputer.inputs
 
-import trplugins.menu.util.parseSimplePlaceholder
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.event.SubscribeEvent
@@ -8,9 +7,10 @@ import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.PacketReceiveEvent
 import taboolib.module.nms.getI18nName
-import trplugins.menu.api.receptacle.vanilla.window.WindowReceptacle
 import taboolib.platform.util.buildItem
 import trplugins.menu.api.receptacle.vanilla.window.WindowLayout
+import trplugins.menu.api.receptacle.vanilla.window.WindowReceptacle
+import trplugins.menu.util.parseSimplePlaceholder
 import java.util.concurrent.ConcurrentHashMap
 
 /**

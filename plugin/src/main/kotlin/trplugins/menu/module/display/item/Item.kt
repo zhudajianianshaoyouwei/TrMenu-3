@@ -1,14 +1,14 @@
 package trplugins.menu.module.display.item
 
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
+import taboolib.platform.util.buildItem
+import taboolib.platform.util.isAir
 import trplugins.menu.api.menu.IItem
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.display.texture.Texture
 import trplugins.menu.util.bukkit.ItemHelper.defColorize
 import trplugins.menu.util.collections.CycleList
-import org.bukkit.Material
-import org.bukkit.inventory.ItemStack
-import taboolib.platform.util.buildItem
-import taboolib.platform.util.isAir
 
 /**
  * @author Arasple

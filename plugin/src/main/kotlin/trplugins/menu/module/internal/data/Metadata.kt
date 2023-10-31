@@ -1,12 +1,5 @@
 package trplugins.menu.module.internal.data
 
-import trplugins.menu.TrMenu
-import trplugins.menu.TrMenu.SETTINGS
-import trplugins.menu.api.event.CustomDatabaseEvent
-import trplugins.menu.module.display.MenuSession
-import trplugins.menu.module.internal.database.DatabaseSQLite
-import trplugins.menu.module.internal.database.DatabaseMongodb
-import trplugins.menu.module.internal.database.DatabaseSQL
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
@@ -16,6 +9,13 @@ import taboolib.common.platform.ProxyPlayer
 import taboolib.common.platform.Schedule
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
+import trplugins.menu.TrMenu
+import trplugins.menu.TrMenu.SETTINGS
+import trplugins.menu.api.event.CustomDatabaseEvent
+import trplugins.menu.module.display.MenuSession
+import trplugins.menu.module.internal.database.DatabaseMongodb
+import trplugins.menu.module.internal.database.DatabaseSQL
+import trplugins.menu.module.internal.database.DatabaseSQLite
 
 /**
  * @author Arasple

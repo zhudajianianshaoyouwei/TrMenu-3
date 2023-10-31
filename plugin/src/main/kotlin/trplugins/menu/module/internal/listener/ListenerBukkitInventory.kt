@@ -1,12 +1,12 @@
 package trplugins.menu.module.internal.listener
 
-import trplugins.menu.module.display.MenuSession
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.event.player.PlayerChangedWorldEvent
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
+import trplugins.menu.module.display.MenuSession
 
 /**
  * @author Arasple

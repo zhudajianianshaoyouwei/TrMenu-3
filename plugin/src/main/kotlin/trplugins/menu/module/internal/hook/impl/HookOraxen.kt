@@ -1,10 +1,10 @@
 package trplugins.menu.module.internal.hook.impl
 
 import io.th0rgal.oraxen.api.OraxenItems
-import trplugins.menu.module.internal.hook.HookAbstract
 import org.bukkit.inventory.ItemStack
 import taboolib.library.xseries.XMaterial
 import taboolib.platform.util.buildItem
+import trplugins.menu.module.internal.hook.HookAbstract
 
 /**
  * @author Arasple

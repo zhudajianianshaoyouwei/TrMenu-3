@@ -1,9 +1,9 @@
 package trplugins.menu.module.internal.hook.impl
 
-import trplugins.menu.module.internal.hook.HookAbstract
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
+import trplugins.menu.module.internal.hook.HookAbstract
 
 
 /**

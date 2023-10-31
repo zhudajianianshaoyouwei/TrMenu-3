@@ -1,11 +1,11 @@
 package trplugins.menu.module.internal.command.impl
 
-import trplugins.menu.TrMenu.SETTINGS
-import trplugins.menu.module.conf.Loader
-import trplugins.menu.module.internal.command.CommandExpression
 import org.bukkit.command.CommandSender
 import taboolib.common.platform.command.subCommand
 import taboolib.platform.util.sendLang
+import trplugins.menu.TrMenu.SETTINGS
+import trplugins.menu.module.conf.Loader
+import trplugins.menu.module.internal.command.CommandExpression
 
 /**
  * @author Arasple

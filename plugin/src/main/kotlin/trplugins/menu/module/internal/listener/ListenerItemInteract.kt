@@ -1,10 +1,5 @@
 package trplugins.menu.module.internal.listener
 
-import trplugins.menu.TrMenu
-import trplugins.menu.api.event.MenuOpenEvent
-import trplugins.menu.module.display.Menu
-import trplugins.menu.module.display.MenuSession
-import trplugins.menu.util.reloadable
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.Inventory
@@ -12,6 +7,11 @@ import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common5.Baffle
 import taboolib.module.nms.MinecraftVersion
+import trplugins.menu.TrMenu
+import trplugins.menu.api.event.MenuOpenEvent
+import trplugins.menu.module.display.Menu
+import trplugins.menu.module.display.MenuSession
+import trplugins.menu.util.reloadable
 import java.util.concurrent.TimeUnit
 
 /**

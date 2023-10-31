@@ -1,12 +1,12 @@
 package trplugins.menu.module.internal.item
 
+import org.bukkit.inventory.ItemStack
+import trplugins.menu.api.event.CustomItemSourceEvent
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.module.internal.hook.impl.HookSkulls
-import trplugins.menu.module.internal.script.js.JavaScriptAgent
-import org.bukkit.inventory.ItemStack
-import trplugins.menu.api.event.CustomItemSourceEvent
 import trplugins.menu.module.internal.script.asItemStack
+import trplugins.menu.module.internal.script.js.JavaScriptAgent
 
 /**
  * @author Arasple

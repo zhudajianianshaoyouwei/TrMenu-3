@@ -1,7 +1,7 @@
 package trplugins.menu.api.event
 
-import trplugins.menu.module.internal.database.Database
 import taboolib.platform.type.BukkitProxyEvent
+import trplugins.menu.module.internal.database.Database
 
 /**
  * @Author sky

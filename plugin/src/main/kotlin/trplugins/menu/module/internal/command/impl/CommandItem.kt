@@ -2,10 +2,6 @@ package trplugins.menu.module.internal.command.impl
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import trplugins.menu.module.internal.command.CommandExpression
-import trplugins.menu.module.internal.item.ItemRepository
-import trplugins.menu.util.bukkit.ItemHelper
-import trplugins.menu.util.net.Paster
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -18,6 +14,10 @@ import taboolib.module.nms.getItemTag
 import taboolib.platform.util.isAir
 import taboolib.platform.util.sendLang
 import taboolib.type.BukkitEquipment
+import trplugins.menu.module.internal.command.CommandExpression
+import trplugins.menu.module.internal.item.ItemRepository
+import trplugins.menu.util.bukkit.ItemHelper
+import trplugins.menu.util.net.Paster
 
 /**
  * @author Arasple

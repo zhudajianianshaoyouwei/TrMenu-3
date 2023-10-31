@@ -1,13 +1,5 @@
 package trplugins.menu.module.internal.script.js
 
-import trplugins.menu.module.display.MenuSession
-import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.module.internal.data.NetQuery
-import trplugins.menu.module.internal.hook.HookPlugin
-import trplugins.menu.util.Bungees
-import trplugins.menu.util.ClassUtils
-import trplugins.menu.util.bukkit.Heads
-import trplugins.menu.util.bukkit.ItemMatcher
 import me.clip.placeholderapi.PlaceholderAPI
 import org.apache.commons.lang3.math.NumberUtils
 import org.bukkit.Bukkit
@@ -28,7 +20,15 @@ import taboolib.platform.util.ItemBuilder
 import taboolib.type.BukkitEquipment
 import trplugins.menu.TrMenu
 import trplugins.menu.api.receptacle.provider.PlatformProvider
-import java.util.*
+import trplugins.menu.module.display.MenuSession
+import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.data.NetQuery
+import trplugins.menu.module.internal.hook.HookPlugin
+import trplugins.menu.util.Bungees
+import trplugins.menu.util.ClassUtils
+import trplugins.menu.util.bukkit.Heads
+import trplugins.menu.util.bukkit.ItemMatcher
+import java.util.TreeMap
 
 
 /**

@@ -73,7 +73,7 @@ dependencies {
     // Server Core
     compileOnly("ink.ptms.core:v12002:12002-minimize:mapped")
     compileOnly("ink.ptms.core:v12002:12002-minimize:universal")
-    compileOnly("ink.ptms.core:v11904:11904-minimize:mapped") // TODO
+    compileOnly("ink.ptms.core:v11904:11904-minimize:mapped")
     compileOnly("ink.ptms.core:v11904:11904-minimize:universal")
     compileOnly("ink.ptms.core:v11701:11701-minimize:mapped")
     compileOnly("ink.ptms.core:v11701:11701-minimize:universal")
@@ -86,7 +86,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:8bad2c4") { isTransitive = false }
     compileOnly("org.black_ixx:playerpoints:3.2.6") { isTransitive = false }
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") { isTransitive = false }
-    compileOnly("com.github.oraxen:oraxen:v1.163.0") { isTransitive = false }
+    compileOnly("com.github.oraxen:oraxen:v1.162.0") { isTransitive = false }
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.2-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1") { isTransitive = false }
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT") { isTransitive = false }

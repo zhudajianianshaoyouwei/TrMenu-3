@@ -1,6 +1,5 @@
 package trplugins.menu.module.internal.database
 
-import trplugins.menu.TrMenu
 import org.bukkit.entity.Player
 import taboolib.common.platform.function.getDataFolder
 import taboolib.module.configuration.Configuration
@@ -8,6 +7,7 @@ import taboolib.module.database.ColumnOptionSQLite
 import taboolib.module.database.ColumnTypeSQLite
 import taboolib.module.database.Table
 import taboolib.module.database.getHost
+import trplugins.menu.TrMenu
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 

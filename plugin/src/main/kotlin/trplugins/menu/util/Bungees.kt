@@ -1,8 +1,8 @@
 package trplugins.menu.util
 
-import trplugins.menu.TrMenu
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import trplugins.menu.TrMenu
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.io.IOException

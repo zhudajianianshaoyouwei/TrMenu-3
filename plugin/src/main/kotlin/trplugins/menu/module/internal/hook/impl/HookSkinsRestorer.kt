@@ -1,7 +1,7 @@
 package trplugins.menu.module.internal.hook.impl
 
-import net.skinsrestorer.api.SkinsRestorerProvider
 import net.skinsrestorer.api.SkinsRestorer
+import net.skinsrestorer.api.SkinsRestorerProvider
 import trplugins.menu.module.internal.hook.HookAbstract
 
 /**

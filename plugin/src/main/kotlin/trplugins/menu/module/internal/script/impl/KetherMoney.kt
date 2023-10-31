@@ -1,12 +1,12 @@
 package trplugins.menu.module.internal.script.impl
 
-import trplugins.menu.module.internal.hook.HookPlugin
-import trplugins.menu.module.internal.script.kether.BaseAction
 import taboolib.library.kether.ArgTypes
 import taboolib.library.kether.ParsedAction
 import taboolib.library.kether.QuestContext
 import taboolib.module.kether.KetherParser
 import taboolib.module.kether.scriptParser
+import trplugins.menu.module.internal.hook.HookPlugin
+import trplugins.menu.module.internal.script.kether.BaseAction
 import java.util.concurrent.CompletableFuture
 
 /**
