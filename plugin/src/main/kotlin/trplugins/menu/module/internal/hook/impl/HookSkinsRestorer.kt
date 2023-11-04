@@ -12,7 +12,7 @@ class HookSkinsRestorer : HookAbstract() {
 
     private val skinsRestorer: SkinsRestorer? =
         if (isHooked) {
-            SkinsRestorerProvider.get()
+            runCatching { SkinsRestorerProvider.get() }.getOrNull()
         } else {
             null
         }
