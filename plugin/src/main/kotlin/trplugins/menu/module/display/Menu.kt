@@ -100,6 +100,7 @@ class Menu(
      * 本菜单内切换页码
      */
     fun page(viewer: Player, page: Int) {
+        if (page < 0 || page > layout.getSize()) return
         Performance.check("Menu:Event:ChangePage") {
             val session = MenuSession.getSession(viewer)
             val previous = session.layout(page)!!
