@@ -42,7 +42,7 @@ object TrMenu : Plugin() {
         private set
 
     override fun onLoad() {
-        Language.default = "en_US"
+        Language.default = "zh_CN"
         actionHandle = ActionHandle({ t, u -> t.evalScript(u) }, { t, u -> t.session().parse(u) }, "kether")
         console().sendLang("Plugin-Loading", Bukkit.getVersion())
     }
