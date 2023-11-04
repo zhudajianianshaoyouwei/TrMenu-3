@@ -29,7 +29,7 @@ import trplugins.menu.module.internal.script.evalScript
  */
 object TrMenu : Plugin() {
 
-    @Config("settings.yml",true, autoReload = true)
+    @Config("settings.yml", autoReload = true)
     lateinit var SETTINGS: Configuration
         private set
 
@@ -40,7 +40,7 @@ object TrMenu : Plugin() {
 
     lateinit var actionHandle: ActionHandle
         private set
-    
+
     override fun onLoad() {
         Language.default = "en_US"
         actionHandle = ActionHandle({ t, u -> t.evalScript(u) }, { t, u -> t.session().parse(u) }, "kether")
@@ -72,7 +72,7 @@ object TrMenu : Plugin() {
         interactCooldown.reload()
         Shortcuts.Type.load()
         RegisterCommands.load()
-        Kether.isAllowToleranceParser = SETTINGS.getBoolean("Action.Kether.Allow-Tolerance-Parser",false)
+        Kether.isAllowToleranceParser = SETTINGS.getBoolean("Action.Kether.Allow-Tolerance-Parser", false)
         if (SETTINGS.getBoolean("Options.Bedrock-Static-Inv", false)) {
             PlatformProvider.compute()
         } else {

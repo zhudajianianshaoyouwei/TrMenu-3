@@ -13,6 +13,10 @@ abstract class HookAbstract {
 
     open val name by lazy { getPluginName() }
 
+    fun getFastName(): String? {
+        return null
+    }
+
     val plugin: Plugin? by lazy {
         Bukkit.getPluginManager().getPlugin(name)
     }
@@ -22,6 +26,9 @@ abstract class HookAbstract {
     }
 
     open fun getPluginName(): String {
+        if (getFastName() != null) {
+            return getFastName()!!
+        }
         return javaClass.simpleName.substring(4)
     }
 

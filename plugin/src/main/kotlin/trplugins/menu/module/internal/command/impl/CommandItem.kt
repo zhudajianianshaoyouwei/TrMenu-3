@@ -9,11 +9,17 @@ import trplugins.menu.util.net.Paster
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import taboolib.common.io.newFile
 import taboolib.common.platform.command.subCommand
 import taboolib.common.platform.function.adaptPlayer
+import taboolib.common.platform.function.getDataFolder
 import taboolib.common.platform.function.submit
 import taboolib.library.xseries.XSound
+import taboolib.module.configuration.Configuration
+import taboolib.module.configuration.Type
+import taboolib.module.configuration.createLocal
 import taboolib.module.nms.getItemTag
+import taboolib.module.nms.getName
 import taboolib.platform.util.isAir
 import taboolib.platform.util.sendLang
 import taboolib.type.BukkitEquipment
@@ -69,11 +75,13 @@ object CommandItem : CommandExpression {
                                 )
                             }
                         }
+
                         "save" -> item?.let {
                             ItemRepository.itemStacks[argument] = item
                             submit(async = true) { ItemRepository.saveTask() }
                             player.sendLang("Command-Item-Saved", argument)
                         }
+
                         "delete", "del" -> ItemRepository.removeItem(argument)?.let {
                             player.sendLang("Command-Item-Deleted", argument)
                         }
@@ -83,19 +91,30 @@ object CommandItem : CommandExpression {
         }
     }
 
+    private val saveFile by lazy {
+        Configuration.loadFromFile(newFile(getDataFolder(), "itemsJson.yml", create = true), Type.YAML)
+    }
+
     private fun toJson(player: Player, item: ItemStack) {
         if (item.isAir) {
             player.sendLang("Command-Item-No-Item")
             return
         }
+        val name = item.getName()
         val json = JsonObject()
         json.addProperty("type", item.type.name)
         json.addProperty("data", item.data!!.data)
         json.addProperty("amount", item.amount)
         json.add("meta", Gson().toJsonTree(item.getItemTag()))
         val stringJson = json.toString()
-        if (stringJson.length < 200) player.sendLang("Command-Item-To-Json", stringJson)
-        else Paster.paste(adaptPlayer(player), stringJson, "json")
+        if (stringJson.length < 200) {
+            player.sendLang("Command-Item-To-Json", stringJson)
+        } else {
+//            Paster.paste(adaptPlayer(player), stringJson, "json")
+            saveFile[name] = stringJson
+            saveFile.saveToFile()
+            player.sendMessage("§7[§3TrMenu§7] §8[§7Item§8] §7Item §3$name §7has been saved to §3${saveFile.file?.name}§7.")
+        }
     }
 
     private fun fromJson(player: Player, json: String) {
