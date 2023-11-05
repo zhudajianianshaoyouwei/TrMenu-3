@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.BannerMeta
 import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.ItemTag
 import taboolib.platform.util.ItemBuilder
+import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.util.parseJson
 import kotlin.math.min
 
@@ -56,11 +57,13 @@ object ItemHelper {
                     }
                 } else if (type.size == 2) {
                     try {
-                        patterns.add(Pattern(
-                            DyeColor.valueOf(type[0].uppercase()), PatternType.valueOf(
-                                type[1].uppercase()
+                        patterns.add(
+                            Pattern(
+                                DyeColor.valueOf(type[0].uppercase()), PatternType.valueOf(
+                                    type[1].uppercase()
+                                )
                             )
-                        ))
+                        )
                     } catch (e: Exception) {
                         patterns.add(Pattern(DyeColor.BLACK, PatternType.BASE))
                     }
@@ -88,9 +91,11 @@ object ItemHelper {
 
     fun fromJson(json: String): ItemStack? {
         try {
+            if (HookPlugin.getNBTAPI().isHooked) {
+                return HookPlugin.getNBTAPI().fromJson(json)
+            }
             val parse = JsonParser().parse(json)
             if (parse is JsonObject) {
-
                 val itemStack = parse["type"].let {
                     it ?: return XMaterial.STONE.parseItem()
                     try {
@@ -99,7 +104,6 @@ object ItemHelper {
                         ItemStack(Material.valueOf(it.asString))
                     }
                 }
-
                 parse["data"].let {
                     it ?: return@let
                     itemStack?.durability = it.asShort
@@ -109,11 +113,13 @@ object ItemHelper {
                     itemStack?.amount = it.asInt
                 }
                 val meta = parse["meta"]
-                return if (meta != null) itemStack.also { it?.let { it1 ->
-                    ItemTag.fromLegacyJson(meta.toString()).saveTo(
-                        it1
-                    )
-                } }
+                return if (meta != null) itemStack.also {
+                    it?.let { it1 ->
+                        ItemTag.fromLegacyJson(meta.toString()).saveTo(
+                            it1
+                        )
+                    }
+                }
                 else itemStack
             }
             return null

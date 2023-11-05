@@ -24,7 +24,7 @@ tasks.build {
         val plugin = project(":plugin")
         val file = file("${plugin.buildDir}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
 
-        file?.copyTo(file("$buildDir/libs/${project.name}-$version.jar"), true)
+        file?.copyTo(file("$buildDir/libs/TrMenu-$version.jar"), true)
     }
     dependsOn(project(":plugin").tasks.build)
 }
