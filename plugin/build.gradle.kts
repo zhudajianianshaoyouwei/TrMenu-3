@@ -58,6 +58,7 @@ repositories {
     maven("https://repo.codemc.org/repository/maven-public")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.opencollab.dev/main/")
+    maven("https://repo.oraxen.com/snapshots")
     maven("https://jitpack.io")
 }
 
@@ -86,8 +87,8 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:8bad2c4") { isTransitive = false }
     compileOnly("org.black_ixx:playerpoints:3.2.6") { isTransitive = false }
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") { isTransitive = false }
-    compileOnly("com.github.oraxen:oraxen:v1.163.0") { isTransitive = false }
-    compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.2-SNAPSHOT") { isTransitive = false }
+    compileOnly("io.th0rgal:oraxen:1.164.0-SNAPSHOT") { isTransitive = false }
+    compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.4-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1") { isTransitive = false }
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:core:3.9.1") { isTransitive = false }
