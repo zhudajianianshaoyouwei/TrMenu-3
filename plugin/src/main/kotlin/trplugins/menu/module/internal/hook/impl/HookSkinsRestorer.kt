@@ -17,9 +17,7 @@ class HookSkinsRestorer : HookAbstract() {
             } catch (e: IllegalStateException) {
                 null
             }
-        } else {
-            null
-        }
+        } else null
         get() {
             if (field == null) reportAbuse()
             return field

@@ -41,7 +41,7 @@ subprojects {
     }
 
     dependencies {
-        "compileOnly"(kotlin("stdlib"))
+        "api"(kotlin("stdlib")) // Dreeam - compileOnly -> api, For compatibility
     }
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
