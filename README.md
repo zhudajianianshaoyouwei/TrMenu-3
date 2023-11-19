@@ -9,6 +9,7 @@
 - **Support 1.20.1/2**
 - **Fix bug when SkinsRestorer is under proxy mode**
 - **Fix skull display issue on 1.20.2**
+- TODO: 1.12/lower version catserver/mohist compatibility
 
  **Notice: I maintain this fork only based on my interests.**
 
