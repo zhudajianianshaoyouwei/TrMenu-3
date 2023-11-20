@@ -28,7 +28,10 @@ class HookSkinsRestorer : HookAbstract() {
             }
 
             val skinData = it.skinStorage.findOrCreateSkinData(name)
-            return skinData.get().property.value
+            if (skinData.isPresent) {
+                return skinData.get().property.value
+            }
+            return null
         }
         return null
     }

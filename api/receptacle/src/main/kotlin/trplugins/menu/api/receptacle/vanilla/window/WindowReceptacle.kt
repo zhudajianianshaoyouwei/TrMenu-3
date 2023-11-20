@@ -67,10 +67,12 @@ open class WindowReceptacle(var type: WindowLayout, title: String = type.toBukki
     override fun refresh(slot: Int) {
         if (viewer != null) {
             setupPlayerInventorySlots()
-            if (slot >= 0) {
-                nmsProxy<NMS>().sendWindowsSetSlot(viewer!!, slot = slot, itemStack = contents[slot], stateId = stateId)
-            } else {
-                nmsProxy<NMS>().sendWindowsItems(viewer!!, items = contents)
+            runCatching {
+                if (slot >= 0) {
+                    nmsProxy<NMS>().sendWindowsSetSlot(viewer!!, slot = slot, itemStack = contents[slot], stateId = stateId)
+                } else {
+                    nmsProxy<NMS>().sendWindowsItems(viewer!!, items = contents)
+                }
             }
         }
     }
