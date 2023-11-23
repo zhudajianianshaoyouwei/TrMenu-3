@@ -95,7 +95,7 @@ Icons:
   '*':
     update: [ -1, 5, 20, -1 ]
     display:
-      material: <skull:9842dc3b917b1a796c303e15105474a8e315de7982b6ca54feafb5a4d13d4e95>
+      material: 'skull:9842dc3b917b1a796c303e15105474a8e315de7982b6ca54feafb5a4d13d4e95'
       name:
         - '&3&lSERVER'
         - '&b&lSE&3&lRVER'
