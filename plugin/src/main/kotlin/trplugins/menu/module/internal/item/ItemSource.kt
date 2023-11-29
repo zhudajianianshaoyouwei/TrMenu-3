@@ -35,6 +35,8 @@ object ItemSource {
             "ITEMSADDER", "IA" -> HookPlugin.getItemsAdder().getItem(id)
             "ZAPHKIEL", "ZL" -> HookPlugin.getZaphkiel().getItem(id)
             "SXITEM", "SI" -> HookPlugin.getSXItem().getItem(id, session.placeholderPlayer)
+            "MagicCosmeticsE","MAGICE"-> HookPlugin.getMagicCosmetics().getEquipped(id, session.placeholderPlayer)
+            "MagicCosmeticsI","MAGICI"-> HookPlugin.getMagicCosmetics().getCosmeticItem(id)
             else -> CustomItemSourceEvent(name, id, session).also { it.call() }.source
         }
     }

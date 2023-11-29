@@ -85,6 +85,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:core:v3.7.3") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:api:v3.7.3") { isTransitive = false }
+    compileOnly("com.github.FrancoBM12:API-MagicCosmetics:2.2.5") { isTransitive = false }
 
     compileOnly(fileTree("libs"))
 }

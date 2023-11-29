@@ -87,4 +87,8 @@ object HookPlugin {
         return get(HookNBTAPI::class.java)
     }
 
+    fun getMagicCosmetics(): HookMagicCosmetics {
+        return get(HookMagicCosmetics::class.java)
+    }
+
 }
