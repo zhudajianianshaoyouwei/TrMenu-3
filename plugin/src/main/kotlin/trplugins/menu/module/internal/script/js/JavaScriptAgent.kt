@@ -1,10 +1,12 @@
 package trplugins.menu.module.internal.script.js
 
+import com.francobm.magicosmetics.api.MagicAPI
 import com.google.common.collect.Maps
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.util.EvalResult
 import org.bukkit.Bukkit
 import taboolib.common5.compileJS
+import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.module.internal.script.FunctionParser
 import java.util.function.Function
 import javax.script.CompiledScript
@@ -25,7 +27,8 @@ object JavaScriptAgent {
 
     private val bindings = mapOf(
         "bukkitServer" to Bukkit.getServer(),
-        "utils" to Assist.INSTANCE
+        "utils" to Assist.INSTANCE,
+        "magicApi" to HookPlugin.getMagicCosmetics()
     )
 
     private val compiledScripts = Maps.newConcurrentMap<String, CompiledScript>()
@@ -50,6 +53,7 @@ object JavaScriptAgent {
             it["session"] = session
             it["player"] = session.viewer
             it["sender"] = session.viewer
+
         }, ScriptContext.ENGINE_SCOPE)
         val setAttribute: (String, Function<Any, Any?>) -> Unit = { name, func ->
             context.setAttribute(name, func, ScriptContext.ENGINE_SCOPE)
