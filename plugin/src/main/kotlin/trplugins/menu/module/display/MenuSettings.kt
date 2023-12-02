@@ -10,6 +10,7 @@ import org.bukkit.Bukkit
 import taboolib.common.platform.function.pluginId
 import taboolib.common5.Baffle
 import taboolib.module.chat.colored
+import trplugins.menu.api.receptacle.MenuTaskData
 import trplugins.menu.util.Cooldown
 import java.util.concurrent.TimeUnit
 
@@ -32,7 +33,7 @@ class MenuSettings(
     val openEvent: Reactions,
     val closeEvent: Reactions,
     val clickEvent: Reactions,
-    val tasks: Map<Long, Reactions>,
+    val tasks: List<MenuTaskData>,
     val internalFunctions: Set<ScriptFunction>
 ) {
 

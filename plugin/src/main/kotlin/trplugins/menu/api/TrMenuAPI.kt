@@ -1,16 +1,16 @@
 package trplugins.menu.api
 
-import org.bukkit.command.CommandMap
-import trplugins.menu.module.display.Menu
-import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.util.EvalResult
-import trplugins.menu.module.internal.service.Performance
-import taboolib.library.kether.LocalizedException
 import org.bukkit.entity.Player
 import taboolib.common.platform.function.adaptPlayer
-import taboolib.common.platform.function.onlinePlayers
-import taboolib.common.platform.function.pluginId
+import taboolib.common.platform.function.console
+import taboolib.common5.Coerce
+import taboolib.library.kether.LocalizedException
 import taboolib.module.kether.KetherShell
+import taboolib.module.kether.ScriptOptions
+import trplugins.menu.module.display.Menu
+import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.service.Performance
+import trplugins.menu.util.EvalResult
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -65,5 +65,6 @@ object TrMenuAPI {
             EvalResult.FALSE
         }
     }
+
 
 }
