@@ -1,11 +1,14 @@
 Plugin-Loading:
   - '&r'
-  - '&7正在加载 &3Tr&bMenu &f&lPremium... &8{0}'
+  - '&7正在加载 &3Tr&bMenu &f&lFix... &8{0}'
   - '&r'
 Plugin-Enabled: '&8[&3Tr&bMenu&8] &b良好 &8| &3插件启用. 当前运行版本 &2{0}&7.'
 Plugin-Update:
   - '&8[&3Tr&bMenu&8] &b更新 &8| &3更新 &a{0}&3 找到, 通过下方链接下载!'
   - '&bhttps://www.spigotmc.org/resources/83120/'
+Plugin-Version:
+  - '&8[&3Tr&bMenu&8] &b版本 &8| &3你正在使用社区维护版本:'
+  - '&bhttps://github.com/lilingfengdev/TrMenu'
 Plugin-Dependency-Hooked: '&8[&3Tr&bMenu&8] &6挂钩 &8| &7软依赖 &f{0} &7已兼容.'
 Plugin-Dependency-Abuse: '&8[&3Tr&bMenu&8] &6挂钩 &8| &4试图使用未挂钩插件 &c{0}'
 

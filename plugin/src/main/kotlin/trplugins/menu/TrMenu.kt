@@ -53,6 +53,7 @@ object TrMenu : Plugin() {
         Loader.loadMenus()
         Metadata.database
         console().sendLang("Plugin-Enabled", plugin.description.version)
+        console().sendLang("Plugin-Version")
         HookPlugin.printInfo()
     }
 
