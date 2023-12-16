@@ -1,5 +1,5 @@
 package trplugins.menu.util.bukkit
-
+import java.nio.charset.StandardCharsets;
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.mojang.authlib.GameProfile
@@ -14,6 +14,9 @@ import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.library.xseries.XMaterial
 import trplugins.menu.module.internal.hook.HookPlugin
+import io.github.bakedlibs.dough.common.CommonPatterns;
+import io.github.bakedlibs.dough.skins.PlayerHead;
+import io.github.bakedlibs.dough.skins.PlayerSkin;
 import java.net.URL
 import java.util.Base64
 import java.util.UUID
@@ -25,14 +28,13 @@ import java.util.UUID
 object Heads {
 
     private val MOJANG_API = arrayOf(
-        "https://api.mojang.com/users/profiles/minecraft/",
-        "https://sessionserver.mojang.com/session/minecraft/profile/"
+            "https://api.mojang.com/users/profiles/minecraft/",
+            "https://sessionserver.mojang.com/session/minecraft/profile/"
     )
 
     private val DEFAULT_HEAD = XMaterial.PLAYER_HEAD.parseItem()!!
     private val CACHED_PLAYER_TEXTURE = mutableMapOf<String, String?>()
     private val CACHED_SKULLS = mutableMapOf<String, ItemStack>()
-
     fun cacheSize(): Pair<Int, Int> {
         return CACHED_SKULLS.size to CACHED_PLAYER_TEXTURE.size
     }
@@ -45,15 +47,26 @@ object Heads {
         if (CACHED_SKULLS.containsKey(name)) {
             return CACHED_SKULLS[name] ?: DEFAULT_HEAD
         } else {
-            CACHED_SKULLS[name] = DEFAULT_HEAD.clone().also { item -> playerTexture(name) { modifyTexture(it, item) } ?: return DEFAULT_HEAD }
+            CACHED_SKULLS[name] = DEFAULT_HEAD.clone().also { item ->
+                playerTexture(name) { modifyTexture(it, item) } ?: return DEFAULT_HEAD
+            }
             return CACHED_SKULLS[name] ?: DEFAULT_HEAD
         }
     }
 
     private fun getCustomTextureHead(texture: String): ItemStack {
-        return CACHED_SKULLS.computeIfAbsent(texture) {
-            modifyTexture(texture, DEFAULT_HEAD.clone())
+        if (CACHED_SKULLS.containsKey(texture)) {
+            return CACHED_SKULLS[texture] ?: DEFAULT_HEAD
         }
+        var base64 = texture
+
+        if (CommonPatterns.HEXADECIMAL.matcher(texture).matches()) {
+            base64 = encodeTexture(texture)
+        }
+
+        val skin: PlayerSkin = PlayerSkin.fromBase64(base64)
+        CACHED_SKULLS[texture] = PlayerHead.getItemStack(skin)
+        return CACHED_SKULLS[texture] ?: DEFAULT_HEAD
     }
 
     fun seekTexture(itemStack: ItemStack): String? {
@@ -69,21 +82,21 @@ object Heads {
         return null
     }
 
-    /**
-     * PRIVATE UTILS
-     */
+
     private fun playerTexture(name: String, block: (String) -> Unit): Unit? {
         when {
             // Dreeam - Still need way to hook SkinsRestorer API under proxy, the check below still cant check if server under Velocity modern forwarding
             HookPlugin.getSkinsRestorer().isHooked && !org.spigotmc.SpigotConfig.bungee -> {
                 HookPlugin.getSkinsRestorer().getPlayerSkinTexture(name)?.also(block) ?: return null
             }
+
             Bukkit.getPlayer(name)?.isOnline == true -> {
                 Bukkit.getPlayer(name)!!.invokeMethod<GameProfile>("getProfile")?.properties?.get("textures")
-                    ?.find { it.value != null }?.value
-                    ?.also(block)
-                    ?: return null
+                        ?.find { it.value != null }?.value
+                        ?.also(block)
+                        ?: return null
             }
+
             else -> {
                 submit(async = true) {
                     val profile = JsonParser().parse(fromURL("${MOJANG_API[0]}$name")) as? JsonObject
@@ -93,11 +106,11 @@ object Heads {
                     }
                     val uuid = profile["id"].asString
                     (JsonParser().parse(fromURL("${MOJANG_API[1]}$uuid")) as JsonObject).getAsJsonArray("properties")
-                        .forEach {
-                            if ("textures" == it.asJsonObject["name"].asString) {
-                                CACHED_PLAYER_TEXTURE[name] = it.asJsonObject["value"].asString.also(block)
+                            .forEach {
+                                if ("textures" == it.asJsonObject["name"].asString) {
+                                    CACHED_PLAYER_TEXTURE[name] = it.asJsonObject["value"].asString.also(block)
+                                }
                             }
-                        }
                 }
             }
         }
