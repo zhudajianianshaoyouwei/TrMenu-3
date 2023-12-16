@@ -79,8 +79,8 @@ dependencies {
     compileOnly("ink.ptms:Zaphkiel:2.0.14") { isTransitive = false }
     compileOnly("ca.tweetzy:skulls:3.10.0") { isTransitive = false }
     compileOnly("org.black_ixx:playerpoints:3.2.6") { isTransitive = false }
-    compileOnly("com.github.MilkBowl:VaultAPI:8bad2c4") { isTransitive = false }
-    compileOnly("com.github.oraxen:oraxen:-SNAPSHOT") { isTransitive = false }
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") { isTransitive = false }
+    compileOnly("com.github.oraxen:oraxen:1.165.0") { isTransitive = false }
     compileOnly("org.black_ixx:playerpoints:3.1.1") { isTransitive = false }
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.5-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1") { isTransitive = false }
