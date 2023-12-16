@@ -1,7 +1,16 @@
 package trplugins.menu
 
+import trplugins.menu.module.conf.Loader
+import trplugins.menu.module.conf.prop.RunningPerformance
+import trplugins.menu.module.display.MenuSession
+import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.hook.HookPlugin
+import trplugins.menu.module.internal.inputer.Inputer.Companion.cancelWords
+import trplugins.menu.module.internal.listener.ListenerItemInteract.interactCooldown
+import trplugins.menu.module.internal.service.RegisterCommands
+import trplugins.menu.module.internal.service.Shortcuts
 import org.bukkit.Bukkit
-import taboolib.common.platform.Plugin
+import taboolib.common.platform.*
 import taboolib.common.platform.function.console
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
@@ -11,17 +20,8 @@ import taboolib.module.lang.sendLang
 import taboolib.platform.BukkitPlugin
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.receptacle.provider.PlatformProvider
-import trplugins.menu.module.conf.Loader
-import trplugins.menu.module.conf.prop.RunningPerformance
-import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.display.session
-import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.module.internal.hook.HookPlugin
-import trplugins.menu.module.internal.inputer.Inputer.Companion.cancelWords
-import trplugins.menu.module.internal.listener.ListenerItemInteract.interactCooldown
 import trplugins.menu.module.internal.script.evalScript
-import trplugins.menu.module.internal.service.RegisterCommands
-import trplugins.menu.module.internal.service.Shortcuts
 
 /**
  * @author Arasple
@@ -29,7 +29,7 @@ import trplugins.menu.module.internal.service.Shortcuts
  */
 object TrMenu : Plugin() {
 
-    @Config("settings.yml", migrate = true, autoReload = true)
+    @Config("settings.yml", autoReload = true)
     lateinit var SETTINGS: Configuration
         private set
 
@@ -40,9 +40,9 @@ object TrMenu : Plugin() {
 
     lateinit var actionHandle: ActionHandle
         private set
-    
+
     override fun onLoad() {
-        Language.default = "en_US"
+        Language.default = "zh_CN"
         actionHandle = ActionHandle({ t, u -> t.evalScript(u) }, { t, u -> t.session().parse(u) }, "kether")
         console().sendLang("Plugin-Loading", Bukkit.getVersion())
     }
@@ -72,7 +72,7 @@ object TrMenu : Plugin() {
         interactCooldown.reload()
         Shortcuts.Type.load()
         RegisterCommands.load()
-        Kether.isAllowToleranceParser = SETTINGS.getBoolean("Action.Kether.Allow-Tolerance-Parser",false)
+        Kether.isAllowToleranceParser = SETTINGS.getBoolean("Action.Kether.Allow-Tolerance-Parser", false)
         if (SETTINGS.getBoolean("Options.Bedrock-Static-Inv", false)) {
             PlatformProvider.compute()
         } else {

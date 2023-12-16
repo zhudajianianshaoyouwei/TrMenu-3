@@ -1,15 +1,18 @@
 package trplugins.menu.module.display
 
-import me.clip.placeholderapi.PlaceholderAPI
-import org.bukkit.Bukkit
-import taboolib.common.platform.function.pluginId
-import taboolib.module.chat.colored
 import trplugins.menu.TrMenu
 import trplugins.menu.api.reaction.Reactions
 import trplugins.menu.module.internal.script.js.ScriptFunction
-import trplugins.menu.util.Cooldown
 import trplugins.menu.util.bukkit.ItemMatcher
 import trplugins.menu.util.collections.CycleList
+import me.clip.placeholderapi.PlaceholderAPI
+import org.bukkit.Bukkit
+import taboolib.common.platform.function.pluginId
+import taboolib.common5.Baffle
+import taboolib.module.chat.colored
+import trplugins.menu.api.receptacle.MenuTaskData
+import trplugins.menu.util.Cooldown
+import java.util.concurrent.TimeUnit
 
 /**
  * @author Arasple
@@ -30,7 +33,7 @@ class MenuSettings(
     val openEvent: Reactions,
     val closeEvent: Reactions,
     val clickEvent: Reactions,
-    val tasks: Map<Long, Reactions>,
+    val tasks: List<MenuTaskData>,
     val internalFunctions: Set<ScriptFunction>
 ) {
 

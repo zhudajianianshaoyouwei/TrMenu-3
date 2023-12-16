@@ -22,10 +22,15 @@ object JavaScriptAgent {
         "$ ",
     )
 
-    private val bindings = mapOf(
+
+    private val bindings = mutableMapOf(
         "bukkitServer" to Bukkit.getServer(),
-        "utils" to Assist.INSTANCE
+        "utils" to Assist.INSTANCE,
     )
+
+    fun putBinding(key: String, value: Any) {
+        bindings[key] = value
+    }
 
     private val compiledScripts = Maps.newConcurrentMap<String, CompiledScript>()
 
@@ -49,6 +54,7 @@ object JavaScriptAgent {
             it["session"] = session
             it["player"] = session.viewer
             it["sender"] = session.viewer
+
         }, ScriptContext.ENGINE_SCOPE)
         val setAttribute: (String, Function<Any, Any?>) -> Unit = { name, func ->
             context.setAttribute(name, func, ScriptContext.ENGINE_SCOPE)

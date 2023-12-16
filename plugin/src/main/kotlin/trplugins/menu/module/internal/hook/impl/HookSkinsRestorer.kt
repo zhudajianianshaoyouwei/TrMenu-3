@@ -1,7 +1,7 @@
 package trplugins.menu.module.internal.hook.impl
 
-import net.skinsrestorer.api.SkinsRestorer
 import net.skinsrestorer.api.SkinsRestorerProvider
+import net.skinsrestorer.api.SkinsRestorer
 import trplugins.menu.module.internal.hook.HookAbstract
 
 /**
@@ -12,12 +12,10 @@ class HookSkinsRestorer : HookAbstract() {
 
     private val skinsRestorer: SkinsRestorer? =
         if (isHooked) {
-            try {
-                SkinsRestorerProvider.get()
-            } catch (e: IllegalStateException) {
-                null
-            }
-        } else null
+            runCatching { SkinsRestorerProvider.get() }.getOrNull()
+        } else {
+            null
+        }
         get() {
             if (field == null) reportAbuse()
             return field
@@ -25,10 +23,14 @@ class HookSkinsRestorer : HookAbstract() {
 
     fun getPlayerSkinTexture(name: String): String? {
         skinsRestorer?.let {
+            if (it.skinStorage.findOrCreateSkinData(name) == null) {
+                return null
+            }
             val skinData = it.skinStorage.findOrCreateSkinData(name)
             if (skinData.isPresent) {
                 return skinData.get().property.value
             }
+            return null
         }
         return null
     }

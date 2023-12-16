@@ -2,10 +2,13 @@ package trplugins.menu.api
 
 import org.bukkit.entity.Player
 import taboolib.common.platform.function.adaptPlayer
+import taboolib.common.platform.function.console
+import taboolib.common5.Coerce
 import taboolib.library.kether.LocalizedException
-import taboolib.module.kether.KetherShell.eval
+import taboolib.module.kether.KetherShell
 import taboolib.module.kether.ScriptOptions
 import trplugins.menu.module.display.Menu
+import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.EvalResult
 import java.util.concurrent.CompletableFuture
@@ -33,10 +36,14 @@ object TrMenuAPI {
     fun eval(player: Player, script: String): CompletableFuture<Any?> {
         Performance.check("Handler:Script:Evaluation") {
             return try {
-                eval(
-                    script,
-                    ScriptOptions.builder().namespace(namespace = listOf("trmenu")).sender(adaptPlayer(player)).build()
-                )
+                KetherShell.eval(script, namespace = listOf("trmenu")) {
+                    sender = adaptPlayer(player)
+                    rootFrame().variables().run {
+                        Metadata.getMeta(player).data.forEach { (key, value) ->
+                            set(key, value.toString())
+                        }
+                    }
+                }
             } catch (e: LocalizedException) {
                 println("§c[TrMenu] §8Unexpected exception while parsing kether shell:")
                 e.localizedMessage.split("\n").forEach {
@@ -58,5 +65,6 @@ object TrMenuAPI {
             EvalResult.FALSE
         }
     }
+
 
 }

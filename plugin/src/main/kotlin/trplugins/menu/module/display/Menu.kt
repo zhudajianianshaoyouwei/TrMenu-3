@@ -13,6 +13,7 @@ import trplugins.menu.api.receptacle.vanilla.window.WindowReceptacle
 import trplugins.menu.module.display.icon.Icon
 import trplugins.menu.module.display.layout.MenuLayout
 import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.script.evalScript
 import trplugins.menu.module.internal.service.Performance
 import java.util.function.Consumer
 
@@ -99,6 +100,7 @@ class Menu(
      * 本菜单内切换页码
      */
     fun page(viewer: Player, page: Int) {
+        if (page < 0 || page > layout.getSize()) return
         Performance.check("Menu:Event:ChangePage") {
             val session = MenuSession.getSession(viewer)
             val previous = session.layout(page)!!
@@ -164,14 +166,19 @@ class Menu(
     }
 
     private fun loadTasks(session: MenuSession) {
-        settings.tasks.forEach { (period, reactions) ->
-            session.arrange(
-                submit(delay = 5L, period = period, async = true) {
-                    Performance.check("Menu:CustomTasks") {
-                        reactions.eval(adaptPlayer(session.viewer))
+        settings.tasks.forEach { taskData ->
+            taskData.actions.forEach { sub ->
+                session.arrange(
+                    submit(delay = 5L, period = taskData.period, async = true) {
+                        Performance.check("Menu:CustomTasks") {
+                            val asBoolean = sub.condition.evalScript(session).asBoolean(false)
+                            if (asBoolean) {
+                                sub.actions.joinToString(" ").evalScript(session)
+                            }
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 
@@ -205,5 +212,4 @@ class Menu(
     fun removeViewers() {
         viewers.clear()
     }
-
 }
