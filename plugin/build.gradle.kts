@@ -42,7 +42,7 @@ taboolib {
             name("Triton").optional(true)
         }
     }
-    relocate("trplugins.menu", group.toString().toLowerCase())
+    relocate("trplugins.menu", group.toString().lowercase())
 
     classifier = null
     version = taboolibVersion

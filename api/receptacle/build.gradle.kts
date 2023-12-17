@@ -27,7 +27,7 @@ repositories {
     maven("https://repo.tabooproject.org/repository/releases")
     maven("https://repo.codemc.io/repository/nms/")
     maven("https://hub.spigotmc.org/nexus/content/groups/public/")
-    maven("https://repo.opencollab.dev/main/")
+    maven("https://repo.opencollab.dev/maven-snapshots/")
 }
 
 dependencies {

@@ -4,16 +4,17 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.mojang.authlib.GameProfile
 import com.mojang.authlib.properties.Property
-import trplugins.menu.module.internal.hook.HookPlugin
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
 import taboolib.common.platform.function.console
 import taboolib.common.platform.function.submit
-import taboolib.common.reflect.Reflex.Companion.getProperty
-import taboolib.common.reflect.Reflex.Companion.invokeMethod
-import taboolib.common.reflect.Reflex.Companion.setProperty
+import taboolib.library.reflex.Reflex.Companion.getProperty
+import taboolib.library.reflex.Reflex.Companion.invokeMethod
+import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.library.xseries.XMaterial
+import taboolib.library.xseries.XSkull
+import trplugins.menu.module.internal.hook.HookPlugin
 import java.net.URL
 import java.util.*
 
@@ -36,15 +37,24 @@ object Heads {
         return CACHED_SKULLS.size to CACHED_PLAYER_TEXTURE.size
     }
 
+    @Deprecated("Use getHeadX", ReplaceWith("Heads.getHeadX(id)"))
     fun getHead(id: String): ItemStack {
         return if (id.length > 20) getCustomTextureHead(id) else getPlayerHead(id)
     }
+
+    fun getHeadX(id: String): ItemStack =
+        CACHED_SKULLS.computeIfAbsent(id) {
+            (CACHED_SKULLS[it] ?: DEFAULT_HEAD).apply {
+                itemMeta = itemMeta?.let { m -> XSkull.applySkin(m, id) }
+            }
+        }
 
     fun getPlayerHead(name: String): ItemStack {
         if (CACHED_SKULLS.containsKey(name)) {
             return CACHED_SKULLS[name] ?: DEFAULT_HEAD
         } else {
-            CACHED_SKULLS[name] = DEFAULT_HEAD.clone().also { item -> playerTexture(name) { modifyTexture(it, item) } ?: return DEFAULT_HEAD }
+            CACHED_SKULLS[name] = DEFAULT_HEAD.clone()
+                .also { item -> playerTexture(name) { modifyTexture(it, item) } ?: return DEFAULT_HEAD }
             return CACHED_SKULLS[name] ?: DEFAULT_HEAD
         }
     }
@@ -76,6 +86,7 @@ object Heads {
             HookPlugin.getSkinsRestorer().isHooked -> {
                 HookPlugin.getSkinsRestorer().getPlayerSkinTexture(name)?.also(block) ?: return null
             }
+
             Bukkit.getPlayer(name)?.isOnline == true -> {
                 Bukkit.getPlayer(name)!!.invokeMethod<GameProfile>("getProfile")?.properties?.get("textures")
                     ?.find { it.value != null }?.value
@@ -83,6 +94,7 @@ object Heads {
                     ?: return null
 
             }
+
             else -> {
                 submit(async = true) {
                     val profile = JsonParser().parse(fromURL("${MOJANG_API[0]}$name")) as? JsonObject
