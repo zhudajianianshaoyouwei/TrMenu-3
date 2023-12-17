@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 val taboolibVersion: String by project
 
 plugins {
@@ -22,9 +24,9 @@ tasks.jar {
 tasks.build {
     doLast {
         val plugin = project(":plugin")
-        val file = file("${plugin.layout.buildDirectory}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
+        val file = file("${plugin.buildDir}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
 
-        file?.copyTo(file("${layout.buildDirectory}/libs/${project.name}-$version.jar"), true)
+        file?.copyTo(file("${buildDir}/libs/${project.name}-$version.jar"), true)
     }
     dependsOn(project(":plugin").tasks.build)
 }
@@ -39,7 +41,7 @@ subprojects {
     }
 
     dependencies {
-        "api"(kotlin("stdlib")) // Dreeam - compileOnly -> api, For compatibility
+        "compileOnly"(kotlin("stdlib"))
     }
 
     tasks.withType<JavaCompile> {
