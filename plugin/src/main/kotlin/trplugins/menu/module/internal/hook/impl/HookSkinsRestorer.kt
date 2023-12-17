@@ -23,14 +23,10 @@ class HookSkinsRestorer : HookAbstract() {
 
     fun getPlayerSkinTexture(name: String): String? {
         skinsRestorer?.let {
-            if (it.skinStorage.findOrCreateSkinData(name) == null) {
-                return null
-            }
             val skinData = it.skinStorage.findOrCreateSkinData(name)
             if (skinData.isPresent) {
                 return skinData.get().property.value
             }
-            return null
         }
         return null
     }

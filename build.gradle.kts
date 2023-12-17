@@ -1,4 +1,3 @@
-@file:Suppress("DEPRECATION")
 
 val taboolibVersion: String by project
 
@@ -24,9 +23,9 @@ tasks.jar {
 tasks.build {
     doLast {
         val plugin = project(":plugin")
-        val file = file("${plugin.buildDir}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
+        val file = file("${plugin.layout.buildDirectory.get()}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
 
-        file?.copyTo(file("${buildDir}/libs/${project.name}-$version.jar"), true)
+        file?.copyTo(file("${project.layout.buildDirectory.get()}/libs/${project.name}-$version.jar"), true)
     }
     dependsOn(project(":plugin").tasks.build)
 }
@@ -41,15 +40,21 @@ subprojects {
     }
 
     dependencies {
-        "compileOnly"(kotlin("stdlib"))
+        "api"(kotlin("stdlib")) // Dreeam - compileOnly -> api, For compatibility
     }
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
 
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+
     // Java 版本设置
-    java {
+    configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
