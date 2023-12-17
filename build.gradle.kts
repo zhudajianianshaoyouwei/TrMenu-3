@@ -40,7 +40,6 @@ subprojects {
 
     dependencies {
         "api"(kotlin("stdlib")) // Dreeam - compileOnly -> api, For compatibility
-        implementation("io.github.baked-libs:dough-api:1.2.0")
     }
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
