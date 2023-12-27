@@ -147,7 +147,6 @@ object MenuSerializer : ISerializer {
                         })
                     )
                 }
-                println(this)
             },
             funs.map { ScriptFunction(it.key, it.value.toString()) }.toSet()
         )
