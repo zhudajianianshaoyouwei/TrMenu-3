@@ -24,7 +24,7 @@ jobs:
         run: ./gradlew build
 
       - name: Upload TrMenu
-        if: "github.event_name" != "pull_request"
+        if: "github.event_name != 'pull_request'"
         uses: marvinpinto/action-automatic-releases@master
         with:
           title: "TrMenu"
