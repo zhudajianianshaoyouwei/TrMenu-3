@@ -5,6 +5,7 @@ on:
     branches: [ stable/v3 ]
   pull_request:
     branches: [ stable/v3 ]
+
 jobs:
   releaseJar:
     runs-on: ubuntu-latest
@@ -16,11 +17,14 @@ jobs:
         with:
           java-version: 8
           distribution: temurin
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+
       - name: Upload TrMenu
+        if: "github.event_name" != "pull_request"
         uses: marvinpinto/action-automatic-releases@master
         with:
           title: "TrMenu"

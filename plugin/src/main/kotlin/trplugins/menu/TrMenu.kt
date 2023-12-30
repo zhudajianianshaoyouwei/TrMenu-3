@@ -1,16 +1,7 @@
 package trplugins.menu
 
-import trplugins.menu.module.conf.Loader
-import trplugins.menu.module.conf.prop.RunningPerformance
-import trplugins.menu.module.display.MenuSession
-import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.module.internal.hook.HookPlugin
-import trplugins.menu.module.internal.inputer.Inputer.Companion.cancelWords
-import trplugins.menu.module.internal.listener.ListenerItemInteract.interactCooldown
-import trplugins.menu.module.internal.service.RegisterCommands
-import trplugins.menu.module.internal.service.Shortcuts
 import org.bukkit.Bukkit
-import taboolib.common.platform.*
+import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.console
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
@@ -20,8 +11,17 @@ import taboolib.module.lang.sendLang
 import taboolib.platform.BukkitPlugin
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.receptacle.provider.PlatformProvider
+import trplugins.menu.module.conf.Loader
+import trplugins.menu.module.conf.prop.RunningPerformance
+import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.display.session
+import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.hook.HookPlugin
+import trplugins.menu.module.internal.inputer.Inputer.Companion.cancelWords
+import trplugins.menu.module.internal.listener.ListenerItemInteract.interactCooldown
 import trplugins.menu.module.internal.script.evalScript
+import trplugins.menu.module.internal.service.RegisterCommands
+import trplugins.menu.module.internal.service.Shortcuts
 
 /**
  * @author Arasple

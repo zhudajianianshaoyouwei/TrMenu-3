@@ -2,11 +2,8 @@ package trplugins.menu.api
 
 import org.bukkit.entity.Player
 import taboolib.common.platform.function.adaptPlayer
-import taboolib.common.platform.function.console
-import taboolib.common5.Coerce
 import taboolib.library.kether.LocalizedException
 import taboolib.module.kether.KetherShell
-import taboolib.module.kether.ScriptOptions
 import trplugins.menu.module.display.Menu
 import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.service.Performance

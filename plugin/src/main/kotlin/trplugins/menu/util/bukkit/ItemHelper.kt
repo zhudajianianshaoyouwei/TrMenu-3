@@ -2,7 +2,6 @@ package trplugins.menu.util.bukkit
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import trplugins.menu.module.display.MenuSettings
 import org.bukkit.ChatColor
 import org.bukkit.Color
 import org.bukkit.DyeColor
@@ -15,6 +14,7 @@ import org.bukkit.inventory.meta.BannerMeta
 import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.ItemTag
 import taboolib.platform.util.ItemBuilder
+import trplugins.menu.module.display.MenuSettings
 import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.util.parseJson
 import kotlin.math.min

@@ -2,7 +2,6 @@ package trplugins.menu.api.receptacle.hook
 
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import org.geysermc.floodgate.api.FloodgateApi
 import trplugins.menu.api.receptacle.provider.PlatformProvider
 
 /**

@@ -16,7 +16,8 @@ import taboolib.library.xseries.XMaterial
 import taboolib.library.xseries.XSkull
 import trplugins.menu.module.internal.hook.HookPlugin
 import java.net.URL
-import java.util.*
+import java.util.Base64
+import java.util.UUID
 
 /**
  * @author Arasple
@@ -117,7 +118,7 @@ object Heads {
 
     private fun modifyTexture(input: String, itemStack: ItemStack): ItemStack {
         val meta = itemStack.itemMeta as SkullMeta
-        val profile = GameProfile(UUID.randomUUID(), null)
+        val profile = GameProfile(UUID.randomUUID(), "null")
         val texture = if (input.length in 60..100) encodeTexture(input) else input
 
         profile.properties.put("textures", Property("textures", texture, "TrMenu_TexturedSkull"))
@@ -128,7 +129,7 @@ object Heads {
 
     private fun encodeTexture(input: String): String {
         val encoder = Base64.getEncoder()
-        return encoder.encodeToString("{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/$input\"}}}".toByteArray())
+        return encoder.encodeToString("{\"textures\":{\"SKIN\":{\"url\":\"https://textures.minecraft.net/texture/$input\"}}}".toByteArray())
     }
 
     private fun fromURL(url: String): String {

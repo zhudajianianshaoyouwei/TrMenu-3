@@ -163,7 +163,6 @@ object Loader {
                 console().sendLang("Menu-Loader-Reloaded", file.name, System.currentTimeMillis() - start)
             }
         }
-
     }
 
 

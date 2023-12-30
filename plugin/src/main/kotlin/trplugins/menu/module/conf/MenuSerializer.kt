@@ -117,8 +117,6 @@ object MenuSerializer : ISerializer {
         val eventClose = Property.EVENT_CLOSE.ofList(events)
         val eventClick = Property.EVENT_CLICK.ofList(events)
 
-
-
         result.result = MenuSettings(
             CycleList(title),
             titleUpdate,
@@ -147,7 +145,6 @@ object MenuSerializer : ISerializer {
                         })
                     )
                 }
-                println(this)
             },
             funs.map { ScriptFunction(it.key, it.value.toString()) }.toSet()
         )
