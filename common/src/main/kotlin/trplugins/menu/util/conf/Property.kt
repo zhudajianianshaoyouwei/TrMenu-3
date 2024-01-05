@@ -1,5 +1,6 @@
 package trplugins.menu.util.conf
 
+import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.module.configuration.ConfigSection
 import taboolib.module.configuration.Configuration
@@ -344,7 +345,9 @@ enum class Property(val default: String, val regex: Regex) {
                 is Configuration -> return any
                 is ConfigSection -> {
 
-                    return Configuration.empty().apply { setProperty("root", any.root) }
+                    return Configuration.empty().apply {
+                        setProperty("root", any.getProperty("root"))
+                    }
                 }
                 is Map<*, *> -> {
                     any.entries.forEach { entry -> it[entry.key.toString()] = entry.value }

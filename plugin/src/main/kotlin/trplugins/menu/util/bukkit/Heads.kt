@@ -105,7 +105,7 @@ object Heads {
 
     private fun modifyTexture(input: String, itemStack: ItemStack): ItemStack {
         val meta = itemStack.itemMeta as SkullMeta
-        val profile = GameProfile(UUID.randomUUID(), null)
+        val profile = GameProfile(UUID.randomUUID(), "TrMenu")
         val texture = if (input.length in 60..100) encodeTexture(input) else input
 
         profile.properties.put("textures", Property("textures", texture, "TrMenu_TexturedSkull"))
