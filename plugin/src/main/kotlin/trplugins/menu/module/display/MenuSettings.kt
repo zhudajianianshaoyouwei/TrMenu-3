@@ -6,6 +6,7 @@ import taboolib.common.platform.function.pluginId
 import taboolib.module.chat.colored
 import trplugins.menu.TrMenu
 import trplugins.menu.api.reaction.Reactions
+import trplugins.menu.api.receptacle.MenuTaskData
 import trplugins.menu.module.internal.script.js.ScriptFunction
 import trplugins.menu.util.Cooldown
 import trplugins.menu.util.bukkit.ItemMatcher
@@ -30,7 +31,7 @@ class MenuSettings(
     val openEvent: Reactions,
     val closeEvent: Reactions,
     val clickEvent: Reactions,
-    val tasks: Map<Long, Reactions>,
+    val tasks: List<MenuTaskData>,
     val internalFunctions: Set<ScriptFunction>
 ) {
 

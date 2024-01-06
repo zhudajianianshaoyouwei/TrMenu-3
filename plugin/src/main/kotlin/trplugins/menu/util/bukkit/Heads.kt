@@ -13,6 +13,7 @@ import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.library.xseries.XMaterial
+import taboolib.library.xseries.XSkull
 import trplugins.menu.module.internal.hook.HookPlugin
 import java.net.URL
 import java.util.Base64
@@ -37,20 +38,29 @@ object Heads {
         return CACHED_SKULLS.size to CACHED_PLAYER_TEXTURE.size
     }
 
+    @Deprecated("Use getHeadX", ReplaceWith("Heads.getHeadX(id)"))
     fun getHead(id: String): ItemStack {
         return if (id.length > 20) getCustomTextureHead(id) else getPlayerHead(id)
     }
+
+    fun getHeadX(id: String): ItemStack =
+        CACHED_SKULLS.computeIfAbsent(id) {
+            (CACHED_SKULLS[it] ?: DEFAULT_HEAD).apply {
+                itemMeta = itemMeta?.let { m -> XSkull.applySkin(m, id) }
+            }
+        }
 
     fun getPlayerHead(name: String): ItemStack {
         if (CACHED_SKULLS.containsKey(name)) {
             return CACHED_SKULLS[name] ?: DEFAULT_HEAD
         } else {
-            CACHED_SKULLS[name] = DEFAULT_HEAD.clone().also { item -> playerTexture(name) { modifyTexture(it, item) } ?: return DEFAULT_HEAD }
+            CACHED_SKULLS[name] = DEFAULT_HEAD.clone()
+                .also { item -> playerTexture(name) { modifyTexture(it, item) } ?: return DEFAULT_HEAD }
             return CACHED_SKULLS[name] ?: DEFAULT_HEAD
         }
     }
 
-    private fun getCustomTextureHead(texture: String): ItemStack {
+    fun getCustomTextureHead(texture: String): ItemStack {
         return CACHED_SKULLS.computeIfAbsent(texture) {
             modifyTexture(texture, DEFAULT_HEAD.clone())
         }
@@ -74,16 +84,18 @@ object Heads {
      */
     private fun playerTexture(name: String, block: (String) -> Unit): Unit? {
         when {
-            // Dreeam - Still need way to hook SkinsRestorer API under proxy, the check below still cant check if server under Velocity modern forwarding
-            HookPlugin.getSkinsRestorer().isHooked && !org.spigotmc.SpigotConfig.bungee -> {
+            HookPlugin.getSkinsRestorer().isHooked -> {
                 HookPlugin.getSkinsRestorer().getPlayerSkinTexture(name)?.also(block) ?: return null
             }
+
             Bukkit.getPlayer(name)?.isOnline == true -> {
                 Bukkit.getPlayer(name)!!.invokeMethod<GameProfile>("getProfile")?.properties?.get("textures")
                     ?.find { it.value != null }?.value
                     ?.also(block)
                     ?: return null
+
             }
+
             else -> {
                 submit(async = true) {
                     val profile = JsonParser().parse(fromURL("${MOJANG_API[0]}$name")) as? JsonObject

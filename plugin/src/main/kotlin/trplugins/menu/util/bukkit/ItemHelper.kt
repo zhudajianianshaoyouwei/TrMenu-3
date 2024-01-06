@@ -15,6 +15,7 @@ import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.ItemTag
 import taboolib.platform.util.ItemBuilder
 import trplugins.menu.module.display.MenuSettings
+import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.util.parseJson
 import kotlin.math.min
 
@@ -42,9 +43,9 @@ object ItemHelper {
 
     fun deserializePattern(builder: ItemBuilder, string: String) {
         builder.patterns.clear()
-        builder.patterns.addAll(string.split(",").let { it ->
+        builder.patterns.addAll(string.split(",").let {
             val patterns = mutableListOf<Pattern>()
-            it.forEach { it ->
+            it.forEach {
                 val type = it.split(" ")
                 if (type.size == 1) {
                     builder.finishing = {
@@ -56,11 +57,13 @@ object ItemHelper {
                     }
                 } else if (type.size == 2) {
                     try {
-                        patterns.add(Pattern(
-                            DyeColor.valueOf(type[0].uppercase()), PatternType.valueOf(
-                                type[1].uppercase()
+                        patterns.add(
+                            Pattern(
+                                DyeColor.valueOf(type[0].uppercase()), PatternType.valueOf(
+                                    type[1].uppercase()
+                                )
                             )
-                        ))
+                        )
                     } catch (e: Exception) {
                         patterns.add(Pattern(DyeColor.BLACK, PatternType.BASE))
                     }
@@ -88,9 +91,11 @@ object ItemHelper {
 
     fun fromJson(json: String): ItemStack? {
         try {
+            if (HookPlugin.getNBTAPI().isHooked) {
+                return HookPlugin.getNBTAPI().fromJson(json)
+            }
             val parse = JsonParser().parse(json)
             if (parse is JsonObject) {
-
                 val itemStack = parse["type"].let {
                     it ?: return XMaterial.STONE.parseItem()
                     try {
@@ -99,7 +104,6 @@ object ItemHelper {
                         ItemStack(Material.valueOf(it.asString))
                     }
                 }
-
                 parse["data"].let {
                     it ?: return@let
                     itemStack?.durability = it.asShort
@@ -110,8 +114,10 @@ object ItemHelper {
                 }
                 val meta = parse["meta"]
                 return if (meta != null) itemStack.also {
-                    if (it != null) {
-                        ItemTag.fromLegacyJson(meta.toString()).saveTo(it)
+                    it?.let { it1 ->
+                        ItemTag.fromLegacyJson(meta.toString()).saveTo(
+                            it1
+                        )
                     }
                 }
                 else itemStack
@@ -126,7 +132,7 @@ object ItemHelper {
         return when (item.lowercase()) {
             "all", "inv" -> inv.contents
             "armor" -> inv.armorContents
-            "hand", "mainhand" -> inv.itemInMainHand
+            "hand", "mainhand" -> inv.itemInHand
             "offhand" -> inv.itemInOffHand
             "helmet" -> inv.armorContents[3]
             "chestplate" -> inv.armorContents[2]

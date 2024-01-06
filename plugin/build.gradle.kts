@@ -1,5 +1,3 @@
-import java.util.Locale
-
 val taboolibVersion: String by rootProject
 
 plugins {
@@ -29,6 +27,10 @@ taboolib {
         contributors {
             name("Arasple")
             name("Score2")
+            name("lilingfeng")
+            name("Dreeam-qwq")
+            name("FxRayHughes")
+            name("TheFloodDragon")
         }
         dependencies {
             name("PlaceholderAPI").optional(true)
@@ -45,7 +47,8 @@ taboolib {
             name("Triton").optional(true)
         }
     }
-    relocate("trplugins.menu", group.toString().lowercase(Locale.getDefault()))
+
+    relocate("trplugins.menu", group.toString().lowercase())
 
     classifier = null
     version = taboolibVersion
@@ -58,7 +61,7 @@ repositories {
     maven("https://repo.codemc.org/repository/maven-public")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.opencollab.dev/main/")
-    maven("https://repo.oraxen.com/snapshots")
+    maven("https://repo.oraxen.com/releases")
     maven("https://jitpack.io")
 }
 
@@ -87,12 +90,14 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:8bad2c4") { isTransitive = false }
     compileOnly("org.black_ixx:playerpoints:3.2.6") { isTransitive = false }
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") { isTransitive = false }
-    compileOnly("io.th0rgal:oraxen:1.166.0-SNAPSHOT") { isTransitive = false }
+    compileOnly("io.th0rgal:oraxen:1.165.0") { isTransitive = false }
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.5-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1") { isTransitive = false }
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:core:3.9.3") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:api:3.9.3") { isTransitive = false }
+    compileOnly("de.tr7zw:item-nbt-api-plugin:2.12.2") { isTransitive = false }
+    compileOnly("com.github.FrancoBM12:API-MagicCosmetics:2.2.5") { isTransitive = false }
 
     compileOnly(fileTree("libs"))
 }

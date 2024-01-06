@@ -5,6 +5,7 @@ import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.action.base.ActionBase
 import trplugins.menu.api.action.base.ActionContents
 import trplugins.menu.module.display.session
+import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -23,7 +24,7 @@ class Page(handle: ActionHandle) : ActionBase(handle) {
         val menu = session.menu ?: return
         val page = min(contents.stringContent().parseContent(placeholderPlayer).toIntOrNull() ?: 0, menu.layout.getSize() - 1)
 
-        menu.page(player.cast(), page)
+        menu.page(player.cast(), max(0, page))
     }
 
 }

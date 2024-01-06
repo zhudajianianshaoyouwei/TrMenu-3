@@ -3,6 +3,7 @@ package trplugins.menu.module.conf
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemFlag
 import taboolib.common.platform.function.pluginId
+import taboolib.common.util.asList
 import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.Type
 import taboolib.module.nms.ItemTag
@@ -10,6 +11,8 @@ import taboolib.module.nms.ItemTagData
 import trplugins.menu.TrMenu.actionHandle
 import trplugins.menu.api.menu.ISerializer
 import trplugins.menu.api.reaction.Reactions
+import trplugins.menu.api.receptacle.MenuTaskData
+import trplugins.menu.api.receptacle.MenuTaskSubData
 import trplugins.menu.api.receptacle.ReceptacleClickType
 import trplugins.menu.api.suffixes
 import trplugins.menu.module.conf.prop.SerializeError
@@ -96,7 +99,7 @@ object MenuSerializer : ISerializer {
         val options = Property.OPTIONS.ofSection(conf)
         val bindings = Property.BINDINGS.ofSection(conf)
         val events = Property.EVENTS.ofSection(conf)
-        val tasks = Property.TASKS.ofMap(conf, true)
+        val tasks = Property.TASKS.ofSection(conf)
         val funs = Property.FUNCTIONS.ofMap(conf, true)
         val title = Property.TITLE.ofStringList(conf, listOf(pluginId))
         val titleUpdate = Property.TITLE_UPDATE.ofInt(conf, -20)
@@ -129,14 +132,19 @@ object MenuSerializer : ISerializer {
             Reactions.ofReaction(actionHandle, eventOpen),
             Reactions.ofReaction(actionHandle, eventClose),
             Reactions.ofReaction(actionHandle, eventClick),
-            mutableMapOf<Long, Reactions>().run {
-                tasks.forEach { (_, content) ->
-                    val map = Property.asSection(content)
-                    val period = Property.PERIOD.ofInt(map, -1)
-                    val reactions = Reactions.ofReaction(actionHandle, Property.TASKS.ofList(map))
-                    if (period > 0 && !reactions.isEmpty()) this[period.toLong()] = reactions
+            mutableListOf<MenuTaskData>().apply {
+                tasks?.getKeys(false)?.forEach { subKey ->
+                    val period = tasks.getLong("$subKey.period", -1)
+                    add(
+                        MenuTaskData(subKey, period, mutableListOf<MenuTaskSubData>().apply {
+                            tasks.getMapList("$subKey.task").forEach z@{ action ->
+                                val type = action["condition"]?.toString() ?: return@z
+                                val reaction = action["actions"]?.asList() ?: return@z
+                                add(MenuTaskSubData(type, reaction))
+                            }
+                        })
+                    )
                 }
-                this
             },
             funs.map { ScriptFunction(it.key, it.value.toString()) }.toSet()
         )

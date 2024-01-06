@@ -12,12 +12,10 @@ class HookSkinsRestorer : HookAbstract() {
 
     private val skinsRestorer: SkinsRestorer? =
         if (isHooked) {
-            try {
-                SkinsRestorerProvider.get()
-            } catch (e: IllegalStateException) {
-                null
-            }
-        } else null
+            runCatching { SkinsRestorerProvider.get() }.getOrNull()
+        } else {
+            null
+        }
         get() {
             if (field == null) reportAbuse()
             return field

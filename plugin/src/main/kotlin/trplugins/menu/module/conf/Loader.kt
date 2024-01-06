@@ -55,7 +55,7 @@ object Loader {
 
         val errors = mutableListOf<String>()
 
-        val files = mutableListOf<File>().also { it ->
+        val files = mutableListOf<File>().also {
             it.addAll(filterMenuFiles(folder))
             it.addAll(TrMenu.SETTINGS.getStringList("Loader.Menu-Files").flatMap { filterMenuFiles(File(it)) })
         }
@@ -120,49 +120,47 @@ object Loader {
     /**
      * 监听菜单
      */
-    internal fun listen(file: File) {
-        if (!FileListener.isListening(file)) {
-            FileListener.listener(file) {
-                val start = System.currentTimeMillis()
-                val reload = try {
-                    MenuSerializer.serializeMenu(file).also { it ->
-                        if (!it.succeed()) {
-                            console().sendLang(
-                                "Menu-Loader-Failed",
-                                file.nameWithoutExtension,
-                                it.type.name
-                            )
-                            it.errors.forEach { console().sendMessage("    §8$it") }
-                            console().sendMessage("")
-                        }
+    fun listen(file: File) {
+        FileListener.listener(file) {
+            val start = System.currentTimeMillis()
+            val reload = try {
+                MenuSerializer.serializeMenu(file).also {
+                    if (!it.succeed()) {
+                        console().sendLang(
+                            "Menu-Loader-Failed",
+                            file.nameWithoutExtension,
+                            it.type.name
+                        )
+                        it.errors.forEach { console().sendMessage("    §8$it") }
+                        console().sendMessage("")
                     }
-                } catch (t: Throwable) {
-                    console().sendLang(
-                        "Menu-Loader-Failed",
-                        file.nameWithoutExtension,
-                        t.message ?: "Nothing..."
-                    )
-                    console().sendMessage("§8${t.stackTraceToString()}")
-                    return@listener
                 }
-                val current = TrMenuAPI.getMenuById(file.nameWithoutExtension) ?: return@listener
+            } catch (t: Throwable) {
+                console().sendLang(
+                    "Menu-Loader-Failed",
+                    file.nameWithoutExtension,
+                    t.message ?: "Nothing..."
+                )
+                console().sendMessage("§8${t.stackTraceToString()}")
+                return@listener
+            }
+            val current = TrMenuAPI.getMenuById(file.nameWithoutExtension) ?: return@listener
 
-                if (reload.succeed()) {
-                    val reloadMenu = reload.result as Menu
+            if (reload.succeed()) {
+                val reloadMenu = reload.result as Menu
 
-                    current.forSessions { s ->
-                        reloadMenu.open(s.viewer, s.page, MenuOpenEvent.Reason.RELOAD)
-                    }
-
-                    Menu.menus.replaceAll { target ->
-                        if (target == current) {
-                            target.removeViewers()
-                            reloadMenu
-                        } else target
-                    }
-
-                    console().sendLang("Menu-Loader-Reloaded", file.name, System.currentTimeMillis() - start)
+                current.forSessions { s ->
+                    reloadMenu.open(s.viewer, s.page, MenuOpenEvent.Reason.RELOAD)
                 }
+
+                Menu.menus.replaceAll { target ->
+                    if (target == current) {
+                        target.removeViewers()
+                        reloadMenu
+                    } else target
+                }
+
+                console().sendLang("Menu-Loader-Reloaded", file.name, System.currentTimeMillis() - start)
             }
         }
     }

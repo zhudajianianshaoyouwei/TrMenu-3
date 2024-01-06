@@ -1,10 +1,9 @@
-import java.util.Locale
 
 val taboolibVersion: String by project
 
 plugins {
-    id("org.gradle.java")
-    id("org.gradle.maven-publish")
+    java
+    `maven-publish`
     kotlin("jvm") version "1.9.20" apply false
     id("io.izzel.taboolib") version "1.56" apply false
 }
@@ -26,7 +25,7 @@ tasks.build {
         val plugin = project(":plugin")
         val file = file("${plugin.layout.buildDirectory.get()}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
 
-        file?.copyTo(file("${layout.buildDirectory.get()}/libs/${project.name}-$version.jar"), true)
+        file?.copyTo(file("${project.layout.buildDirectory.get()}/libs/${project.name}-$version.jar"), true)
     }
     dependsOn(project(":plugin").tasks.build)
 }
@@ -43,18 +42,26 @@ subprojects {
     dependencies {
         "api"(kotlin("stdlib")) // Dreeam - compileOnly -> api, For compatibility
     }
+
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+
+    // Java 版本设置
     configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     val archiveName = if (project == rootProject)
-        rootProject.name.lowercase(Locale.getDefault())
-    else
-        "${rootProject.name.lowercase(Locale.getDefault())}-${project.name.lowercase(Locale.getDefault())}"
+        rootProject.name.lowercase()
+    else "${rootProject.name.lowercase()}-${project.name.lowercase()}"
 
     val sourceSets = extensions.getByName("sourceSets") as SourceSetContainer
 

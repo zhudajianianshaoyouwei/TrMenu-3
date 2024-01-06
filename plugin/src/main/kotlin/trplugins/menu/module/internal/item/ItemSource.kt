@@ -24,14 +24,19 @@ object ItemSource {
                 if (id.equals("RANDOM", true)) HookPlugin.getHeadDatabase().getRandomHead()
                 else HookPlugin.getHeadDatabase().getHead(id)
             }
+
             "SKULLS" -> {
                 if (id.equals("RANDOM", true)) HookPlugin[HookSkulls::class.java].getRandomSkull()
                 else HookPlugin[HookSkulls::class.java].getSkull(id)
             }
+
             "JAVASCRIPT", "JS" -> JavaScriptAgent.eval(session, id).asItemStack()
             "ORAXEN" -> HookPlugin.getOraxen().getItem(id)
             "ITEMSADDER", "IA" -> HookPlugin.getItemsAdder().getItem(id)
             "ZAPHKIEL", "ZL" -> HookPlugin.getZaphkiel().getItem(id)
+            "SXITEM", "SI" -> HookPlugin.getSXItem().getItem(id, session.placeholderPlayer)
+            "MagicCosmeticsE","MAGICE"-> HookPlugin.getMagicCosmetics().getEquipped(id, session.placeholderPlayer)
+            "MagicCosmeticsI","MAGICI"-> HookPlugin.getMagicCosmetics().getCosmeticItem(id)
             else -> CustomItemSourceEvent(name, id, session).also { it.call() }.source
         }
     }
