@@ -37,7 +37,7 @@ class Texture(
 
         var itemStack = when (type) {
             TextureType.NORMAL -> parseMaterial(temp)
-            TextureType.HEAD -> Heads.getHeadX(temp)
+            TextureType.HEAD -> Heads.getHead(temp)
             TextureType.REPO -> ItemRepository.getItem(temp)
             TextureType.SOURCE -> ItemSource.fromSource(session, temp)
             TextureType.RAW -> ItemHelper.fromJson(temp)
