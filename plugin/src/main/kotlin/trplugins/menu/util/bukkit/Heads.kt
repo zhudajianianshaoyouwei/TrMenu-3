@@ -87,15 +87,12 @@ object Heads {
             HookPlugin.getSkinsRestorer().isHooked -> {
                 HookPlugin.getSkinsRestorer().getPlayerSkinTexture(name)?.also(block) ?: return null
             }
-
             Bukkit.getPlayer(name)?.isOnline == true -> {
                 Bukkit.getPlayer(name)!!.invokeMethod<GameProfile>("getProfile")?.properties?.get("textures")
                     ?.find { it.value != null }?.value
                     ?.also(block)
                     ?: return null
-
             }
-
             else -> {
                 submit(async = true) {
                     val profile = JsonParser().parse(fromURL("${MOJANG_API[0]}$name")) as? JsonObject

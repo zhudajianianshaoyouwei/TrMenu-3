@@ -6,12 +6,34 @@
 
 ### 🔔 What's new in this fork?
 
-- **Support 1.20.1/2**
+- **Support 1.20.1 ~ 1.20.4**
 - **Fix bug when SkinsRestorer is under proxy mode**
-- **Fix skull display issue on 1.20.2**
-- TODO: 1.12/lower version catserver/mohist compatibility
+- **Fix skull display issue on 1.20.2/4**
 
  **Notice: I maintain this fork only based on my interests.**
+
+---
+
+### 🔔 What's new in TrMenu v3?
+
+- **Extremely Fast & Optimized** Not only focused on the improvement of conditional evaluations but also reconstructed
+  the API of the virtual inventory. Large quantity of modules have been recoded for better performance, as well as
+  providing a unique way of monitoring TrMenu's performance
+- **Capable as always** Almost every feature are optimized and reserved, new features are also added
+- **Function & Scripts** Unify and standardize the use of inline functions, refactor TrMenu Actions, and fully support
+  the new Kether scripting language
+
+> For more detailed information, please via the wiki site
+---
+
+### 🌍 Languages
+
+* **en_US(English)** by _@Arasple_ & _@Score2_
+* **ru_RU(Русский)** by _@Liassid_
+* **vi_VN(Tiếng Việt)** by _@Galaxy-VN_
+* **zh_CN(简体中文)** by _@Arasple_ & _@Score2_
+* **zh_HK(繁體中文)** by _@Arasple_ & _@Score2_
+* **zh_TW(繁體中文)** copy from _zh_HK_
 
 ---
 

@@ -1,1 +1,3 @@
-@Suppress("DEPRECATION") gradle.buildFinished { delete(layout.buildDirectory.get()) }
+gradle.buildFinished {
+    delete(layout.buildDirectory.get())
+}

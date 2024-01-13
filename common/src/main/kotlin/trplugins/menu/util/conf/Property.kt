@@ -345,9 +345,7 @@ enum class Property(val default: String, val regex: Regex) {
                 is Configuration -> return any
                 is ConfigSection -> {
 
-                    return Configuration.empty().apply {
-                        setProperty("root", any.getProperty("root"))
-                    }
+                    return Configuration.empty().apply { setProperty("root", any.getProperty("root")) }
                 }
                 is Map<*, *> -> {
                     any.entries.forEach { entry -> it[entry.key.toString()] = entry.value }

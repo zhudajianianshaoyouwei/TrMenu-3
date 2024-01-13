@@ -42,7 +42,7 @@ object CommandItem : CommandExpression {
                 listOf("toJson", "fromJson", "save", "get", "del", "delete")
             }
             // Method
-            execute<Player> { player, context, argument ->
+            execute<Player> { player, _, argument ->
                 if (!argument.equals("toJson", ignoreCase = true)) {
                     return@execute
                 }
@@ -63,7 +63,7 @@ object CommandItem : CommandExpression {
 
                     val item = BukkitEquipment.getItems(player)[BukkitEquipment.HAND]
 
-                    when (context.argument(-1)?.lowercase()) {
+                    when (context.argument(-1).lowercase()) {
                         "fromjson" -> fromJson(player, argument)
                         "get" -> ItemRepository.itemStacks[argument]?.let {
                             player.inventory.addItem(it).values.forEach { e ->
@@ -73,13 +73,11 @@ object CommandItem : CommandExpression {
                                 )
                             }
                         }
-
                         "save" -> item?.let {
                             ItemRepository.itemStacks[argument] = item
                             submit(async = true) { ItemRepository.saveTask() }
                             player.sendLang("Command-Item-Saved", argument)
                         }
-
                         "delete", "del" -> ItemRepository.removeItem(argument)?.let {
                             player.sendLang("Command-Item-Deleted", argument)
                         }
