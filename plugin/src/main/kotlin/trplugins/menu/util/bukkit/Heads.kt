@@ -38,12 +38,8 @@ object Heads {
         return CACHED_SKULLS.size to CACHED_PLAYER_TEXTURE.size
     }
 
-    @Deprecated("Use getHeadX", ReplaceWith("Heads.getHeadX(id)"))
-    fun getHead(id: String): ItemStack {
-        return if (id.length > 20) getCustomTextureHead(id) else getPlayerHead(id)
-    }
 
-    fun getHeadX(id: String): ItemStack =
+    fun getHead(id: String): ItemStack =
         CACHED_SKULLS.computeIfAbsent(id) {
             (CACHED_SKULLS[it] ?: DEFAULT_HEAD).apply {
                 itemMeta = itemMeta?.let { m -> XSkull.applySkin(m, id) }
