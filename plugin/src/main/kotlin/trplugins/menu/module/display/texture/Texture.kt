@@ -1,5 +1,6 @@
 package trplugins.menu.module.display.texture
 
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
@@ -23,12 +24,12 @@ import trplugins.menu.util.bukkit.ItemHelper
  * @date 2021/1/24 11:50
  */
 class Texture(
-    val raw: String,
-    val type: TextureType,
-    val texture: String,
-    val dynamic: Boolean,
-    private var static: ItemStack?,
-    val meta: Map<TextureMeta, String>
+        val raw: String,
+        val type: TextureType,
+        val texture: String,
+        val dynamic: Boolean,
+        private var static: ItemStack?,
+        val meta: Map<TextureMeta, String>
 ) : ITexture {
 
     override fun generate(session: MenuSession): ItemStack {
@@ -46,14 +47,18 @@ class Texture(
         if (itemStack != null) {
             if (itemStack.type == Material.AIR || itemStack.type.name.endsWith("_AIR")) {
                 return itemStack
-            } else itemStack = buildItem(itemStack) {
-                meta.forEach { (meta, metaValue) ->
-                    val value = session.parse(metaValue)
-                    when (meta) {
-                        TextureMeta.DATA_VALUE -> damage = value.toIntOrNull() ?: 0
-                        TextureMeta.MODEL_DATA -> customModelData = value.toInt()
-                        TextureMeta.LEATHER_DYE -> color = ItemHelper.serializeColor(value)
-                        TextureMeta.BANNER_PATTERN -> ItemHelper.deserializePattern(this, value)
+            } else if (itemStack.itemMeta is SkullMeta) {
+                return itemStack
+            } else {
+                itemStack = buildItem(itemStack) {
+                    meta.forEach { (meta, metaValue) ->
+                        val value = session.parse(metaValue)
+                        when (meta) {
+                            TextureMeta.DATA_VALUE -> damage = value.toIntOrNull() ?: 0
+                            TextureMeta.MODEL_DATA -> customModelData = value.toInt()
+                            TextureMeta.LEATHER_DYE -> color = ItemHelper.serializeColor(value)
+                            TextureMeta.BANNER_PATTERN -> ItemHelper.deserializePattern(this, value)
+                        }
                     }
                 }
             }
@@ -61,7 +66,6 @@ class Texture(
                 static = itemStack
             }
         }
-
         return itemStack ?: FALL_BACK
     }
 
@@ -80,14 +84,14 @@ class Texture(
             // Head Meta
             if (itemMeta is SkullMeta) {
                 val hdb =
-                    if (HookPlugin.getHeadDatabase().isHooked) {
-                        HookPlugin.getHeadDatabase().getId(itemStack)
-                    } else null
+                        if (HookPlugin.getHeadDatabase().isHooked) {
+                            HookPlugin.getHeadDatabase().getId(itemStack)
+                        } else null
                 val skulls =
-                    if (hdb != null) null
-                    else if (HookPlugin[HookSkulls::class.java].isHooked) {
-                        HookPlugin[HookSkulls::class.java].getId(itemStack)
-                    } else null
+                        if (hdb != null) null
+                        else if (HookPlugin[HookSkulls::class.java].isHooked) {
+                            HookPlugin[HookSkulls::class.java].getId(itemStack)
+                        } else null
 
 
                 return when {
@@ -156,10 +160,10 @@ class Texture(
             } catch (e: Throwable) {
                 runCatching {
                     XMaterial.entries.find { it.name.equals(id.toString(), true) }
-                        ?: XMaterial.entries.find { it -> it.legacy.any { it == id.toString() } }
-                        ?: XMaterial.entries.maxByOrNull { similarDegree(id.toString(), it.name) }
+                            ?: XMaterial.entries.find { it -> it.legacy.any { it == id.toString() } }
+                            ?: XMaterial.entries.maxByOrNull { similarDegree(id.toString(), it.name) }
                 }.getOrNull()?.parseItem()
-                    ?: FALL_BACK
+                        ?: FALL_BACK
             }
 
             return item
