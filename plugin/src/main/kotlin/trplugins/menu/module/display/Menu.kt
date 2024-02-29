@@ -92,6 +92,11 @@ class Menu(
                 loadTasks(session)
 
                 receptacle.open(viewer)
+                settings.properties.forEach { (id, value) ->
+                    if (id >= 0 && value != null) {
+                        receptacle.property(id, value)
+                    }
+                }
             }
         }
     }

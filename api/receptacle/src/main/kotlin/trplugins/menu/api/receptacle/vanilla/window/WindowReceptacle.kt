@@ -97,6 +97,12 @@ open class WindowReceptacle(var type: WindowLayout, override var title: String =
         }
     }
 
+    override fun property(id: Int, value: Int) {
+        if (viewer != null) {
+            nmsProxy<NMS>().sendWindowsUpdateData(viewer!!, id = id, value = value)
+        }
+    }
+
     override fun callEventClick(event: ReceptacleInteractEvent<ItemStack>) {
         if (viewer != null) {
             onClick(viewer!!, event)

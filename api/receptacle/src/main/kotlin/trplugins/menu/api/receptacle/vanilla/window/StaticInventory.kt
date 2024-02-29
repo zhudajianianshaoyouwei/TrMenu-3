@@ -5,13 +5,14 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
-import taboolib.library.reflex.Reflex.Companion.getProperty
+import org.bukkit.inventory.InventoryView
 
 object StaticInventory {
 
     private val inventories = HashMap<String, Holder>()
 
     val Player.staticInventory get() = inventories[this.name]?.inventory
+    val Player.inventoryView get() = inventories[this.name]?.view
 
     fun open(player: Player, layout: WindowLayout, title: String) {
         val holder = Holder(layout, title)
@@ -30,17 +31,20 @@ object StaticInventory {
             InventoryType.CHEST -> Bukkit.createInventory(this, layout.slotRange.last + 1, title)
             else -> Bukkit.createInventory(this, type, title)
         }
+        var view: InventoryView? = null
+            private set
 
         override fun getInventory(): Inventory {
             return inventory
         }
 
         fun open(player: Player) {
-            player.openInventory(inventory)
+            view = player.openInventory(inventory)
         }
 
         fun clear() {
             inventory.clear()
+            view = null
         }
     }
 }

@@ -75,8 +75,9 @@ abstract class NMS {
     /**
      * https://wiki.vg/Protocol#Window_Property
      *
-     * TODO This packet is used to inform the client that part of a GUI window should be updated.
+     * Send by the server to inform the client that part of a GUI window should be updated.
+     * The meaning of the Property field depends on the type of the window.
      */
-    abstract fun sendWindowsUpdateData(player: Player, windowId: Int = windowId(player), property: Int, value: Int)
+    abstract fun sendWindowsUpdateData(player: Player, windowId: Int = windowId(player), id: Int, value: Int)
 
 }
