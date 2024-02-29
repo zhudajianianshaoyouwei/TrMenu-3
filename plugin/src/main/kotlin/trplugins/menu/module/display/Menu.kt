@@ -135,9 +135,11 @@ class Menu(
      * 加载容器标题 & 自动更新
      */
     private fun loadTitle(session: MenuSession) {
+        session.receptacle?.title(settings.title.next(session.id)?.let { session.parse(it) } ?: pluginId, update = false)
+        
         val setTitle = {
-            session.receptacle?.title = settings.title.next(session.id)?.let { session.parse(it) } ?: pluginId
-        }.also { it.invoke() }
+            session.receptacle?.title(settings.title.next(session.id)?.let { session.parse(it) } ?: pluginId)
+        }
 
         if (settings.titleUpdate > 0 && settings.title.cyclable()) {
             session.arrange(submit(delay = 10, period = settings.titleUpdate.toLong(), async = true) {

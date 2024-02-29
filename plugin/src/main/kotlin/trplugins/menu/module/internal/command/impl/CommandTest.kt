@@ -27,7 +27,7 @@ object CommandTest : CommandExpression {
             chest.open(player)
 
             val task = submit(delay = 20, period = 10, async = false) {
-                chest.title = (0..20).random().toString()
+                chest.title((0..20).random().toString())
             }
             submit(delay = (20 * 20)) {
                 task.cancel()

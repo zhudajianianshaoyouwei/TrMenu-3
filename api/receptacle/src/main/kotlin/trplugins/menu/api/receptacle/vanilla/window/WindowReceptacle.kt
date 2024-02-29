@@ -12,7 +12,7 @@ import trplugins.menu.api.receptacle.setViewingReceptacle
  * @author Arasple
  * @date 2020/11/29 10:38
  */
-open class WindowReceptacle(var type: WindowLayout, title: String = type.toBukkitType().defaultTitle) : Receptacle<ItemStack>(type) {
+open class WindowReceptacle(var type: WindowLayout, override var title: String = type.toBukkitType().defaultTitle) : Receptacle<ItemStack>(type) {
 
     private var viewer: Player? = null
 
@@ -29,14 +29,6 @@ open class WindowReceptacle(var type: WindowLayout, title: String = type.toBukki
     private var stateId = 1
         get() {
             return field++
-        }
-
-    override var title = title
-        set(value) {
-            field = value
-            submit(delay = 3, async = true) {
-                initializationPackets()
-            }
         }
 
     fun hidePlayerInventory(hidePlayerInventory: Boolean) {
@@ -93,6 +85,15 @@ open class WindowReceptacle(var type: WindowLayout, title: String = type.toBukki
             }
             onClose(viewer!!, this)
             viewer!!.setViewingReceptacle(null)
+        }
+    }
+
+    override fun title(value: String, update: Boolean) {
+        title = value
+        if (update) {
+            submit(delay = 3, async = true) {
+                initializationPackets()
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package trplugins.menu.api.receptacle.vanilla.window
 
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import trplugins.menu.api.receptacle.provider.PlatformProvider
 
 /**
  * @author Arasple
@@ -9,6 +10,22 @@ import org.bukkit.inventory.ItemStack
  */
 abstract class NMS {
 
+    companion object {
+        var javaStaticInventory: Boolean = false
+        var bedrockStaticInventory: Boolean = false
+        var createIdPacketInventory: Boolean = false
+
+        fun Player.useStaticInventory() = if (PlatformProvider.isBedrockPlayer(this)) bedrockStaticInventory else javaStaticInventory
+
+        fun createWindowId(): Boolean {
+            return createIdPacketInventory
+        }
+    }
+
+    /**
+     * Get current window id from player o create a new one
+     */
+    abstract fun windowId(player: Player, create: Boolean = false): Int
 
     /**
      * This packet is sent by the client when closing a window.
@@ -17,7 +34,7 @@ abstract class NMS {
      *
      * This is the ID of the window that was closed. 0 for player inventory.
      */
-    abstract fun sendWindowsClose(player: Player, windowId: Int = 119)
+    abstract fun sendWindowsClose(player: Player, windowId: Int = windowId(player))
 
     /**
      * Sent by the server when items in multiple slots (in a window) are added/removed.
@@ -27,7 +44,7 @@ abstract class NMS {
      *
      * @param items Array of Slot
      */
-    abstract fun sendWindowsItems(player: Player, windowId: Int = 119, items: Array<ItemStack?>)
+    abstract fun sendWindowsItems(player: Player, windowId: Int = windowId(player), items: Array<ItemStack?>)
 
     /**
      * This is sent to the client when it should open an inventory,
@@ -39,7 +56,7 @@ abstract class NMS {
      * @param type The window type to use for display. See ReceptacleType for the different values.
      * @param title The title of the window
      */
-    abstract fun sendWindowsOpen(player: Player, windowId: Int = 119, type: WindowLayout, title: String)
+    abstract fun sendWindowsOpen(player: Player, windowId: Int = windowId(player, true), type: WindowLayout, title: String)
 
     /**
      * Sent by the server when an item in a slot (in a window) is added/removed.
@@ -53,13 +70,13 @@ abstract class NMS {
      * @param slot The slot that should be updated
      * @param itemStack The to update item stack
      */
-    abstract fun sendWindowsSetSlot(player: Player, windowId: Int = 119, slot: Int, itemStack: ItemStack? = null, stateId: Int = 1)
+    abstract fun sendWindowsSetSlot(player: Player, windowId: Int = windowId(player), slot: Int, itemStack: ItemStack? = null, stateId: Int = 1)
 
     /**
      * https://wiki.vg/Protocol#Window_Property
      *
      * TODO This packet is used to inform the client that part of a GUI window should be updated.
      */
-    abstract fun sendWindowsUpdateData(player: Player, windowId: Int = 119, property: Int, value: Int)
+    abstract fun sendWindowsUpdateData(player: Player, windowId: Int = windowId(player), property: Int, value: Int)
 
 }

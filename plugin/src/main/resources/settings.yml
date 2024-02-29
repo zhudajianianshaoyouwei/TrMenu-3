@@ -3,7 +3,11 @@ Options:
   Running-Performance: Normal
   Multi-Thread: true
   Async-Load-Menus: true
-  Bedrock-Static-Inv: false
+  Static-Inventory:
+    Java: false
+    Bedrock: false
+  Packet-Inventory:
+    Create-Id: false
 
   Placeholders:
     JavaScript-Parse: false

@@ -11,7 +11,6 @@ object StaticInventory {
 
     private val inventories = HashMap<String, Holder>()
 
-    val Player.staticContainerId get() = inventories[this.name]?.containerId
     val Player.staticInventory get() = inventories[this.name]?.inventory
 
     fun open(player: Player, layout: WindowLayout, title: String) {
@@ -31,8 +30,6 @@ object StaticInventory {
             InventoryType.CHEST -> Bukkit.createInventory(this, layout.slotRange.last + 1, title)
             else -> Bukkit.createInventory(this, type, title)
         }
-        var containerId: Int? = null
-            private set
 
         override fun getInventory(): Inventory {
             return inventory
@@ -40,12 +37,10 @@ object StaticInventory {
 
         fun open(player: Player) {
             player.openInventory(inventory)
-            containerId = player.getProperty<Int>("entity/containerCounter")!!
         }
 
         fun clear() {
             inventory.clear()
-            containerId = null
         }
     }
 }

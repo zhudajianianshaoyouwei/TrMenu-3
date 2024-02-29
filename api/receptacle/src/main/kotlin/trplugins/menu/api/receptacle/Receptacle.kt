@@ -24,6 +24,7 @@ abstract class Receptacle<Element>(val layout: ReceptacleLayout) {
     abstract fun refresh(slot: Int = -1)
     abstract fun open(player: Player)
     abstract fun close(sendPacket: Boolean = true)
+    abstract fun title(value: String, update: Boolean = true)
     abstract fun callEventClick(event: ReceptacleInteractEvent<Element>)
 
 

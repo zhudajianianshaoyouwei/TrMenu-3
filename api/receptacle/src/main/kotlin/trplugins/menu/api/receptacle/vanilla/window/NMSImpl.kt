@@ -12,7 +12,6 @@ import taboolib.library.reflex.Reflex.Companion.unsafeInstance
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.sendPacket
 import taboolib.platform.util.isAir
-import trplugins.menu.api.receptacle.provider.PlatformProvider
 import trplugins.menu.api.receptacle.vanilla.window.StaticInventory.staticInventory
 
 /**
@@ -23,20 +22,31 @@ class NMSImpl : NMS() {
 
     private val emptyItemStack: net.minecraft.server.v1_16_R3.ItemStack? = CraftItemStack.asNMSCopy((ItemStack(Material.AIR)))
     private val version = MinecraftVersion.majorLegacy
+    private val windowIds = HashMap<String, Int>()
 
-    private fun Player.isBedrockPlayer() = PlatformProvider.isBedrockPlayer(this)
+    private val Player.windowId get() = windowIds[this.name] ?: 119
+
+    override fun windowId(player: Player, create: Boolean): Int {
+        if (createWindowId() && create) {
+            val id = player.getProperty<Int>("entity/containerCounter")!! + 1
+            player.setProperty("entity/containerCounter", id)
+            windowIds[player.name] = id
+        }
+        return player.windowId
+    }
 
     override fun sendWindowsClose(player: Player, windowId: Int) {
-        if (player.isBedrockPlayer()) {
+        if (player.useStaticInventory()) {
             StaticInventory.close(player)
         } else {
+            windowIds.remove(player.name)
             player.sendPacket(PacketPlayOutCloseWindow(windowId))
         }
     }
 
     override fun sendWindowsItems(player: Player, windowId: Int, items: Array<ItemStack?>) {
         when {
-            player.isBedrockPlayer() -> {
+            player.useStaticInventory() -> {
                 val inventory = player.staticInventory!!
                 items.forEachIndexed { index, item ->
                     if (index >= inventory.size) {
@@ -84,7 +94,7 @@ class NMSImpl : NMS() {
 
     override fun sendWindowsOpen(player: Player, windowId: Int, type: WindowLayout, title: String) {
         when {
-            player.isBedrockPlayer() -> {
+            player.useStaticInventory() -> {
                 StaticInventory.open(player, type, title)
             }
             version >= 11900 -> {
@@ -129,7 +139,7 @@ class NMSImpl : NMS() {
 
     override fun sendWindowsSetSlot(player: Player, windowId: Int, slot: Int, itemStack: ItemStack?, stateId: Int) {
         when {
-            player.isBedrockPlayer() -> {
+            player.useStaticInventory() -> {
                 if (windowId == -1 && slot == -1) {
                     player.itemOnCursor.type = Material.AIR
                 } else {
