@@ -1,5 +1,3 @@
-@file:SuppressWarnings("unchecked")
-
 package trplugins.menu.util
 
 import com.google.gson.JsonElement

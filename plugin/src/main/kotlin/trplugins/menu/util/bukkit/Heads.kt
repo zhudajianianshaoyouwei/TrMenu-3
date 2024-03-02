@@ -14,6 +14,7 @@ import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.library.reflex.Reflex.Companion.setProperty
 import taboolib.library.xseries.XMaterial
 import taboolib.library.xseries.XSkull
+import taboolib.module.nms.MinecraftVersion
 import trplugins.menu.module.internal.hook.HookPlugin
 import java.net.URL
 import java.util.Base64
@@ -33,6 +34,8 @@ object Heads {
     private val DEFAULT_HEAD = XMaterial.PLAYER_HEAD.parseItem()!!
     private val CACHED_PLAYER_TEXTURE = mutableMapOf<String, String?>()
     private val CACHED_SKULLS = mutableMapOf<String, ItemStack>()
+    private val VALUE = if (MinecraftVersion.major >= 1.20) "value" else "getValue"
+    private val NAME = if (MinecraftVersion.major >= 1.20) "name" else "getName"
 
     fun cacheSize(): Pair<Int, Int> {
         return CACHED_SKULLS.size to CACHED_PLAYER_TEXTURE.size
@@ -70,7 +73,7 @@ object Heads {
         }
 
         meta.getProperty<GameProfile>("profile")?.properties?.values()?.forEach {
-            if (it.name == "textures") return it.value
+            if (it.getProperty<String>(NAME) == "textures") return it.getProperty<String>(VALUE)
         }
         return null
     }
@@ -85,7 +88,7 @@ object Heads {
             }
             Bukkit.getPlayer(name)?.isOnline == true -> {
                 Bukkit.getPlayer(name)!!.invokeMethod<GameProfile>("getProfile")?.properties?.get("textures")
-                    ?.find { it.value != null }?.value
+                    ?.find { it.getProperty<String>(VALUE) != null }?.getProperty<String>(VALUE)
                     ?.also(block)
                     ?: return null
             }
@@ -132,6 +135,4 @@ object Heads {
             ""
         }
     }
-
-
 }
