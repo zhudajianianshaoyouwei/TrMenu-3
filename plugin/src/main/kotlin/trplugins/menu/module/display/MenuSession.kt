@@ -12,7 +12,6 @@ import trplugins.menu.module.display.icon.Icon
 import trplugins.menu.module.display.icon.IconProperty
 import trplugins.menu.module.display.layout.Layout
 import trplugins.menu.module.internal.script.FunctionParser
-import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.ignoreCase
 import trplugins.menu.util.parseGradients
 import trplugins.menu.util.parseRainbow
@@ -104,19 +103,17 @@ class MenuSession(
      * 处理一个字符串，替换函数变量
      */
     fun parse(string: String): String {
-        Performance.check("Handler:StringParse") {
-            val preColor = MenuSettings.PRE_COLOR
-            val funced = FunctionParser.parse(placeholderPlayer, string) { type, value ->
-                when (type) {
-                    "node", "nodes", "n" -> menu?.conf?.get(parse(menu!!.conf.ignoreCase(value))).toString()
-                    else -> null
-                }
+        val preColor = MenuSettings.PRE_COLOR
+        val funced = FunctionParser.parse(placeholderPlayer, string) { type, value ->
+            when (type) {
+                "node", "nodes", "n" -> menu?.conf?.get(parse(menu!!.conf.ignoreCase(value))).toString()
+                else -> null
             }
-            val content = (if (preColor) funced else funced.colored().parseRainbow().parseGradients()).replaceWithOrder(*arguments)
-            val papi = content.replacePlaceholder(placeholderPlayer)
-            return if (preColor) papi else papi.colored().parseRainbow().parseGradients()
         }
-        throw Exception()
+        val content =
+            (if (preColor) funced else funced.colored().parseRainbow().parseGradients()).replaceWithOrder(*arguments)
+        val papi = content.replacePlaceholder(placeholderPlayer)
+        return if (preColor) papi else papi.colored().parseRainbow().parseGradients()
     }
 
     fun parse(string: List<String>): List<String> {

@@ -1,29 +1,7 @@
-val taboolibVersion: String by rootProject
-
-plugins {
-    id("io.izzel.taboolib")
-}
-
 taboolib {
-    install(
-        "common",
-        "common-5",
-        "expansion-javascript",
-        "module-kether",
-        "module-ui",
-        "module-lang",
-        "module-database",
-        "module-database-mongodb",
-        "module-metrics",
-        "module-nms",
-        "module-chat",
-        "module-nms-util",
-        "module-configuration",
-        "platform-bukkit"
-    )
-
     description {
         name(rootProject.name)
+        desc("Modern & Advanced Menu-Plugin for Minecraft Servers")
         contributors {
             name("Arasple")
             name("Score2")
@@ -33,24 +11,22 @@ taboolib {
             name("TheFloodDragon")
         }
         dependencies {
-            name("PlaceholderAPI").optional(true)
-            name("Zaphkiel").optional(true)
-            name("Skulls").optional(true)
-            name("Vault").optional(true)
-            name("PlayerPoints").optional(true)
-            name("HeadDatabase").optional(true)
-            name("Oraxen").optional(true)
-            name("SkinsRestorer").optional(true)
-            name("ItemsAdder").optional(true)
-            name("floodgate").optional(true)
-            name("FastScript").optional(true)
-            name("Triton").optional(true)
+            name("PlaceholderAPI").with("bukkit").optional(true)
+            name("Zaphkiel").with("bukkit").optional(true)
+            name("Skulls").with("bukkit").optional(true)
+            name("Vault").with("bukkit").optional(true)
+            name("PlayerPoints").with("bukkit").optional(true)
+            name("HeadDatabase").with("bukkit").optional(true)
+            name("Oraxen").with("bukkit").optional(true)
+            name("SkinsRestorer").with("bukkit").optional(true)
+            name("ItemsAdder").with("bukkit").optional(true)
+            name("floodgate").with("bukkit").optional(true)
+            name("FastScript").with("bukkit").optional(true)
+            name("Triton").with("bukkit").optional(true)
         }
     }
     relocate("trplugins.menu", group.toString().lowercase())
 
-    classifier = null
-    version = taboolibVersion
 }
 
 repositories {
@@ -71,7 +47,6 @@ dependencies {
 
     // Libraries
     compileOnly("org.apache.commons:commons-lang3:3.14.0")
-    compileOnly("com.electronwill.night-config:core:3.6.7")
 
     // Server Core
     compileOnly("ink.ptms.core:v12002:12002-minimize:mapped")

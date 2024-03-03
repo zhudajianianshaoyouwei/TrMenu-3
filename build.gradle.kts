@@ -1,19 +1,10 @@
-
-val taboolibVersion: String by project
+import io.izzel.taboolib.gradle.*
 
 plugins {
     java
     `maven-publish`
-    kotlin("jvm") version "1.9.20" apply false
-    id("io.izzel.taboolib") version "1.56" apply false
-}
-
-description = "Modern & Advanced Menu-Plugin for Minecraft Servers"
-
-repositories {
-    mavenCentral()
-    maven("https://repo.tabooproject.org/repository/releases")
-    maven("https://jitpack.io")
+    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    id("io.izzel.taboolib") version "2.0.9"
 }
 
 tasks.jar {
@@ -32,15 +23,35 @@ tasks.build {
 
 subprojects {
     apply<JavaPlugin>()
-    apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "maven-publish")
+    apply(plugin = "io.izzel.taboolib")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+
+    taboolib {
+        env {
+            install(
+                UNIVERSAL, DATABASE, KETHER, METRICS, NMS, NMS_UTIL, UI,
+                EXPANSION_REDIS, EXPANSION_JAVASCRIPT, EXPANSION_PLAYER_DATABASE,
+                BUKKIT_ALL
+            )
+        }
+        version {
+            taboolib = "6.1.1-beta4"
+            coroutines = null
+        }
+    }
 
     repositories {
         mavenCentral()
+        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
+        maven("https://repo.tabooproject.org/repository/releases")
+        maven("https://repo.codemc.io/repository/nms/")
+        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
+        maven("https://repo.opencollab.dev/main/")
     }
 
     dependencies {
-        "api"(kotlin("stdlib")) // Dreeam - compileOnly -> api, For compatibility
+        compileOnly(kotlin("stdlib"))
     }
 
     tasks.withType<JavaCompile> {

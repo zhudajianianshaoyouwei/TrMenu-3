@@ -131,7 +131,7 @@ class Inputer(private val stages: CycleList<Catcher>) {
         companion object {
 
             fun of(name: String): Type {
-                return entries.find { it.name.equals(name, true) } ?: CHAT
+                return values().find { it.name.equals(name, true) } ?: CHAT
             }
 
         }

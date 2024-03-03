@@ -116,7 +116,7 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int, p
         private val actions = setOf(InventoryAction.DROP_ALL_CURSOR, InventoryAction.DROP_ONE_CURSOR, InventoryAction.DROP_ONE_SLOT, InventoryAction.DROP_ALL_SLOT)
 
         private fun matchesFirst(string: String): ReceptacleClickType {
-            return entries.find { it.name.equals(string, true) } ?: ALL
+            return values().find { it.name.equals(string, true) } ?: ALL
         }
 
         fun matches(string: String): Set<ReceptacleClickType> {
@@ -137,7 +137,7 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int, p
                     else -> UNKNOWN
                 }
             }
-            return entries.find { it.equals(mode, button) }
+            return values().find { it.equals(mode, button) }
         }
 
         fun from(type: ClickType?, action: InventoryAction?, slot: Int = -1): ReceptacleClickType? {
@@ -148,7 +148,7 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int, p
             } else {
                 null
             }
-            return entries.find { it.equals(type, act) }
+            return values().find { it.equals(type, act) }
         }
     }
 }

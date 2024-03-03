@@ -261,7 +261,7 @@ object Hex {
         if (MinecraftVersion.majorLegacy >= 11600) return ChatColor.of(color).toString()
         var minDist = Int.MAX_VALUE
         var legacy = ChatColor.WHITE
-        for (mapping: ChatColorHexMapping in ChatColorHexMapping.entries) {
+        for (mapping: ChatColorHexMapping in ChatColorHexMapping.values()) {
             val r = mapping.red - color.red
             val g = mapping.green - color.green
             val b = mapping.blue - color.blue

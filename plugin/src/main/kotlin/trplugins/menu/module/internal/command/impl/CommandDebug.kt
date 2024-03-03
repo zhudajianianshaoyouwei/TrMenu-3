@@ -15,7 +15,6 @@ import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.display.texture.Texture
 import trplugins.menu.module.internal.command.CommandExpression
 import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.Time
 import trplugins.menu.util.bukkit.Heads
 import trplugins.menu.util.net.Paster
@@ -47,7 +46,6 @@ object CommandDebug : CommandExpression {
                 }
 
                 when (context.argument(0).lowercase()) {
-                    "mirror" -> mirror(sender)
                     "dump" -> dump(sender)
                     "info" -> info(sender)
                     "player" -> {
@@ -75,22 +73,6 @@ object CommandDebug : CommandExpression {
                 }
             }
 
-        }
-    }
-
-    /**
-     * 性能损害
-     */
-    private fun mirror(sender: CommandSender) {
-        submit(async = true) {
-            val proxySender = adaptCommandSender(sender)
-            Performance.collect(proxySender) {
-                childFormat = "§8  {0}§7{1} §2[{3} ms] §7{4}%"
-                parentFormat = "§8  §8{0}§7{1} §8[{3} ms] §7{4}%"
-            }.run {
-                sender.sendMessage("\n§b§lTrMenu §a§l§nPerformance Mirror\n§r")
-                print(proxySender, getTotal(), 0)
-            }
         }
     }
 

@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.bukkit.event.player.PlayerJoinEvent
 import taboolib.common.LifeCycle
-import taboolib.common.env.IO
+import taboolib.common.PrimitiveIO
 import taboolib.common.platform.Awake
 import taboolib.common.platform.SkipTo
 import taboolib.common.platform.event.EventPriority
@@ -49,7 +49,7 @@ object Updater {
         try {
             URL(API_URL).openStream().use { inputStream ->
                 BufferedInputStream(inputStream).use { bufferedInputStream ->
-                    read = IO.readFully(bufferedInputStream, StandardCharsets.UTF_8)
+                    read = PrimitiveIO.readFully(bufferedInputStream, StandardCharsets.UTF_8)
                     val json = JsonParser().parse(read) as JsonObject
                     val latestVersion = json.get("tag_name").asDouble
                     if (latestVersion > CURRENT_VERSION) {

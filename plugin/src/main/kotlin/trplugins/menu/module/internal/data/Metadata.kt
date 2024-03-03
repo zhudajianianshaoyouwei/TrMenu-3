@@ -13,7 +13,6 @@ import trplugins.menu.TrMenu
 import trplugins.menu.TrMenu.SETTINGS
 import trplugins.menu.api.event.CustomDatabaseEvent
 import trplugins.menu.module.display.MenuSession
-import trplugins.menu.module.internal.database.DatabaseMongodb
 import trplugins.menu.module.internal.database.DatabaseSQL
 import trplugins.menu.module.internal.database.DatabaseSQLite
 
@@ -40,7 +39,7 @@ object Metadata {
         when (val db = SETTINGS.getString("Database.Method")?.uppercase()) {
             "LOCAL", "SQLITE", null -> DatabaseSQLite()
             "SQL" -> DatabaseSQL()
-            "MONGODB" -> DatabaseMongodb()
+            "MONGODB" -> TODO("Deprecated")
             else -> {
                 val event = CustomDatabaseEvent(db)
                 event.call()

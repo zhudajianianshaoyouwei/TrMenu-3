@@ -4,7 +4,6 @@ import taboolib.common.platform.function.submit
 import trplugins.menu.api.menu.IIcon
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.script.evalScript
-import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.collections.IndivList
 
 /**
@@ -40,34 +39,32 @@ class Icon(
     }
 
     override fun onUpdate(session: MenuSession, frames: Set<Int>) {
-        Performance.check("Menu:Icon:Update") {
-            val menuId = session.menu?.id // 缓存菜单id避免打开下一个菜单出现图标覆盖
-            val icon = getProperty(session)
-            frames.forEach {
-                when (it) {
-                    // Position
-                    3 -> {
-                        val previous = position.currentPosition(session)
-                        position.cycleIndex(session)
-                        position.updatePosition(session)
-                        val exclude = position.currentPosition(session).let { current ->
-                            return@let previous.filter { pre -> !current.contains(pre) }
-                        }
-                        settingItem(session, icon, menuId)
-                        session.receptacle?.setElement(null, exclude)
+        val menuId = session.menu?.id // 缓存菜单id避免打开下一个菜单出现图标覆盖
+        val icon = getProperty(session)
+        frames.forEach {
+            when (it) {
+                // Position
+                3 -> {
+                    val previous = position.currentPosition(session)
+                    position.cycleIndex(session)
+                    position.updatePosition(session)
+                    val exclude = position.currentPosition(session).let { current ->
+                        return@let previous.filter { pre -> !current.contains(pre) }
                     }
-                    // Texture, Name, Lore
-                    else -> {
-                        val display = icon.display
-                        when (it) {
-                            0 -> display.updateTexture(session)
-                            1 -> display.updateName(session)
-                            2 -> display.updateLore(session)
-                            else -> {
-                            }
+                    settingItem(session, icon, menuId)
+                    session.receptacle?.setElement(null, exclude)
+                }
+                // Texture, Name, Lore
+                else -> {
+                    val display = icon.display
+                    when (it) {
+                        0 -> display.updateTexture(session)
+                        1 -> display.updateName(session)
+                        2 -> display.updateLore(session)
+                        else -> {
                         }
-                        settingItem(session, icon, menuId)
                     }
+                    settingItem(session, icon, menuId)
                 }
             }
         }

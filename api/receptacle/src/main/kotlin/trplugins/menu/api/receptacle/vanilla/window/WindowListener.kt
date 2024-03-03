@@ -18,7 +18,7 @@ import trplugins.menu.api.receptacle.ReceptacleInteractEvent
 import trplugins.menu.api.receptacle.getViewingReceptacle
 import trplugins.menu.api.receptacle.vanilla.window.NMS.Companion.useStaticInventory
 
-@PlatformSide([Platform.BUKKIT])
+@PlatformSide(Platform.BUKKIT)
 object WindowListener {
 
     @SubscribeEvent

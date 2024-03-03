@@ -30,13 +30,13 @@ object CommandConvert : CommandExpression {
             // type
             dynamic {
                 suggestion<CommandSender>(uncheck = true) { _, _ ->
-                    Type.entries.map { it.name }
+                    Type.values().map { it.name }
                 }
 
                 execute<CommandSender> { sender, context, argument ->
                     val menu = Menu.menus.find { it.id == context.argument(-1) }
                         ?: return@execute sender.sendLang("Command-Convert-Unknown-Menu", context.argument(-1))
-                    val type = Type.entries.find { it.name == argument || it.suffixes.contains(argument) }
+                    val type = Type.values().find { it.name == argument || it.suffixes.contains(argument) }
                         ?: return@execute sender.sendLang("Command-Convert-Unknown-Type", argument)
 
                     if (menu.conf.type == type)
