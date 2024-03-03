@@ -5,6 +5,8 @@ import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryType
+import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.reflex.Reflex.Companion.setProperty
@@ -12,7 +14,7 @@ import taboolib.library.reflex.Reflex.Companion.unsafeInstance
 import taboolib.module.nms.MinecraftVersion
 import taboolib.module.nms.sendPacket
 import taboolib.platform.util.isAir
-import trplugins.menu.api.receptacle.provider.PlatformProvider
+import trplugins.menu.api.receptacle.vanilla.window.StaticInventory.inventoryView
 import trplugins.menu.api.receptacle.vanilla.window.StaticInventory.staticInventory
 
 /**
@@ -23,20 +25,31 @@ class NMSImpl : NMS() {
 
     private val emptyItemStack: net.minecraft.server.v1_16_R3.ItemStack? = CraftItemStack.asNMSCopy((ItemStack(Material.AIR)))
     private val version = MinecraftVersion.majorLegacy
+    private val windowIds = HashMap<String, Int>()
 
-    private fun Player.isBedrockPlayer() = PlatformProvider.isBedrockPlayer(this)
+    private val Player.windowId get() = windowIds[this.name] ?: 119
+
+    override fun windowId(player: Player, create: Boolean): Int {
+        if (createWindowId() && create) {
+            val id = player.getProperty<Int>("entity/containerCounter")!! + 1
+            player.setProperty("entity/containerCounter", id)
+            windowIds[player.name] = id
+        }
+        return player.windowId
+    }
 
     override fun sendWindowsClose(player: Player, windowId: Int) {
-        if (player.isBedrockPlayer()) {
+        if (player.useStaticInventory()) {
             StaticInventory.close(player)
         } else {
+            windowIds.remove(player.name)
             player.sendPacket(PacketPlayOutCloseWindow(windowId))
         }
     }
 
     override fun sendWindowsItems(player: Player, windowId: Int, items: Array<ItemStack?>) {
         when {
-            player.isBedrockPlayer() -> {
+            player.useStaticInventory() -> {
                 val inventory = player.staticInventory!!
                 items.forEachIndexed { index, item ->
                     if (index >= inventory.size) {
@@ -84,7 +97,7 @@ class NMSImpl : NMS() {
 
     override fun sendWindowsOpen(player: Player, windowId: Int, type: WindowLayout, title: String) {
         when {
-            player.isBedrockPlayer() -> {
+            player.useStaticInventory() -> {
                 StaticInventory.open(player, type, title)
             }
             version >= 11900 -> {
@@ -129,7 +142,7 @@ class NMSImpl : NMS() {
 
     override fun sendWindowsSetSlot(player: Player, windowId: Int, slot: Int, itemStack: ItemStack?, stateId: Int) {
         when {
-            player.isBedrockPlayer() -> {
+            player.useStaticInventory() -> {
                 if (windowId == -1 && slot == -1) {
                     player.itemOnCursor.type = Material.AIR
                 } else {
@@ -155,8 +168,27 @@ class NMSImpl : NMS() {
         }
     }
 
-    override fun sendWindowsUpdateData(player: Player, windowId: Int, property: Int, value: Int) {
-        TODO("Not yet implemented")
+    override fun sendWindowsUpdateData(player: Player, windowId: Int, id: Int, value: Int) {
+        when {
+            player.useStaticInventory() -> {
+                val inventory = player.staticInventory!!
+                val view = player.inventoryView!!
+                val property = getInventoryProperty(inventory.type, id) ?: return
+                view.setProperty(property, value)
+            }
+            MinecraftVersion.isUniversal -> {
+                sendPacket(
+                    player,
+                    PacketPlayOutWindowData::class.java.unsafeInstance(),
+                    "containerId" to windowId,
+                    "id" to id,
+                    "value" to value
+                )
+            }
+            else -> {
+                player.sendPacket(PacketPlayOutWindowData(windowId, id, value))
+            }
+        }
     }
 
     private fun toNMSCopy(itemStack: ItemStack?): net.minecraft.server.v1_16_R3.ItemStack? {
@@ -166,6 +198,10 @@ class NMSImpl : NMS() {
     private fun sendPacket(player: Player, packet: Any, vararg fields: Pair<String, Any?>) {
         fields.forEach { packet.setProperty(it.first, it.second) }
         player.sendPacket(packet)
+    }
+
+    private fun getInventoryProperty(type: InventoryType, id: Int): InventoryView.Property? {
+        return InventoryView.Property.entries.find { (it.type == type || (it.type == InventoryType.FURNACE && type == InventoryType.BLAST_FURNACE)) && it.id == id }
     }
 
 }

@@ -21,7 +21,7 @@ class SetTitle(handle: ActionHandle) : ActionBase(handle) {
         val session = player.session()
         val receptacle = session.receptacle ?: return
 
-        receptacle.title = contents.stringContent().parseContent(placeholderPlayer)
+        receptacle.title(contents.stringContent().parseContent(placeholderPlayer))
     }
 
 }

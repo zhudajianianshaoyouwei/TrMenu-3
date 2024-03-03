@@ -8,9 +8,12 @@ import taboolib.module.configuration.Configuration
 import taboolib.module.kether.Kether
 import taboolib.module.lang.Language
 import taboolib.module.lang.sendLang
+import taboolib.module.nms.nmsProxy
 import taboolib.platform.BukkitPlugin
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.receptacle.provider.PlatformProvider
+import trplugins.menu.api.receptacle.vanilla.window.NMS
+import trplugins.menu.api.receptacle.vanilla.window.NMSImpl
 import trplugins.menu.module.conf.Loader
 import trplugins.menu.module.conf.prop.RunningPerformance
 import trplugins.menu.module.display.MenuSession
@@ -74,11 +77,10 @@ object TrMenu : Plugin() {
         Shortcuts.Type.load()
         RegisterCommands.load()
         Kether.isAllowToleranceParser = SETTINGS.getBoolean("Action.Kether.Allow-Tolerance-Parser", false)
-        if (SETTINGS.getBoolean("Options.Bedrock-Static-Inv", false)) {
-            PlatformProvider.compute()
-        } else {
-            PlatformProvider.provider = null
-        }
+        PlatformProvider.compute()
+        NMS.javaStaticInventory = SETTINGS.getBoolean("Options.Static-Inventory.Java", false)
+        NMS.bedrockStaticInventory = SETTINGS.getBoolean("Options.Static-Inventory.Bedrock", false)
+        NMS.createIdPacketInventory = SETTINGS.getBoolean("Options.Packet-Inventory.Create-Id", false)
     }
 
 }

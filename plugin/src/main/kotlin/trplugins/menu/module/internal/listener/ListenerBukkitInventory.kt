@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.event.player.PlayerChangedWorldEvent
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
+import trplugins.menu.api.receptacle.vanilla.window.NMS.Companion.useStaticInventory
 import trplugins.menu.module.display.MenuSession
 
 /**
@@ -18,6 +19,7 @@ object ListenerBukkitInventory {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     fun e(e: InventoryOpenEvent) {
         val player = e.player as Player
+        if (player.useStaticInventory()) return
 
         MenuSession.getSession(player).close(closePacket = true, updateInventory = true)
     }

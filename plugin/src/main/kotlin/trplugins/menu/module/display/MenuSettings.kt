@@ -19,6 +19,7 @@ import trplugins.menu.util.collections.CycleList
 class MenuSettings(
     val title: CycleList<String>,
     val titleUpdate: Int,
+    val properties: Map<Int, Int?>,
     val enableArguments: Boolean = true,
     val defaultArguments: Array<String> = arrayOf(),
     val freeSlots: Set<Int> = setOf(),

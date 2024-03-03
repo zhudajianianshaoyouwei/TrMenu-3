@@ -1,57 +1,60 @@
 package trplugins.menu.api.receptacle
 
+import org.bukkit.event.inventory.ClickType
+import org.bukkit.event.inventory.InventoryAction
+
 /**
  * @author Arasple
  * @date 2020/12/5 22:01
  */
-enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
+enum class ReceptacleClickType(private val mode: Int, private val button: Int, private val type: ClickType? = null, private val action: Any? = null) {
 
     ALL(-1, -1),
 
-    LEFT(0, 0),
+    LEFT(0, 0, ClickType.LEFT),
 
-    RIGHT(0, 1),
+    RIGHT(0, 1, ClickType.RIGHT),
 
-    SHIFT_LEFT(1, 0),
+    SHIFT_LEFT(1, 0, ClickType.SHIFT_LEFT),
 
-    SHIFT_RIGHT(1, 1),
+    SHIFT_RIGHT(1, 1, ClickType.SHIFT_RIGHT),
 
-    OFFHAND(2, 40),
+    OFFHAND(2, 40, ClickType.SWAP_OFFHAND),
 
-    NUMBER_KEY(2, -1),
+    NUMBER_KEY(2, -1, ClickType.NUMBER_KEY, -1),
 
-    NUMBER_KEY_1(2, 0),
+    NUMBER_KEY_1(2, 0, ClickType.NUMBER_KEY, 0),
 
-    NUMBER_KEY_2(2, 1),
+    NUMBER_KEY_2(2, 1, ClickType.NUMBER_KEY, 1),
 
-    NUMBER_KEY_3(2, 2),
+    NUMBER_KEY_3(2, 2, ClickType.NUMBER_KEY, 2),
 
-    NUMBER_KEY_4(2, 3),
+    NUMBER_KEY_4(2, 3, ClickType.NUMBER_KEY, 3),
 
-    NUMBER_KEY_5(2, 4),
+    NUMBER_KEY_5(2, 4, ClickType.NUMBER_KEY, 4),
 
-    NUMBER_KEY_6(2, 5),
+    NUMBER_KEY_6(2, 5, ClickType.NUMBER_KEY, 5),
 
-    NUMBER_KEY_7(2, 6),
+    NUMBER_KEY_7(2, 6, ClickType.NUMBER_KEY, 6),
 
-    NUMBER_KEY_8(2, 7),
+    NUMBER_KEY_8(2, 7, ClickType.NUMBER_KEY, 7),
 
-    NUMBER_KEY_9(2, 8),
+    NUMBER_KEY_9(2, 8, ClickType.NUMBER_KEY, 8),
 
-    MIDDLE(3, 2),
+    MIDDLE(3, 2, ClickType.MIDDLE),
 
     // clicked Item will be empty
-    DROP(4, 0),
+    DROP(4, 0, ClickType.DROP),
 
-    CONTROL_DROP(4, 1),
+    CONTROL_DROP(4, 1, ClickType.CONTROL_DROP),
 
-    ABROAD_LEFT_EMPTY(4, 0),
+    ABROAD_LEFT_EMPTY(4, 0, ClickType.DROP, InventoryAction.DROP_ONE_SLOT),
 
-    ABROAD_RIGHT_EMPTY(4, 1),
+    ABROAD_RIGHT_EMPTY(4, 1, ClickType.CONTROL_DROP, InventoryAction.DROP_ALL_SLOT),
 
-    ABROAD_LEFT_ITEM(0, 0),
+    ABROAD_LEFT_ITEM(0, 0, ClickType.LEFT, InventoryAction.DROP_ALL_CURSOR),
 
-    ABROAD_RIGHT_ITEM(0, 1),
+    ABROAD_RIGHT_ITEM(0, 1, ClickType.RIGHT, InventoryAction.DROP_ONE_CURSOR),
 
     LEFT_MOUSE_DRAG_ADD(5, 1),
 
@@ -59,12 +62,20 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
 
     MIDDLE_MOUSE_DRAG_ADD(5, 9),
 
-    DOUBLE_CLICK(6, 0),
+    DOUBLE_CLICK(6, 0, ClickType.DOUBLE_CLICK),
 
     UNKNOWN(-1, -1);
 
+    fun toBukkitType(): ClickType {
+        return this.type ?: ClickType.UNKNOWN
+    }
+
     fun equals(mode: Int, button: Int): Boolean {
         return this.mode == mode && this.button == button
+    }
+
+    fun equals(type: ClickType?, action: Any?): Boolean {
+        return this.type == type && this.action == action
     }
 
     fun isRightClick(): Boolean {
@@ -84,7 +95,7 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
     }
 
     fun isNumberKeyClick(): Boolean {
-        return this.name.startsWith("NUMBER_KEY") || this == OFFHAND
+        return this.type == ClickType.NUMBER_KEY || this == OFFHAND
     }
 
     private fun isDoubleClick(): Boolean {
@@ -102,6 +113,7 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
     companion object {
 
         private val modes = arrayOf("PICKUP", "QUICK_MOVE", "SWAP", "CLONE", "THROW", "QUICK_CRAFT", "PICKUP_ALL")
+        private val actions = setOf(InventoryAction.DROP_ALL_CURSOR, InventoryAction.DROP_ONE_CURSOR, InventoryAction.DROP_ONE_SLOT, InventoryAction.DROP_ALL_SLOT)
 
         private fun matchesFirst(string: String): ReceptacleClickType {
             return entries.find { it.name.equals(string, true) } ?: ALL
@@ -126,6 +138,17 @@ enum class ReceptacleClickType(private val mode: Int, private val button: Int) {
                 }
             }
             return entries.find { it.equals(mode, button) }
+        }
+
+        fun from(type: ClickType?, action: InventoryAction?, slot: Int = -1): ReceptacleClickType? {
+            val act: Any? = if (type == ClickType.NUMBER_KEY) {
+                slot
+            } else if (actions.contains(action)) {
+                action
+            } else {
+                null
+            }
+            return entries.find { it.equals(type, act) }
         }
     }
 }

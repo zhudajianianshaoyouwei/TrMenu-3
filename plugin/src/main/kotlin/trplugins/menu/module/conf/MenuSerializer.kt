@@ -1,6 +1,7 @@
 package trplugins.menu.module.conf
 
 import org.bukkit.event.inventory.InventoryType
+import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemFlag
 import taboolib.common.platform.function.pluginId
 import taboolib.common.util.asList
@@ -103,6 +104,13 @@ object MenuSerializer : ISerializer {
         val funs = Property.FUNCTIONS.ofMap(conf, true)
         val title = Property.TITLE.ofStringList(conf, listOf(pluginId))
         val titleUpdate = Property.TITLE_UPDATE.ofInt(conf, -20)
+        val properties = Property.PROPERTIES.ofMap(conf,
+            keyTransform = { key ->
+                val name = key.replace('-', '_')
+                InventoryView.Property.entries.find { it.name.equals(name, ignoreCase = true) }?.id ?: -1
+            },
+            valueTransform = { value -> value.toString().toIntOrNull() }
+        )
         val optionEnableArguments = Property.OPTION_ENABLE_ARGUMENTS.ofBoolean(options, true)
         val optionDefaultArguments = Property.OPTION_DEFAULT_ARGUMENTS.ofStringList(options)
         val optionFreeSlots = Property.OPTION_FREE_SLOTS.ofStringList(conf)
@@ -120,6 +128,7 @@ object MenuSerializer : ISerializer {
         result.result = MenuSettings(
             CycleList(title),
             titleUpdate,
+            properties,
             optionEnableArguments,
             optionDefaultArguments.toTypedArray(),
             optionFreeSlots.flatMap { Position.Slot.readStaticSlots(it) }.toSet(),

@@ -43,6 +43,11 @@ enum class Property(val default: String, val regex: Regex) {
     SIZE("Size", "(size|row)s?"),
 
     /**
+     * 菜单类型属性
+     */
+    PROPERTIES("Properties", "propert(y|ies?)"),
+
+    /**
      * 菜单选项设置
      */
     OPTIONS("Options", "(option|setting)s?"),
@@ -266,6 +271,10 @@ enum class Property(val default: String, val regex: Regex) {
 
     fun ofMap(conf: Configuration?, deep: Boolean = false): Map<String, Any?> {
         return ofSection(conf)?.getValues(deep) ?: mapOf()
+    }
+
+    fun <K, V> ofMap(conf: Configuration?, deep: Boolean = false, keyTransform: (String) -> K = { it as K }, valueTransform: (Any?) -> V = { it as V }): Map<K, V> {
+        return ofMap(conf, deep).mapKeys { keyTransform(it.key) }.mapValues { valueTransform(it.value) }
     }
 
     fun ofLists(conf: Configuration?): List<List<String>> {
