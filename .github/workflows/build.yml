@@ -2,9 +2,7 @@ name: TrMenu Dev
 
 on:
   push:
-    branches: [ stable/v3 ]
   pull_request:
-    branches: [ stable/v3 ]
 
 jobs:
   releaseJar:
