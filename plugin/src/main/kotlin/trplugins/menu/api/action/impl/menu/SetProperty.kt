@@ -26,7 +26,7 @@ class SetProperty(handle: ActionHandle) : ActionBase(handle) {
         if (args.size < 2) return
 
         val name = args[0].replace('-', '_')
-        val id = name.toIntOrNull() ?: (InventoryView.Property.entries.find { it.name.equals(name, ignoreCase = true) } ?: return).id
+        val id = name.toIntOrNull() ?: (InventoryView.Property.values().find { it.name.equals(name, ignoreCase = true) } ?: return).id
         val value = args[1].toIntOrNull() ?: return
 
         receptacle.property(id, value)

@@ -20,24 +20,31 @@ import trplugins.menu.util.collections.CycleList
  * @date 2021/1/25 10:48
  */
 class Item(
-        val texture: CycleList<Texture>,
-        var name: CycleList<String>,
-        val lore: CycleList<Lore>,
-        val meta: Meta
+    val texture: CycleList<Texture>,
+    var name: CycleList<String>,
+    val lore: CycleList<Lore>,
+    val meta: Meta
 ) : IItem {
 
     internal val cache = mutableMapOf<Int, ItemStack>()
 
     private fun name(session: MenuSession) = this.name.current(session.id)?.let { defColorize(session.parse(it)) }
 
-    private fun lore(session: MenuSession) = this.lore.current(session.id)?.parse(session)?.map { defColorize(it, true) }
+    private fun lore(session: MenuSession) =
+        this.lore.current(session.id)?.parse(session)?.map { defColorize(it, true) }
 
     fun get(session: MenuSession): ItemStack {
         return if (cache.containsKey(session.id)) cache[session.id]!!
         else build(session)
     }
 
-    override fun generate(session: MenuSession, texture: Texture, name: String?, lore: List<String>?, meta: Meta): ItemStack {
+    override fun generate(
+        session: MenuSession,
+        texture: Texture,
+        name: String?,
+        lore: List<String>?,
+        meta: Meta
+    ): ItemStack {
         val item = texture.generate(session)
 
         if (item.isAir) {
@@ -59,19 +66,25 @@ class Item(
 
                 if (meta.hasAmount()) this.amount = meta.amount(session)
             }
-            tabooLibItem.itemMeta?.itemFlags?.forEach{ itemFlag -> itemMeta?.addItemFlags(itemFlag) }
-            tabooLibItem.itemMeta?.enchants?.forEach { enchant -> itemMeta?.addEnchant(enchant.key, enchant.value.toInt(), true) }
-            if(tabooLibItem.itemMeta?.hasCustomModelData() == true) {
+            tabooLibItem.itemMeta?.itemFlags?.forEach { itemFlag -> itemMeta?.addItemFlags(itemFlag) }
+            tabooLibItem.itemMeta?.enchants?.forEach { enchant ->
+                itemMeta?.addEnchant(
+                    enchant.key,
+                    enchant.value.toInt(),
+                    true
+                )
+            }
+            if (tabooLibItem.itemMeta?.hasCustomModelData() == true) {
                 itemMeta?.setCustomModelData(tabooLibItem.itemMeta?.customModelData)
             }
-            if(tabooLibItem.itemMeta?.hasDisplayName() == true) {
+            if (tabooLibItem.itemMeta?.hasDisplayName() == true) {
                 itemMeta?.setDisplayName(tabooLibItem.itemMeta?.displayName)
-            }else{
+            } else {
                 itemMeta?.setDisplayName(null)
             }
-            if(tabooLibItem.itemMeta?.hasLore() == true) {
+            if (tabooLibItem.itemMeta?.hasLore() == true) {
                 itemMeta?.lore = tabooLibItem.itemMeta?.lore
-            }else{
+            } else {
                 itemMeta?.lore = null;
             }
             itemStack.itemMeta = itemMeta
@@ -95,9 +108,9 @@ class Item(
     }
 
     private fun build(
-            session: MenuSession,
-            name: String? = name(session),
-            lore: List<String>? = lore(session)
+        session: MenuSession,
+        name: String? = name(session),
+        lore: List<String>? = lore(session)
     ): ItemStack {
         val item = generate(session, texture.current(session.id)!!, name, lore, meta)
         cache[session.id] = item

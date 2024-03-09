@@ -72,7 +72,7 @@ abstract class ActionBase(val handle: ActionHandle) {
         var content = string
         val options = mutableMapOf<OptionType, String>()
 
-        OptionType.entries.forEach {
+        OptionType.values().forEach {
             it.regex.find(content)?.let { find ->
                 val value = find.groupValues.getOrElse(it.group) { "" }
                 options[it] = value

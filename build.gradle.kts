@@ -1,25 +1,12 @@
-
-val taboolibVersion: String by project
+import io.izzel.taboolib.gradle.*
 
 plugins {
     java
-    `maven-publish`
-    kotlin("jvm") version "1.9.20" apply false
-    id("io.izzel.taboolib") version "1.56" apply false
+    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    id("io.izzel.taboolib") version "2.0.9"
 }
 
-description = "Modern & Advanced Menu-Plugin for Minecraft Servers"
-
-repositories {
-    mavenCentral()
-    maven("https://repo.tabooproject.org/repository/releases")
-    maven("https://jitpack.io")
-}
-
-tasks.jar {
-    onlyIf { false }
-}
-
+// 这段。一言难尽，但我不想动
 tasks.build {
     doLast {
         val plugin = project(":plugin")
@@ -32,15 +19,34 @@ tasks.build {
 
 subprojects {
     apply<JavaPlugin>()
+    apply(plugin = "io.izzel.taboolib")
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "maven-publish")
+
+    taboolib {
+        env {
+            install(
+                UNIVERSAL, DATABASE, KETHER, METRICS, NMS, NMS_UTIL, UI,
+                EXPANSION_REDIS, EXPANSION_JAVASCRIPT, EXPANSION_PLAYER_DATABASE,
+                BUKKIT_ALL
+            )
+        }
+        version {
+            taboolib = "6.1.1-beta7"
+            coroutines = null
+        }
+    }
 
     repositories {
         mavenCentral()
+        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
+        maven("https://repo.tabooproject.org/repository/releases")
+        maven("https://repo.codemc.io/repository/nms/")
+        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
+        maven("https://repo.opencollab.dev/main/")
     }
 
     dependencies {
-        "api"(kotlin("stdlib")) // Dreeam - compileOnly -> api, For compatibility
+        compileOnly(kotlin("stdlib"))
     }
 
     tasks.withType<JavaCompile> {
@@ -59,47 +65,4 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    val archiveName = if (project == rootProject)
-        rootProject.name.lowercase()
-    else "${rootProject.name.lowercase()}-${project.name.lowercase()}"
-
-    val sourceSets = extensions.getByName("sourceSets") as SourceSetContainer
-
-    task<Jar>("sourcesJar") {
-        from(sourceSets.named("main").get().allSource)
-        archiveClassifier.set("sources")
-    }
-
-    tasks.jar {
-        exclude("taboolib")
-    }
-
-    publishing {
-        repositories {
-            maven {
-                url = uri("https://repo.mcage.cn/repository/trplugins/")
-                credentials {
-                    username = project.findProperty("user").toString()
-                    password = project.findProperty("password").toString()
-                }
-                authentication {
-                    create<BasicAuthentication>("basic")
-                }
-            }
-        }
-        publications {
-            create<MavenPublication>("library") {
-                from(components["java"])
-                artifactId = archiveName
-
-                artifact(tasks["sourcesJar"])
-
-                pom {
-                    allprojects.forEach {
-                        repositories.addAll(it.repositories)
-                    }
-                }
-            }
-        }
-    }
 }

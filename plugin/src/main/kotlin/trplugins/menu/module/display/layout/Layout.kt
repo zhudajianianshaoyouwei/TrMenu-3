@@ -7,7 +7,6 @@ import trplugins.menu.api.receptacle.createReceptacle
 import trplugins.menu.api.receptacle.vanilla.window.ChestInventory
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.Regexs
 import trplugins.menu.util.collections.Variables
 import kotlin.math.max
@@ -76,23 +75,19 @@ class Layout(
             session.shut()
         }
         receptacle.onClick = onClick@{ player, event ->
-            Performance.check("Menu:Event:Click") {
-                val cancelEvent = {
-                    event.isCancelled = true
-                    event.refresh()
-                }
+            val cancelEvent = {
+                event.isCancelled = true
+                event.refresh()
+            }
 
-                if (menu.settings.clickDelay.isCooldown(player.name)) {
-                    return@onClick cancelEvent()
-                } else if (!menu.isFreeSlot(event.slot)) {
-                    cancelEvent()
-                }
+            if (menu.settings.clickDelay.isCooldown(player.name)) {
+                return@onClick cancelEvent()
+            } else if (!menu.isFreeSlot(event.slot)) {
+                cancelEvent()
+            }
 
-                submit(async = false) {
-                    Performance.check("Menu:Event:ClickHandle") {
-                        session.getIconProperty(event.slot)?.handleClick(event.receptacleClickType, session)
-                    }
-                }
+            submit(async = false) {
+                session.getIconProperty(event.slot)?.handleClick(event.receptacleClickType, session)
             }
         }
     }

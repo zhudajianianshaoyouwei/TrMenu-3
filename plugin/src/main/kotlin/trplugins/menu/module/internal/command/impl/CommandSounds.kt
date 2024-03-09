@@ -27,7 +27,7 @@ object CommandSounds : CommandExpression {
     override val command = subCommand {
         dynamic(optional = true) {
             suggestion<Player>(uncheck = true) { _, _ ->
-                XSound.entries.map { it.name }
+                XSound.values().map { it.name }
             }
 
             execute<Player> { sender, _, argument ->
@@ -40,7 +40,7 @@ object CommandSounds : CommandExpression {
     }
 
     private fun open(player: Player, page: Int, filter: String?) {
-        val sounds = XSound.entries.filter { filter == null || it.name.contains(filter, true) }.sorted().let {
+        val sounds = XSound.values().filter { filter == null || it.name.contains(filter, true) }.sorted().let {
             it.subList(54 * page, it.size)
         }
 

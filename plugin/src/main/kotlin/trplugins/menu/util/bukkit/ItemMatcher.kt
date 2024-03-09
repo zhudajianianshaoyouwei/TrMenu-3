@@ -7,7 +7,6 @@ import taboolib.library.xseries.XMaterial
 import taboolib.module.chat.colored
 import taboolib.platform.util.hasItem
 import taboolib.platform.util.takeItem
-import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.bukkit.ItemMatcher.TraitType.*
 
 /**
@@ -56,13 +55,10 @@ class ItemMatcher(private val matcher: Set<Match>) {
     }
 
     fun hasItem(player: Player): Boolean {
-        Performance.check("Function:ItemMatcherCheck") {
-            return matcher.all { match ->
-                if (match.amount.first) player.inventory.any { it?.amount != match.amount.second }
-                else player.inventory.hasItem(match.amount.second, match.itemsMatcher)
-            }
+        return matcher.all { match ->
+            if (match.amount.first) player.inventory.any { it?.amount != match.amount.second }
+            else player.inventory.hasItem(match.amount.second, match.itemsMatcher)
         }
-        throw Exception()
     }
 
     fun takeItem(player: Player) = matcher.all { match ->
@@ -173,7 +169,7 @@ class ItemMatcher(private val matcher: Set<Match>) {
 
             // Trait, Opposite
             fun of(type: String): Pair<TraitType, Boolean>? {
-                val trait = entries.find { it.regex.matches(type.removePrefix("!")) } ?: return null
+                val trait = values().find { it.regex.matches(type.removePrefix("!")) } ?: return null
                 val oppose = type.first() == '!'
                 return Pair(trait, oppose)
             }

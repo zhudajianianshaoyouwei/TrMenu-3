@@ -6,7 +6,6 @@ import taboolib.library.kether.LocalizedException
 import taboolib.module.kether.KetherShell
 import trplugins.menu.module.display.Menu
 import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.module.internal.service.Performance
 import trplugins.menu.util.EvalResult
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
@@ -31,25 +30,22 @@ object TrMenuAPI {
 
     @JvmStatic
     fun eval(player: Player, script: String): CompletableFuture<Any?> {
-        Performance.check("Handler:Script:Evaluation") {
-            return try {
-                KetherShell.eval(script, namespace = listOf("trmenu")) {
-                    sender = adaptPlayer(player)
-                    rootFrame().variables().run {
-                        Metadata.getMeta(player).data.forEach { (key, value) ->
-                            set(key, value.toString())
-                        }
+        return try {
+            KetherShell.eval(script, namespace = listOf("trmenu")) {
+                sender = adaptPlayer(player)
+                rootFrame().variables().run {
+                    Metadata.getMeta(player).data.forEach { (key, value) ->
+                        set(key, value.toString())
                     }
                 }
-            } catch (e: LocalizedException) {
-                println("§c[TrMenu] §8Unexpected exception while parsing kether shell:")
-                e.localizedMessage.split("\n").forEach {
-                    println("         §8$it")
-                }
-                CompletableFuture.completedFuture(false)
             }
+        } catch (e: LocalizedException) {
+            println("§c[TrMenu] §8Unexpected exception while parsing kether shell:")
+            e.localizedMessage.split("\n").forEach {
+                println("         §8$it")
+            }
+            CompletableFuture.completedFuture(false)
         }
-        throw Exception()
     }
 
     @JvmStatic

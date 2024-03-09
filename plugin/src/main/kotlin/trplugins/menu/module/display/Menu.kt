@@ -14,7 +14,6 @@ import trplugins.menu.module.display.icon.Icon
 import trplugins.menu.module.display.layout.MenuLayout
 import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.script.evalScript
-import trplugins.menu.module.internal.service.Performance
 import java.util.function.Consumer
 
 /**
@@ -40,7 +39,12 @@ class Menu(
 
     val viewers: MutableSet<String> = mutableSetOf()
 
-    fun open(viewer: Player, page: Int = settings.defaultLayout, reason: MenuOpenEvent.Reason, block: Consumer<MenuSession>) =
+    fun open(
+        viewer: Player,
+        page: Int = settings.defaultLayout,
+        reason: MenuOpenEvent.Reason,
+        block: Consumer<MenuSession>
+    ) =
         open(viewer, page, reason) { menuSession -> block.accept(menuSession) }
 
     /**
@@ -52,50 +56,48 @@ class Menu(
         reason: MenuOpenEvent.Reason,
         block: (MenuSession) -> Unit = {}
     ) {
-        Performance.check("Menu:Event:Open") {
-            val session = MenuSession.getSession(viewer)
-            viewers.add(viewer.name)
+        val session = MenuSession.getSession(viewer)
+        viewers.add(viewer.name)
 
-            val determinedPage = page ?: settings.defaultLayout
+        val determinedPage = page ?: settings.defaultLayout
 
-            if (session.menu == this) {
-                return page(viewer, determinedPage)
-            } else if (session.menu != null) {
-                session.shut()
-            }
+        if (session.menu == this) {
+            return page(viewer, determinedPage)
+        } else if (session.menu != null) {
+            session.shut()
+        }
 
-            val menuOpenEvent = MenuOpenEvent(session, this, determinedPage, reason)
-            menuOpenEvent.call()
+        val menuOpenEvent = MenuOpenEvent(session, this, determinedPage, reason)
+        menuOpenEvent.call()
 
-            if (menuOpenEvent.isCancelled) return
-            session.menu = this
-            block(session)
+        if (menuOpenEvent.isCancelled) return
+        session.menu = this
+        block(session)
 
-            if (!Metadata.byBukkit(viewer, "FORCE_OPEN") && !settings.openEvent.eval(adaptPlayer(session.viewer))) {
-                session.menu = null
+        if (!Metadata.byBukkit(viewer, "FORCE_OPEN") && !settings.openEvent.eval(adaptPlayer(session.viewer))) {
+            session.menu = null
+            return
+        } else {
+            if (session.receptacle != null || session.menu != this) {
                 return
-            } else {
-                if (session.receptacle != null || session.menu != this) {
-                    return
-                }
-                viewer.cancelNextChat(false)
-                val layout = layout[determinedPage]
-                val receptacle: WindowReceptacle
+            }
+            viewer.cancelNextChat(false)
+            val layout = layout[determinedPage]
+            val receptacle: WindowReceptacle
 
-                session.page = determinedPage
-                session.receptacle = layout.baseReceptacle().also { receptacle = it }
-                session.playerItemSlots()
+            session.page = determinedPage
+            session.receptacle = layout.baseReceptacle().also { receptacle = it }
+            session.playerItemSlots()
 
-                layout.initReceptacle(session)
-                loadTitle(session)
-                loadIcon(session)
-                loadTasks(session)
+            layout.initReceptacle(session)
+            loadTitle(session)
+            loadIcon(session)
+            loadTasks(session)
 
-                receptacle.open(viewer)
-                settings.properties.forEach { (id, value) ->
-                    if (id >= 0 && value != null) {
-                        receptacle.property(id, value)
-                    }
+            receptacle.open(viewer)
+            settings.properties.forEach { (id, value) ->
+                if (id >= 0 && value != null) {
+                    receptacle.property(id, value)
                 }
             }
         }
@@ -106,34 +108,32 @@ class Menu(
      */
     fun page(viewer: Player, page: Int) {
         if (page < 0 || page > layout.getSize()) return
-        Performance.check("Menu:Event:ChangePage") {
-            val session = MenuSession.getSession(viewer)
-            val previous = session.layout(page)!!
-            val layout = layout[page]
-            val receptacle: WindowReceptacle
-            val override = previous.isSimilar(layout) && session.receptacle != null
+        val session = MenuSession.getSession(viewer)
+        val previous = session.layout(page)!!
+        val layout = layout[page]
+        val receptacle: WindowReceptacle
+        val override = previous.isSimilar(layout) && session.receptacle != null
 
-            val menuPageChangeEvent = MenuPageChangeEvent(session, session.page, page, override)
-            menuPageChangeEvent.call()
+        val menuPageChangeEvent = MenuPageChangeEvent(session, session.page, page, override)
+        menuPageChangeEvent.call()
 
-            if (menuPageChangeEvent.isCancelled) return
-            if (override) {
-                receptacle = session.receptacle!!
-                receptacle.clear()
-            } else {
-                session.receptacle = layout.baseReceptacle().also { receptacle = it }
-                layout.initReceptacle(session)
-            }
-
-            session.page = page
-            session.playerItemSlots()
-            loadIcon(session)
-
-            if (override) {
-                receptacle.refresh()
-                session.updateActiveSlots()
-            } else receptacle.open(viewer)
+        if (menuPageChangeEvent.isCancelled) return
+        if (override) {
+            receptacle = session.receptacle!!
+            receptacle.clear()
+        } else {
+            session.receptacle = layout.baseReceptacle().also { receptacle = it }
+            layout.initReceptacle(session)
         }
+
+        session.page = page
+        session.playerItemSlots()
+        loadIcon(session)
+
+        if (override) {
+            receptacle.refresh()
+            session.updateActiveSlots()
+        } else receptacle.open(viewer)
     }
 
     /**
@@ -177,11 +177,9 @@ class Menu(
             taskData.actions.forEach { sub ->
                 session.arrange(
                     submit(delay = 5L, period = taskData.period, async = true) {
-                        Performance.check("Menu:CustomTasks") {
-                            val asBoolean = sub.condition.evalScript(session).asBoolean(false)
-                            if (asBoolean) {
-                                sub.actions.joinToString(" ").evalScript(session)
-                            }
+                        val asBoolean = sub.condition.evalScript(session).asBoolean(false)
+                        if (asBoolean) {
+                            sub.actions.joinToString(" ").evalScript(session)
                         }
                     }
                 )
