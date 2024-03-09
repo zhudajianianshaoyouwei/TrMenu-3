@@ -6,6 +6,17 @@ plugins {
     id("io.izzel.taboolib") version "2.0.9"
 }
 
+// 这段。一言难尽，但我不想动
+tasks.build {
+    doLast {
+        val plugin = project(":plugin")
+        val file = file("${plugin.layout.buildDirectory.get()}/libs").listFiles()?.find { it.endsWith("plugin-$version.jar") }
+
+        file?.copyTo(file("${project.layout.buildDirectory.get()}/libs/${project.name}-$version.jar"), true)
+    }
+    dependsOn(project(":plugin").tasks.build)
+}
+
 subprojects {
     apply<JavaPlugin>()
     apply(plugin = "io.izzel.taboolib")
