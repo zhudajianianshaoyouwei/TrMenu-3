@@ -41,25 +41,23 @@ object Heads {
     }
 
     fun getHead(id: String): ItemStack = CACHED_SKULLS.computeIfAbsent(id) {
-        (CACHED_SKULLS[it] ?: DEFAULT_HEAD).apply {
+        DEFAULT_HEAD.clone().apply {
             itemMeta = itemMeta?.let { m -> XSkull.applySkin(m, id) }
         }
-    }
+    }.clone()
 
     fun getPlayerHead(name: String): ItemStack {
-        if (CACHED_SKULLS.containsKey(name)) {
-            return CACHED_SKULLS[name] ?: DEFAULT_HEAD
-        } else {
+        if (!CACHED_SKULLS.containsKey(name)) {
             CACHED_SKULLS[name] = DEFAULT_HEAD.clone()
                 .also { item -> playerTexture(name) { modifyTexture(it, item) } ?: return DEFAULT_HEAD }
-            return CACHED_SKULLS[name] ?: DEFAULT_HEAD
         }
+        return (CACHED_SKULLS[name] ?: DEFAULT_HEAD).clone()
     }
 
     fun getCustomTextureHead(texture: String): ItemStack {
         return CACHED_SKULLS.computeIfAbsent(texture) {
             modifyTexture(texture, DEFAULT_HEAD.clone())
-        }
+        }.clone()
     }
 
     fun seekTexture(itemStack: ItemStack): String? {
