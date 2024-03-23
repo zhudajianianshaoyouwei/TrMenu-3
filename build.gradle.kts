@@ -3,7 +3,7 @@ import io.izzel.taboolib.gradle.*
 plugins {
     java
     id("org.jetbrains.kotlin.jvm") version "1.8.22"
-    id("io.izzel.taboolib") version "2.0.9"
+    id("io.izzel.taboolib") version "2.0.11"
 }
 
 // 这段。一言难尽，但我不想动
@@ -31,7 +31,7 @@ subprojects {
             )
         }
         version {
-            taboolib = "6.1.1-beta12"
+            taboolib = "6.1.1-beta15"
             coroutines = null
         }
     }
@@ -39,7 +39,7 @@ subprojects {
     repositories {
         mavenCentral()
         maven("https://hub.spigotmc.org/nexus/content/groups/public/")
-        maven("https://repo.tabooproject.org/repository/releases")
+        maven("http://sacredcraft.cn:8081/repository/releases")
         maven("https://repo.codemc.io/repository/nms/")
         maven("https://hub.spigotmc.org/nexus/content/groups/public/")
         maven("https://repo.opencollab.dev/main/")
