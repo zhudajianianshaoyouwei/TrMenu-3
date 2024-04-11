@@ -61,7 +61,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.5") { isTransitive = false }
     compileOnly("ink.ptms:Zaphkiel:2.0.14") { isTransitive = false }
     compileOnly("ca.tweetzy:skulls:3.10.0") { isTransitive = false }
-    compileOnly("com.github.MilkBowl:VaultAPI:8bad2c4") { isTransitive = false }
+    compileOnly("com.github.MilkBowl:VaultAPI:8bad2c479f") { isTransitive = false }
     compileOnly("org.black_ixx:playerpoints:3.2.6") { isTransitive = false }
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") { isTransitive = false }
     compileOnly("io.th0rgal:oraxen:1.165.0") { isTransitive = false }
