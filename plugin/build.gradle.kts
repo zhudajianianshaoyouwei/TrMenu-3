@@ -63,7 +63,7 @@ dependencies {
     compileOnly("ca.tweetzy:skulls:3.10.0") { isTransitive = false }
     compileOnly("com.github.MilkBowl:VaultAPI:8bad2c479f") { isTransitive = false }
     compileOnly("org.black_ixx:playerpoints:3.2.6") { isTransitive = false }
-    compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") { isTransitive = false }
+    compileOnly("com.arcaniax:HeadDatabase-API:1.3.2") { isTransitive = false }
     compileOnly("io.th0rgal:oraxen:1.165.0") { isTransitive = false }
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.0") { isTransitive = false }
     compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1") { isTransitive = false }
