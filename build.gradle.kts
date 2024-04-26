@@ -2,8 +2,8 @@ import io.izzel.taboolib.gradle.*
 
 plugins {
     java
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
-    id("io.izzel.taboolib") version "2.0.11"
+    kotlin("jvm") version "1.9.23"
+    id("io.izzel.taboolib") version "2.0.12"
 }
 
 // 这段。一言难尽，但我不想动
@@ -31,7 +31,7 @@ subprojects {
             )
         }
         version {
-            taboolib = "6.1.1-beta26"
+            taboolib = "6.1.2-beta1"
             coroutines = null
         }
     }
