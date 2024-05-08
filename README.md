@@ -6,9 +6,9 @@
 
 ### 🔔 What's new in this fork?
 
-- **Support 1.20.1 ~ 1.20.4**
+- **Support 1.20.1 ~ 1.20.6**
 - **Fix bug when SkinsRestorer is under proxy mode**
-- **Fix skull display issue on 1.20.2/4**
+- **~~Fix skull display issue on 1.20.2/4~~**
 
  **Notice: I maintain this fork only based on my interests.**
 
