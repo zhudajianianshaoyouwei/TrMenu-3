@@ -44,11 +44,10 @@ open class WindowReceptacle(var type: WindowLayout, override var title: String =
         return getElement(slot) != null
     }
 
-    override fun setElement(element: ItemStack?, vararg slots: Int, display: Boolean) {
-        slots.forEach { contents[it] = element }
-        if (display && viewer != null) {
-            slots.forEach { nmsProxy<NMS>().sendWindowsSetSlot(viewer!!, slot = it, itemStack = element, stateId = stateId) }
-        }
+    override fun setElement(element: ItemStack?, slot: Int, display: Boolean) {
+        contents[slot] = element
+        if (!display || viewer == null) return
+        nmsProxy<NMS>().sendWindowsSetSlot(viewer!!, slot = slot, itemStack = element, stateId = stateId)
     }
 
     override fun clear(display: Boolean) {

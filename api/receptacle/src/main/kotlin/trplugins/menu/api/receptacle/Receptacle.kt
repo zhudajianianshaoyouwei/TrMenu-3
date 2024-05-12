@@ -18,7 +18,7 @@ abstract class Receptacle<Element>(val layout: ReceptacleLayout) {
 
     abstract fun getElement(slot: Int): Element?
     abstract fun hasElement(slot: Int): Boolean
-    abstract fun setElement(element: Element? = null, vararg slots: Int, display: Boolean = true)
+    abstract fun setElement(element: Element? = null, slot: Int, display: Boolean = true)
     abstract fun clear(display: Boolean = true)
     abstract fun refresh(slot: Int = -1)
     abstract fun open(player: Player)
@@ -30,6 +30,10 @@ abstract class Receptacle<Element>(val layout: ReceptacleLayout) {
 
     fun setElement(element: Element?, slots: Collection<Int>, display: Boolean = true) {
         setElement(element, *slots.toIntArray(), display = display)
+    }
+
+    fun setElement(element: Element? = null, vararg slots: Int, display: Boolean = true) {
+        slots.forEach { setElement(element, it, display) }
     }
 
     fun onOpen(handler: (player: Player, receptacle: Receptacle<Element>) -> Unit) {
