@@ -109,7 +109,7 @@ class Menu(
     fun page(viewer: Player, page: Int) {
         if (page < 0 || page > layout.getSize()) return
         val session = MenuSession.getSession(viewer)
-        val previous = session.layout(page)!!
+        val previous = session.layout()!!
         val layout = layout[page]
         val receptacle: WindowReceptacle
         val override = previous.isSimilar(layout) && session.receptacle != null
