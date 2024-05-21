@@ -2,11 +2,6 @@ package trplugins.menu.module.display.item
 
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.SkullMeta
-import org.bukkit.profile.PlayerProfile
-import taboolib.module.nms.getName
-import taboolib.module.nms.setDisplayName
-import taboolib.module.nms.setLore
 import taboolib.platform.util.buildItem
 import taboolib.platform.util.isAir
 import trplugins.menu.api.menu.IItem
@@ -21,7 +16,7 @@ import trplugins.menu.util.collections.CycleList
  */
 class Item(
     val texture: CycleList<Texture>,
-    var name: CycleList<String>,
+    val name: CycleList<String>,
     val lore: CycleList<Lore>,
     val meta: Meta
 ) : IItem {
@@ -51,59 +46,21 @@ class Item(
             return item
         }
 
-        var itemStack = item.clone();
+        val itemStack = buildItem(item) {
+            if (item.itemMeta != null) {
+                name?.let { this.name = it }
+                lore?.let { this.lore.addAll(it) }
+            }
+            meta.flags(this)
+            meta.shiny(session, this)
 
-        if (itemStack.hasItemMeta() && itemStack.itemMeta is SkullMeta) {
-            // Fix taboolib bad skull things
-            val itemMeta = itemStack.itemMeta;
-            val tabooLibItem = buildItem(item) {
-                if (item.itemMeta != null) {
-                    name?.let { this.name = it }
-                    lore?.let { this.lore.addAll(it) }
-                }
-                meta.flags(this)
-                meta.shiny(session, this)
-
-                if (meta.hasAmount()) this.amount = meta.amount(session)
-            }
-            tabooLibItem.itemMeta?.itemFlags?.forEach { itemFlag -> itemMeta?.addItemFlags(itemFlag) }
-            tabooLibItem.itemMeta?.enchants?.forEach { enchant ->
-                itemMeta?.addEnchant(
-                    enchant.key,
-                    enchant.value.toInt(),
-                    true
-                )
-            }
-            if (tabooLibItem.itemMeta?.hasCustomModelData() == true) {
-                itemMeta?.setCustomModelData(tabooLibItem.itemMeta?.customModelData)
-            }
-            if (tabooLibItem.itemMeta?.hasDisplayName() == true) {
-                itemMeta?.setDisplayName(tabooLibItem.itemMeta?.displayName)
-            } else {
-                itemMeta?.setDisplayName(null)
-            }
-            if (tabooLibItem.itemMeta?.hasLore() == true) {
-                itemMeta?.lore = tabooLibItem.itemMeta?.lore
-            } else {
-                itemMeta?.lore = null;
-            }
-            itemStack.itemMeta = itemMeta
-        } else {
-            itemStack = buildItem(item) {
-                if (item.itemMeta != null) {
-                    name?.let { this.name = it }
-                    lore?.let { this.lore.addAll(it) }
-                }
-                meta.flags(this)
-                meta.shiny(session, this)
-
-                if (meta.hasAmount()) this.amount = meta.amount(session)
-            }
-
+            if (meta.hasAmount()) this.amount = meta.amount(session)
         }
+
         meta.nbt(session, itemStack)?.run {
             itemStack.itemMeta = this
         }
+
         return itemStack
     }
 
