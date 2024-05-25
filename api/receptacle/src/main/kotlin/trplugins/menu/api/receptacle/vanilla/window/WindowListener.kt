@@ -72,6 +72,7 @@ object WindowListener {
 
             val player = e.whoClicked as? Player ?: return
             val receptacle = player.getViewingReceptacle() as? WindowReceptacle ?: return
+            e.click.ordinal
             val clickType = ReceptacleClickType.from(e.click, e.action, if (e.click == ClickType.NUMBER_KEY) e.hotbarButton else e.slot) ?: return
 
             clicked(player, receptacle, clickType, e.slot)
