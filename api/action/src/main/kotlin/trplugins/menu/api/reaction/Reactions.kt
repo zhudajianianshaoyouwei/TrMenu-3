@@ -8,7 +8,7 @@ import trplugins.menu.api.action.base.ActionEntry
  * @author Arasple
  * @date 2021/1/29 17:51
  */
-data class Reactions(val handle: ActionHandle, private val reacts: List<Reaction>) {
+data class Reactions(val handle: ActionHandle, private val reacts: MutableList<Reaction>) {
 
     fun eval(player: ProxyPlayer): Boolean {
         if (isEmpty()) return true
@@ -25,6 +25,18 @@ data class Reactions(val handle: ActionHandle, private val reacts: List<Reaction
 
     fun isEmpty(): Boolean {
         return reacts.isEmpty() || reacts.all { it.isEmpty() }
+    }
+
+    fun andThen(reaction: Reactions): Reactions {
+        reaction.reacts.forEach {
+            it.priority += reacts.size
+            reacts.add(it)
+        }
+        return this
+    }
+
+    fun copyAndThen(reaction: Reactions): Reactions {
+        return Reactions(handle, mutableListOf<Reaction>().also { it.addAll(reacts) }).andThen(reaction)
     }
 
     companion object {

@@ -143,6 +143,11 @@ enum class Property(val default: String, val regex: Regex) {
     INHERIT("inherit", "inherits?"),
 
     /**
+     * 附加（默认图标）
+     */
+    APPEND("append", "appends?"),
+
+    /**
      * 周期
      */
     PERIOD("period", "(period|time)s?"),
@@ -263,6 +268,24 @@ enum class Property(val default: String, val regex: Regex) {
 
     fun ofStringList(conf: Configuration?, def: List<String> = listOf()): List<String> {
         return asList(of(conf, def))
+    }
+
+    fun ofIconPropertyList(conf: Configuration?, def: List<Property> = listOf()): List<Property> {
+        val value = of(conf, def)
+        if (value !is List<*> && value.toString().equals("true", true)) {
+            return listOf(ICON_DISPLAY_NAME, ICON_DISPLAY_LORE)
+        }
+        return when (value) {
+            is List<*> -> value.mapNotNull { property ->
+                Property.entries.find {
+                    it.name.equals(property.toString(), true) || it.name.equals("ICON_$property", true)
+                }
+            }
+
+            else -> listOfNotNull(Property.entries.find {
+                it.name.equals(value.toString(), true) || it.name.equals("ICON_$value", true)
+            })
+        }
     }
 
     fun ofSection(conf: Configuration?): Configuration? {

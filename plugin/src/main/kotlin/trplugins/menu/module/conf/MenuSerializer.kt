@@ -9,9 +9,11 @@ import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.Type
 import taboolib.module.nms.ItemTag
 import taboolib.module.nms.ItemTagData
+import trplugins.menu.TrMenu
 import trplugins.menu.TrMenu.actionHandle
 import trplugins.menu.api.menu.ISerializer
 import trplugins.menu.api.reaction.Reactions
+import trplugins.menu.api.reaction.SingleReaction
 import trplugins.menu.api.receptacle.MenuTaskData
 import trplugins.menu.api.receptacle.MenuTaskSubData
 import trplugins.menu.api.receptacle.ReceptacleClickType
@@ -243,23 +245,50 @@ object MenuSerializer : ISerializer {
      */
     private val loadIconProperty: (String, IconProperty?, Configuration?, Configuration?, Configuration?, Int) -> IconProperty =
         { _, def, it, display, action, order ->
+            // Inheritance
+            val inherit = if (def != null) Property.INHERIT.ofIconPropertyList(it) else listOf()
+            val append = if (def != null) Property.APPEND.ofIconPropertyList(it) else listOf()
+
+            // Item
             val name = Property.ICON_DISPLAY_NAME.ofStringList(display)
             val texture = Property.ICON_DISPLAY_MATERIAL.ofStringList(display)
             val lore = Property.ICON_DISPLAY_LORE.ofLists(display)
-            val amount = Property.ICON_DISPLAY_AMOUNT.ofString(display, "1")
-            val shiny = Property.ICON_DISPLAY_SHINY.ofString(display, "false")
-            val flags = Property.ICON_DISPLAY_FLAGS.ofStringList(display)
-            val nbt = Property.ICON_DISPLAY_NBT.ofMap(display)
+
+            // Meta
+            val amount = if (inherit.contains(Property.ICON_DISPLAY_AMOUNT)) def!!.display.meta.amount else Property.ICON_DISPLAY_AMOUNT.ofString(display, "1")
+            val shiny = if (inherit.contains(Property.ICON_DISPLAY_SHINY)) def!!.display.meta.shiny else Property.ICON_DISPLAY_SHINY.ofString(display, "false")
+            val flags = if (inherit.contains(Property.ICON_DISPLAY_FLAGS)) {
+                def!!.display.meta.flags
+            } else Property.ICON_DISPLAY_FLAGS.ofStringList(display).mapNotNull { flag ->
+                ItemFlag.entries.find { it.name.equals(flag, true) }
+            }.toTypedArray()
+            val nbt = if (inherit.contains(Property.ICON_DISPLAY_NBT)) {
+                def!!.display.meta.nbt
+            } else {
+                ItemTag().also { Property.ICON_DISPLAY_NBT.ofMap(display).forEach { (key, value) -> it[key] = ItemTagData.toNBT(value) } }
+            }
+
             // only for the subIcon
             val priority = Property.PRIORITY.ofInt(it, order)
             val condition = Property.CONDITION.ofString(it, "")
-            val inherit = Property.INHERIT.ofBoolean(it, false)
+
+            // Actions
             val clickActions = mutableMapOf<Set<ReceptacleClickType>, Reactions>()
+            if (def != null && inherit.contains(Property.ACTIONS)) {
+                clickActions.putAll(def.action)
+            }
             action?.getValues(false)?.forEach { (type, reaction) ->
                 val clickTypes = ReceptacleClickType.matches(type)
                 if (clickTypes.isNotEmpty()) {
                     val reactions = Reactions.ofReaction(actionHandle, reaction)
-                    if (!reactions.isEmpty()) clickActions[clickTypes] = Reactions.ofReaction(actionHandle, reaction)
+                    if (!reactions.isEmpty()) {
+                        clickActions[clickTypes].also { clickActions[clickTypes] = it?.copyAndThen(reactions) ?: reactions }
+                    }
+                }
+            }
+            if (def != null && !inherit.contains(Property.ACTIONS) && append.contains(Property.ACTIONS)) {
+                def.action.forEach { (clickTypes, reaction) ->
+                    clickActions[clickTypes].also { if (it == null) clickActions[clickTypes] = reaction else it.andThen(reaction) }
                 }
             }
 
@@ -268,18 +297,13 @@ object MenuSerializer : ISerializer {
                 if (def != null && texture.isEmpty()) def.display.texture
                 else CycleList(texture.map { Texture.createTexture(it) }),
                 // 图标显示名称
-                if (def != null && inherit && name.isEmpty()) def.display.name
+                if (def != null && inherit.contains(Property.ICON_DISPLAY_NAME) && name.isEmpty()) def.display.name
                 else CycleList(name),
                 // 图标显示描述
-                if (def != null && inherit && lore.isEmpty()) def.display.lore
+                if (def != null && inherit.contains(Property.ICON_DISPLAY_LORE) && lore.isEmpty()) def.display.lore
                 else CycleList(lore.map { Lore(line(it)) }),
                 // 图标附加属性
-                Meta(amount, shiny,
-                    flags.mapNotNull { flag ->
-                        ItemFlag.values().find { it.name.equals(flag, true) }
-                    }.toTypedArray(),
-                    ItemTag().also { nbt.forEach { (key, value) -> it[key] = ItemTagData.toNBT(value) } }
-                )
+                Meta(amount, shiny, flags, nbt)
             )
             IconProperty(priority, condition, item, clickActions)
         }
