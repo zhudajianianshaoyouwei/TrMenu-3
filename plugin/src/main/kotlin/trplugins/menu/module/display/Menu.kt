@@ -41,7 +41,7 @@ class Menu(
 
     fun open(
         viewer: Player,
-        page: Int = settings.defaultLayout,
+        page: Int? = null,
         reason: MenuOpenEvent.Reason,
         block: Consumer<MenuSession>
     ) =
@@ -59,7 +59,7 @@ class Menu(
         val session = MenuSession.getSession(viewer)
         viewers.add(viewer.name)
 
-        val determinedPage = page ?: settings.defaultLayout
+        val determinedPage = page ?: settings.determinePage(session)
 
         if (session.menu == this) {
             return page(viewer, determinedPage)

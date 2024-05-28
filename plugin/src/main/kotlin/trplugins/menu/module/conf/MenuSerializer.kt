@@ -114,7 +114,10 @@ object MenuSerializer : ISerializer {
         val optionEnableArguments = Property.OPTION_ENABLE_ARGUMENTS.ofBoolean(options, true)
         val optionDefaultArguments = Property.OPTION_DEFAULT_ARGUMENTS.ofStringList(options)
         val optionFreeSlots = Property.OPTION_FREE_SLOTS.ofStringList(conf)
-        val optionDefaultLayout = Property.OPTION_DEFAULT_LAYOUT.ofInt(options, 0)
+        val optionDefaultLayout = {
+            val defaultLayout = Property.OPTION_DEFAULT_LAYOUT.ofString(options, "0")
+            defaultLayout.toIntOrNull() ?: defaultLayout
+        }
         val optionHidePlayerInventory = Property.OPTION_HIDE_PLAYER_INVENTORY.ofBoolean(options, false)
 //        val optionHidePurePacket = Property.OPTION_PURE_PACKET.ofBoolean(options, true)
         val optionMinClickDelay = Property.OPTION_MIN_CLICK_DELAY.ofInt(options, 200)
