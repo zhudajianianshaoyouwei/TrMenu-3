@@ -9,11 +9,9 @@ import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.Type
 import taboolib.module.nms.ItemTag
 import taboolib.module.nms.ItemTagData
-import trplugins.menu.TrMenu
 import trplugins.menu.TrMenu.actionHandle
 import trplugins.menu.api.menu.ISerializer
 import trplugins.menu.api.reaction.Reactions
-import trplugins.menu.api.reaction.SingleReaction
 import trplugins.menu.api.receptacle.MenuTaskData
 import trplugins.menu.api.receptacle.MenuTaskSubData
 import trplugins.menu.api.receptacle.ReceptacleClickType
@@ -207,7 +205,7 @@ object MenuSerializer : ISerializer {
             val refresh = Property.ICON_REFRESH.ofInt(section, -1)
             val update = Property.ICON_UPDATE.ofIntList(section)
             val display = Property.ICON_DISPLAY.ofSection(section)
-            val action = Property.ACTIONS.ofSection(section)
+            val action = Property.ACTIONS.ofSection(section, "all")
             val defIcon = loadIconProperty(id, null, section, display, action, -1)
             val slots = Property.ICON_DISPLAY_SLOT.ofLists(display)
             var pages = Property.ICON_DISPLAY_PAGE.ofIntList(display)
@@ -224,7 +222,7 @@ object MenuSerializer : ISerializer {
             val subs = Property.ICON_SUB_ICONS.ofList(section).map {
                 val sub = Property.asSection(it)
                 val subDisplay = Property.ICON_DISPLAY.ofSection(sub)
-                val subAction = Property.ACTIONS.ofSection(sub)
+                val subAction = Property.ACTIONS.ofSection(sub, "all")
                 loadIconProperty(id, defIcon, sub, subDisplay, subAction, order++)
             }.sortedBy { it.priority }
 

@@ -288,8 +288,8 @@ enum class Property(val default: String, val regex: Regex) {
         }
     }
 
-    fun ofSection(conf: Configuration?): Configuration? {
-        return asSection(of(conf))
+    fun ofSection(conf: Configuration?, defKey: String? = null): Configuration? {
+        return asSection(of(conf), defKey)
     }
 
     fun ofMap(conf: Configuration?, deep: Boolean = false): Map<String, Any?> {
@@ -372,7 +372,7 @@ enum class Property(val default: String, val regex: Regex) {
             return results
         }
 
-        fun asSection(any: Any?): Configuration? = Configuration.empty().let {
+        fun asSection(any: Any?, defKey: String? = null): Configuration? = Configuration.empty().let {
             when (any) {
                 is Configuration -> return any
                 is ConfigSection -> {
@@ -383,7 +383,10 @@ enum class Property(val default: String, val regex: Regex) {
                     any.entries.forEach { entry -> it[entry.key.toString()] = entry.value }
                     return@let it
                 }
-                is List<*> -> any.forEach { any ->
+                is List<*> -> if (defKey != null) {
+                    it[defKey] = any
+                    return@let it
+                } else any.forEach { any ->
                     val args = any.toString().split(Regex(":"), 2)
                     if (args.size == 2) it[args[0]] = args[1]
                     return@let it
