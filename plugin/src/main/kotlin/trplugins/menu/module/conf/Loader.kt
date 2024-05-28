@@ -76,7 +76,14 @@ object Loader {
         taskConcurrent.start(
             // serializing
             {
-                val result = MenuSerializer.serializeMenu(it)
+                val result: SerialzeResult
+                try {
+                    result = MenuSerializer.serializeMenu(it)
+                } catch (t: Throwable) {
+                    return@start SerialzeResult(SerialzeResult.Type.MENU, SerialzeResult.State.FAILED).also {
+                        t.message?.let { msg -> it.errors.add(msg) }
+                    }
+                }
                 if (result.state == SerialzeResult.State.IGNORE) {
                     return@start result
                 }
