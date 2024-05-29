@@ -13,14 +13,14 @@ import trplugins.menu.util.collections.IndivList
 class Icon(
     val id: String,
     private val refresh: Long,
-    update: Array<Int>,
+    private val update: Array<Int>,
     val position: Position,
     val defIcon: IconProperty,
     val subs: IndivList<IconProperty>
 ) : IIcon {
 
     override fun startup(session: MenuSession) {
-        update.forEach { (period, frames) ->
+        update(session).forEach { (period, frames) ->
             session.arrange(
                 submit(delay = 10, period = period, async = true) {
                     onUpdate(session, frames)
@@ -86,8 +86,8 @@ class Icon(
         position.reset(session)
         val resetIcon: (IconProperty) -> Unit = {
             it.display.texture.reset(session.id)
-            it.display.name.reset(session.id)
-            it.display.lore.reset(session.id)
+            it.display.name(session).reset(session.id)
+            it.display.lore(session).reset(session.id)
             it.display.cache.remove(session.id)
         }
         resetIcon(defIcon)
@@ -105,7 +105,7 @@ class Icon(
     /**
      * 更新周期
      */
-    internal val update: Map<Long, Set<Int>> = kotlin.run {
+    internal fun update(session: MenuSession): Map<Long, Set<Int>> {
         val result = mutableMapOf<Long, MutableSet<Int>>()
         val fallback = update.maxOrNull() ?: -1
         val array = Array(4) { update.getOrElse(it) { fallback } }
@@ -114,8 +114,8 @@ class Icon(
             if (index <= 4 && i > 0) {
                 val allow = when (index) {
                     0 -> match { it.isTextureUpdatable() }
-                    1 -> match { it.isNameUpdatable() }
-                    2 -> match { it.isLoreUpdatable() }
+                    1 -> match { it.isNameUpdatable(session) }
+                    2 -> match { it.isLoreUpdatable(session) }
                     3 -> match { position.isUpdatable() }
                     else -> false
                 }
@@ -126,7 +126,7 @@ class Icon(
             if (array[it] > 0) result.computeIfAbsent(array[it].toLong()) { mutableSetOf() }.add(it)
         }
 
-        result
+        return result
     }
 
     private fun match(matcher: (IconProperty) -> Boolean): Boolean {

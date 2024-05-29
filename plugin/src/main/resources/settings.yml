@@ -12,6 +12,16 @@ Options:
   Placeholders:
     JavaScript-Parse: false
 
+Language:
+  Default: 'zh_CN'
+  CodeTransfer:
+    zh_hans_cn: 'zh_CN'
+    zh_hant_cn: 'zh_TW'
+    en_ca: 'en_US'
+    en_au: 'en_US'
+    en_gb: 'en_US'
+    en_nz: 'en_US'
+
 Database:
   # Local: SQLITE
   # External: SQL, MONGODB

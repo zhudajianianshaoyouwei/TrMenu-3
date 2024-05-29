@@ -22,12 +22,12 @@ class IconProperty(
         return display.meta.isDynamic || display.texture.cyclable() || display.texture.elements.any { it.dynamic }
     }
 
-    fun isNameUpdatable(): Boolean {
-        return display.name.cyclable() || display.name.elements.any { Regexs.containsPlaceholder(it) }
+    fun isNameUpdatable(session: MenuSession): Boolean {
+        return display.name(session).cyclable() || display.name(session).elements.any { Regexs.containsPlaceholder(it) }
     }
 
-    fun isLoreUpdatable(): Boolean {
-        return display.lore.cyclable() || display.lore.elements.any { it -> Regexs.containsPlaceholder(it.lore.joinToString(" ") { it.first }) }
+    fun isLoreUpdatable(session: MenuSession): Boolean {
+        return display.lore(session).cyclable() || display.lore(session).elements.any { it -> Regexs.containsPlaceholder(it.lore.joinToString(" ") { it.first }) }
     }
 
     fun handleClick(type: ReceptacleClickType, session: MenuSession) {

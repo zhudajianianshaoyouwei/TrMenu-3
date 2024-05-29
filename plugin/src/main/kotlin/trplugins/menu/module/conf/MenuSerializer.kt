@@ -5,6 +5,7 @@ import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemFlag
 import taboolib.common.platform.function.pluginId
 import taboolib.common.util.asList
+import taboolib.library.configuration.ConfigurationSection
 import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.Type
 import taboolib.module.nms.ItemTag
@@ -65,8 +66,10 @@ object MenuSerializer : ISerializer {
         // 加载菜单配置
         val conf = Configuration.loadFromFile(file, type)
 
+        val languages: Set<String> = conf.getConfigurationSection("Lang")?.getKeys(false) ?: emptySet()
+
         // 读取菜单设置
-        val settings = serializeSetting(conf)
+        val settings = serializeSetting(conf, languages)
         if (!settings.succeed()) {
             result.errors.addAll(settings.errors).also {
                 return result
@@ -79,7 +82,7 @@ object MenuSerializer : ISerializer {
             result.errors.addAll(layout.errors).also { return result }
         }
         // 读取菜单图标
-        val icons = serializeIcons(conf, layout.asLayout())
+        val icons = serializeIcons(conf, languages, layout.asLayout())
         if (!icons.succeed()) {
             result.errors.addAll(icons.errors).also {
                 return result
@@ -96,6 +99,10 @@ object MenuSerializer : ISerializer {
      * Ⅱ. 载入菜单设置 MenuSettings
      */
     override fun serializeSetting(conf: Configuration): SerialzeResult {
+        return serializeSetting(conf, emptySet())
+    }
+
+    private fun serializeSetting(conf: Configuration, languages: Set<String>): SerialzeResult {
         val result = SerialzeResult(SerialzeResult.Type.MENU_SETTING)
         val options = Property.OPTIONS.ofSection(conf)
         val bindings = Property.BINDINGS.ofSection(conf)
@@ -125,7 +132,7 @@ object MenuSerializer : ISerializer {
         val eventClose = Property.EVENT_CLOSE.ofList(events)
         val eventClick = Property.EVENT_CLICK.ofList(events)
 
-        result.result = MenuSettings(
+        val settings = MenuSettings(
             CycleList(title),
             titleUpdate,
             properties,
@@ -157,6 +164,18 @@ object MenuSerializer : ISerializer {
             },
             funs.map { ScriptFunction(it.key, it.value.toString()) }.toSet()
         )
+
+        // i18n
+        languages.forEach { locale ->
+            conf.getConfigurationSection("Lang.$locale")?.also {
+                val titleI18n = Property.TITLE.of(it)
+                if (titleI18n != null) {
+                    settings.addI18nTitle(locale, CycleList(Property.asList(titleI18n)))
+                }
+            }
+        }
+
+        result.result = settings
         return result
     }
 
@@ -192,7 +211,21 @@ object MenuSerializer : ISerializer {
      * Ⅳ. 载入图标功能 Icons
      */
     override fun serializeIcons(conf: Configuration, layout: MenuLayout): SerialzeResult {
+        return serializeIcons(conf, emptySet(), layout)
+    }
+
+    fun serializeIcons(conf: Configuration, languages: Set<String>, layout: MenuLayout): SerialzeResult {
         val result = SerialzeResult(SerialzeResult.Type.ICON)
+
+        // i18n
+        val iconsI18n: Map<String, ConfigurationSection>? = if (languages.isEmpty()) null else {
+            val map = mutableMapOf<String, ConfigurationSection>()
+            languages.forEach { locale ->
+                conf.getConfigurationSection("Lang.$locale")?.also { Property.ICONS.ofSection(it)?.also { icons -> map[locale] = icons } }
+            }
+            if (map.isEmpty()) null else map
+        }
+
         val icons = Property.ICONS.ofMap(conf).map { (id, value) ->
             val section = Property.asSection(value).let { it ->
                 if (it !is Configuration) return@let null
@@ -202,11 +235,20 @@ object MenuSerializer : ISerializer {
                 }, conf.type)
             }
 
+            // i18n
+            val sectionI18n: Map<String, ConfigurationSection>? = if (iconsI18n == null) null else {
+                val map = mutableMapOf<String, ConfigurationSection>()
+                iconsI18n.forEach { entry ->
+                    entry.value.getConfigurationSection(id)?.also { map[entry.key] = it }
+                }
+                if (map.isEmpty()) null else map
+            }
+
             val refresh = Property.ICON_REFRESH.ofInt(section, -1)
             val update = Property.ICON_UPDATE.ofIntList(section)
             val display = Property.ICON_DISPLAY.ofSection(section)
             val action = Property.ACTIONS.ofSection(section, "all")
-            val defIcon = loadIconProperty(id, null, section, display, action, -1)
+            val defIcon = loadIconProperty(sectionI18n, null, section, display, action, -1)
             val slots = Property.ICON_DISPLAY_SLOT.ofLists(display)
             var pages = Property.ICON_DISPLAY_PAGE.ofIntList(display)
             var order = 0
@@ -219,11 +261,21 @@ object MenuSerializer : ISerializer {
                     Position(pages.associateWith { slot })
                 } else Position(search.mapValues { CycleList(Position.Slot.from(it.value)) })
 
+            var index = 0
             val subs = Property.ICON_SUB_ICONS.ofList(section).map {
+                // i18n
+                val subSectionI18n: Map<String, ConfigurationSection>? = if (iconsI18n == null) null else {
+                    val map = mutableMapOf<String, ConfigurationSection>()
+                    iconsI18n.forEach { entry ->
+                        entry.value.getConfigurationSection(index++.toString())?.also { map[entry.key] = it }
+                    }
+                    if (map.isEmpty()) null else map
+                }
+
                 val sub = Property.asSection(it)
                 val subDisplay = Property.ICON_DISPLAY.ofSection(sub)
                 val subAction = Property.ACTIONS.ofSection(sub, "all")
-                loadIconProperty(id, defIcon, sub, subDisplay, subAction, order++)
+                loadIconProperty(subSectionI18n, defIcon, sub, subDisplay, subAction, order++)
             }.sortedBy { it.priority }
 
             if (defIcon.display.texture.isEmpty() || subs.any { it.display.texture.isEmpty() }) {
@@ -241,8 +293,8 @@ object MenuSerializer : ISerializer {
     /**
      * Func Ⅴ. 载入图标显示部分
      */
-    private val loadIconProperty: (String, IconProperty?, Configuration?, Configuration?, Configuration?, Int) -> IconProperty =
-        { _, def, it, display, action, order ->
+    private val loadIconProperty: (Map<String, ConfigurationSection>?, IconProperty?, Configuration?, Configuration?, Configuration?, Int) -> IconProperty =
+        { sectionI18n, def, it, display, action, order ->
             // Inheritance
             val inherit = if (def != null) Property.INHERIT.ofIconPropertyList(it) else listOf()
             val append = if (def != null) Property.APPEND.ofIconPropertyList(it) else listOf()
@@ -303,6 +355,19 @@ object MenuSerializer : ISerializer {
                 // 图标附加属性
                 Meta(amount, shiny, flags, nbt)
             )
+
+            // i18n
+            sectionI18n?.forEach { (locale, conf) ->
+                val nameI18n = Property.ICON_DISPLAY_NAME.ofStringList(conf)
+                if (nameI18n.isNotEmpty()) {
+                    item.addI18nName(locale, CycleList(nameI18n))
+                }
+                val loreI18n = Property.ICON_DISPLAY_LORE.ofLists(conf)
+                if (loreI18n.isNotEmpty()) {
+                    item.addI18nLore(locale, CycleList(loreI18n.map { Lore(line(it)) }))
+                }
+            }
+
             IconProperty(priority, condition, item, clickActions)
         }
 

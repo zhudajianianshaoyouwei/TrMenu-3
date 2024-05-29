@@ -68,6 +68,14 @@ object TrMenu : Plugin() {
     }
 
     private fun onSettingsReload() {
+        Language.default = SETTINGS.getString("Language.Default") ?: "zh_CN"
+        SETTINGS.getConfigurationSection("Language.CodeTransfer")?.also {
+            Language.languageCodeTransfer.clear()
+            it.getKeys(false).forEach { lang ->
+                Language.languageCodeTransfer[lang] = it.getString(lang) ?: Language.default
+            }
+        }
+
         performance = kotlin.runCatching {
             RunningPerformance.valueOf(SETTINGS.getString("Options.Running-Performance") ?: "Normal")
         }.getOrNull() ?: RunningPerformance.NORMAL

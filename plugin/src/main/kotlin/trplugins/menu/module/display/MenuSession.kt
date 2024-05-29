@@ -4,7 +4,9 @@ import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyPlayer
 import taboolib.common.platform.service.PlatformExecutor
 import taboolib.common.util.replaceWithOrder
+import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.chat.colored
+import taboolib.module.lang.Language
 import taboolib.platform.compat.replacePlaceholder
 import trplugins.menu.api.event.MenuCloseEvent
 import trplugins.menu.api.receptacle.vanilla.window.WindowReceptacle
@@ -84,6 +86,16 @@ class MenuSession(
     // 临时任务（切换页码时允许删除）
     private val temporaries = mutableSetOf<PlatformExecutor.PlatformTask>()
 
+    val locale: String
+        get() = kotlin.run {
+            val code = try {
+                viewer.locale
+            } catch (ignored: NoSuchMethodError) {
+                viewer.getProperty<String>("entity/locale")!!
+            }.lowercase()
+            
+            Language.languageCodeTransfer[code]?.lowercase() ?: code
+        }
 
     /**
      * 取得当前会话的布局
@@ -106,7 +118,13 @@ class MenuSession(
         val preColor = MenuSettings.PRE_COLOR
         val funced = FunctionParser.parse(placeholderPlayer, string) { type, value ->
             when (type) {
-                "node", "nodes", "n" -> menu?.conf?.get(parse(menu!!.conf.ignoreCase(value))).toString()
+                "node", "nodes", "n" -> menu?.conf?.get(parse(menu!!.conf.ignoreCase(value))).let {
+                    if (it is List<*>) {
+                        it.joinToString("\n")
+                    } else {
+                        it.toString()
+                    }
+                }
                 else -> null
             }
         }
