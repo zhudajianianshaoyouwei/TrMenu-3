@@ -114,7 +114,10 @@ object MenuSerializer : ISerializer {
         val optionEnableArguments = Property.OPTION_ENABLE_ARGUMENTS.ofBoolean(options, true)
         val optionDefaultArguments = Property.OPTION_DEFAULT_ARGUMENTS.ofStringList(options)
         val optionFreeSlots = Property.OPTION_FREE_SLOTS.ofStringList(conf)
-        val optionDefaultLayout = Property.OPTION_DEFAULT_LAYOUT.ofInt(options, 0)
+        val optionDefaultLayout = {
+            val defaultLayout = Property.OPTION_DEFAULT_LAYOUT.ofString(options, "0")
+            defaultLayout.toIntOrNull() ?: defaultLayout
+        }
         val optionHidePlayerInventory = Property.OPTION_HIDE_PLAYER_INVENTORY.ofBoolean(options, false)
 //        val optionHidePurePacket = Property.OPTION_PURE_PACKET.ofBoolean(options, true)
         val optionMinClickDelay = Property.OPTION_MIN_CLICK_DELAY.ofInt(options, 200)
@@ -205,7 +208,7 @@ object MenuSerializer : ISerializer {
             val refresh = Property.ICON_REFRESH.ofInt(section, -1)
             val update = Property.ICON_UPDATE.ofIntList(section)
             val display = Property.ICON_DISPLAY.ofSection(section)
-            val action = Property.ACTIONS.ofSection(section)
+            val action = Property.ACTIONS.ofSection(section, "all")
             val defIcon = loadIconProperty(id, null, section, display, action, -1)
             val slots = Property.ICON_DISPLAY_SLOT.ofLists(display)
             var pages = Property.ICON_DISPLAY_PAGE.ofIntList(display)
@@ -222,7 +225,7 @@ object MenuSerializer : ISerializer {
             val subs = Property.ICON_SUB_ICONS.ofList(section).map {
                 val sub = Property.asSection(it)
                 val subDisplay = Property.ICON_DISPLAY.ofSection(sub)
-                val subAction = Property.ACTIONS.ofSection(sub)
+                val subAction = Property.ACTIONS.ofSection(sub, "all")
                 loadIconProperty(id, defIcon, sub, subDisplay, subAction, order++)
             }.sortedBy { it.priority }
 
@@ -243,23 +246,50 @@ object MenuSerializer : ISerializer {
      */
     private val loadIconProperty: (String, IconProperty?, Configuration?, Configuration?, Configuration?, Int) -> IconProperty =
         { _, def, it, display, action, order ->
+            // Inheritance
+            val inherit = if (def != null) Property.INHERIT.ofIconPropertyList(it) else listOf()
+            val append = if (def != null) Property.APPEND.ofIconPropertyList(it) else listOf()
+
+            // Item
             val name = Property.ICON_DISPLAY_NAME.ofStringList(display)
             val texture = Property.ICON_DISPLAY_MATERIAL.ofStringList(display)
             val lore = Property.ICON_DISPLAY_LORE.ofLists(display)
-            val amount = Property.ICON_DISPLAY_AMOUNT.ofString(display, "1")
-            val shiny = Property.ICON_DISPLAY_SHINY.ofString(display, "false")
-            val flags = Property.ICON_DISPLAY_FLAGS.ofStringList(display)
-            val nbt = Property.ICON_DISPLAY_NBT.ofMap(display)
+
+            // Meta
+            val amount = if (inherit.contains(Property.ICON_DISPLAY_AMOUNT)) def!!.display.meta.amount else Property.ICON_DISPLAY_AMOUNT.ofString(display, "1")
+            val shiny = if (inherit.contains(Property.ICON_DISPLAY_SHINY)) def!!.display.meta.shiny else Property.ICON_DISPLAY_SHINY.ofString(display, "false")
+            val flags = if (inherit.contains(Property.ICON_DISPLAY_FLAGS)) {
+                def!!.display.meta.flags
+            } else Property.ICON_DISPLAY_FLAGS.ofStringList(display).mapNotNull { flag ->
+                ItemFlag.entries.find { it.name.equals(flag, true) }
+            }.toTypedArray()
+            val nbt = if (inherit.contains(Property.ICON_DISPLAY_NBT)) {
+                def!!.display.meta.nbt
+            } else {
+                ItemTag().also { Property.ICON_DISPLAY_NBT.ofMap(display).forEach { (key, value) -> it[key] = ItemTagData.toNBT(value) } }
+            }
+
             // only for the subIcon
             val priority = Property.PRIORITY.ofInt(it, order)
             val condition = Property.CONDITION.ofString(it, "")
-            val inherit = Property.INHERIT.ofBoolean(it, false)
+
+            // Actions
             val clickActions = mutableMapOf<Set<ReceptacleClickType>, Reactions>()
+            if (def != null && inherit.contains(Property.ACTIONS)) {
+                clickActions.putAll(def.action)
+            }
             action?.getValues(false)?.forEach { (type, reaction) ->
                 val clickTypes = ReceptacleClickType.matches(type)
                 if (clickTypes.isNotEmpty()) {
                     val reactions = Reactions.ofReaction(actionHandle, reaction)
-                    if (!reactions.isEmpty()) clickActions[clickTypes] = Reactions.ofReaction(actionHandle, reaction)
+                    if (!reactions.isEmpty()) {
+                        clickActions[clickTypes].also { clickActions[clickTypes] = it?.copyAndThen(reactions) ?: reactions }
+                    }
+                }
+            }
+            if (def != null && !inherit.contains(Property.ACTIONS) && append.contains(Property.ACTIONS)) {
+                def.action.forEach { (clickTypes, reaction) ->
+                    clickActions[clickTypes].also { if (it == null) clickActions[clickTypes] = reaction else it.andThen(reaction) }
                 }
             }
 
@@ -268,18 +298,13 @@ object MenuSerializer : ISerializer {
                 if (def != null && texture.isEmpty()) def.display.texture
                 else CycleList(texture.map { Texture.createTexture(it) }),
                 // 图标显示名称
-                if (def != null && inherit && name.isEmpty()) def.display.name
+                if (def != null && inherit.contains(Property.ICON_DISPLAY_NAME) && name.isEmpty()) def.display.name
                 else CycleList(name),
                 // 图标显示描述
-                if (def != null && inherit && lore.isEmpty()) def.display.lore
+                if (def != null && inherit.contains(Property.ICON_DISPLAY_LORE) && lore.isEmpty()) def.display.lore
                 else CycleList(lore.map { Lore(line(it)) }),
                 // 图标附加属性
-                Meta(amount, shiny,
-                    flags.mapNotNull { flag ->
-                        ItemFlag.values().find { it.name.equals(flag, true) }
-                    }.toTypedArray(),
-                    ItemTag().also { nbt.forEach { (key, value) -> it[key] = ItemTagData.toNBT(value) } }
-                )
+                Meta(amount, shiny, flags, nbt)
             )
             IconProperty(priority, condition, item, clickActions)
         }

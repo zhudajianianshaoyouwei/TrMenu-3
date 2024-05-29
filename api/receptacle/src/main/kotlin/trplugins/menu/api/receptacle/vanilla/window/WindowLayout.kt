@@ -16,7 +16,7 @@ open class WindowLayout(val vanillaId: String, val serialId: Int, slotRange: Int
     fun toBukkitType(): InventoryType {
         return when (serialId) {
             0, 1, 2, 3, 4, 5 -> InventoryType.CHEST
-            6 -> InventoryType.HOPPER
+            6 -> InventoryType.DROPPER
             7 -> InventoryType.ANVIL
             8 -> InventoryType.BEACON
             9 -> InventoryType.BLAST_FURNACE

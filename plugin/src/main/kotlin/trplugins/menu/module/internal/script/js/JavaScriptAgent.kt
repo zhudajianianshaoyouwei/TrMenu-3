@@ -55,6 +55,7 @@ object JavaScriptAgent {
             it["session"] = session
             it["player"] = session.viewer
             it["sender"] = session.viewer
+            it["data"] = Metadata.getData(session.viewer).data
             it["meta"] = Metadata.getMeta(session.viewer).data
             it["config"] = session.menu?.conf
         }, ScriptContext.ENGINE_SCOPE)

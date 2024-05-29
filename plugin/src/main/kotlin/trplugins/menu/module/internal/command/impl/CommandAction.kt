@@ -26,7 +26,7 @@ object CommandAction : CommandExpression {
             // Action
             dynamic {
                 execute<CommandSender> { sender, context, argument ->
-                    val player = context.argument(-1).let { Bukkit.getPlayerExact(it) }
+                    val player = context.argument(-1).let { if (it == "\$any") Bukkit.getOnlinePlayers().firstOrNull() else Bukkit.getPlayerExact(it) }
                     if (player == null || !player.isOnline) {
                         sender.sendLang("Command-Action-Unknown-Player", context.argument(-1))
                         return@execute

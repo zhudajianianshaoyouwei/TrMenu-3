@@ -23,7 +23,7 @@ class MenuSettings(
     val enableArguments: Boolean = true,
     val defaultArguments: Array<String> = arrayOf(),
     val freeSlots: Set<Int> = setOf(),
-    val defaultLayout: Int,
+    val defaultLayout: Any,
     expansions: Array<String>,
     val minClickDelay: Int,
     val hidePlayerInventory: Boolean,
@@ -95,6 +95,14 @@ class MenuSettings(
         for (i in 0..index) commands = commands.toMutableList().also { it.removeAt(0) }
 
         return commands.toMutableList().also { it.add(0, command ?: return@also) }
+    }
+
+    fun determinePage(session: MenuSession): Int {
+        return if (defaultLayout is Int) {
+            defaultLayout
+        } else {
+            session.parse(defaultLayout as String).toIntOrNull() ?: 0
+        }
     }
 
 }

@@ -143,6 +143,11 @@ enum class Property(val default: String, val regex: Regex) {
     INHERIT("inherit", "inherits?"),
 
     /**
+     * 附加（默认图标）
+     */
+    APPEND("append", "appends?"),
+
+    /**
      * 周期
      */
     PERIOD("period", "(period|time)s?"),
@@ -265,8 +270,26 @@ enum class Property(val default: String, val regex: Regex) {
         return asList(of(conf, def))
     }
 
-    fun ofSection(conf: Configuration?): Configuration? {
-        return asSection(of(conf))
+    fun ofIconPropertyList(conf: Configuration?, def: List<Property> = listOf()): List<Property> {
+        val value = of(conf, def)
+        if (value !is List<*> && value.toString().equals("true", true)) {
+            return listOf(ICON_DISPLAY_NAME, ICON_DISPLAY_LORE)
+        }
+        return when (value) {
+            is List<*> -> value.mapNotNull { property ->
+                Property.entries.find {
+                    it.name.equals(property.toString(), true) || it.name.equals("ICON_$property", true)
+                }
+            }
+
+            else -> listOfNotNull(Property.entries.find {
+                it.name.equals(value.toString(), true) || it.name.equals("ICON_$value", true)
+            })
+        }
+    }
+
+    fun ofSection(conf: Configuration?, defKey: String? = null): Configuration? {
+        return asSection(of(conf), defKey)
     }
 
     fun ofMap(conf: Configuration?, deep: Boolean = false): Map<String, Any?> {
@@ -349,7 +372,7 @@ enum class Property(val default: String, val regex: Regex) {
             return results
         }
 
-        fun asSection(any: Any?): Configuration? = Configuration.empty().let {
+        fun asSection(any: Any?, defKey: String? = null): Configuration? = Configuration.empty().let {
             when (any) {
                 is Configuration -> return any
                 is ConfigSection -> {
@@ -360,7 +383,10 @@ enum class Property(val default: String, val regex: Regex) {
                     any.entries.forEach { entry -> it[entry.key.toString()] = entry.value }
                     return@let it
                 }
-                is List<*> -> any.forEach { any ->
+                is List<*> -> if (defKey != null) {
+                    it[defKey] = any
+                    return@let it
+                } else any.forEach { any ->
                     val args = any.toString().split(Regex(":"), 2)
                     if (args.size == 2) it[args[0]] = args[1]
                     return@let it

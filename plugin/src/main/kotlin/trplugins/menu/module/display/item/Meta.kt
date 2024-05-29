@@ -16,10 +16,10 @@ import trplugins.menu.util.Regexs
  * 显示物品的非动画, 支持动态的属性
  */
 class Meta(
-    private val amount: String,
-    private val shiny: String,
-    private val flags: Array<ItemFlag>,
-    private val nbt: ItemTag?,
+    val amount: String,
+    val shiny: String,
+    val flags: Array<ItemFlag>,
+    val nbt: ItemTag?,
 ) {
 
     private val isAmountDynamic = amount.toIntOrNull() == null
