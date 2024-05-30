@@ -357,6 +357,12 @@ object MenuSerializer : ISerializer {
             )
 
             // i18n
+            if (def != null && inherit.contains(Property.ICON_DISPLAY_NAME) && name.isEmpty()) {
+                item.nameI18n.putAll(def.display.nameI18n)
+            }
+            if (def != null && inherit.contains(Property.ICON_DISPLAY_LORE) && lore.isEmpty()) {
+                item.loreI18n.putAll(def.display.loreI18n)
+            }
             sectionI18n?.forEach { (locale, conf) ->
                 val nameI18n = Property.ICON_DISPLAY_NAME.ofStringList(conf)
                 if (nameI18n.isNotEmpty()) {

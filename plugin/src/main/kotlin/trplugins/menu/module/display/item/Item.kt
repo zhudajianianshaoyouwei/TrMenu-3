@@ -21,9 +21,9 @@ open class Item(
     val meta: Meta
 ) : IItem {
 
-    private val nameI18n = HashMap<String, CycleList<String>>()
+    val nameI18n = HashMap<String, CycleList<String>>()
 
-    private val loreI18n = HashMap<String, CycleList<Lore>>()
+    val loreI18n = HashMap<String, CycleList<Lore>>()
 
     internal val cache = mutableMapOf<Int, ItemStack>()
 
