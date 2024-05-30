@@ -86,15 +86,23 @@ class MenuSession(
     // 临时任务（切换页码时允许删除）
     private val temporaries = mutableSetOf<PlatformExecutor.PlatformTask>()
 
-    val locale: String
-        get() = kotlin.run {
-            val code = try {
-                viewer.locale
-            } catch (ignored: NoSuchMethodError) {
-                viewer.getProperty<String>("entity/locale")!!
-            }.lowercase()
-            
-            Language.languageCodeTransfer[code]?.lowercase() ?: code
+    var locale: String = kotlin.run {
+        val code = try {
+            viewer.locale
+        } catch (ignored: NoSuchMethodError) {
+            viewer.getProperty<String>("entity/locale")!!
+        }.lowercase()
+
+        Language.languageCodeTransfer[code]?.lowercase() ?: code
+    }
+        set(value) {
+            if (field == value.lowercase()) return
+            // Clear display cache
+            Menu.menus.forEach { menu -> menu.icons.forEach { icon ->
+                icon.defIcon.display.cache.remove(id)
+                icon.subs.elements.forEach { sub -> sub.display.cache.remove(id) }
+            } }
+            field = value.lowercase()
         }
 
     /**
