@@ -264,9 +264,9 @@ object MenuSerializer : ISerializer {
             var index = 0
             val subs = Property.ICON_SUB_ICONS.ofList(section).map {
                 // i18n
-                val subSectionI18n: Map<String, ConfigurationSection>? = if (iconsI18n == null) null else {
+                val subSectionI18n: Map<String, ConfigurationSection>? = if (sectionI18n == null) null else {
                     val map = mutableMapOf<String, ConfigurationSection>()
-                    iconsI18n.forEach { entry ->
+                    sectionI18n.forEach { entry ->
                         entry.value.getConfigurationSection(index++.toString())?.also { map[entry.key] = it }
                     }
                     if (map.isEmpty()) null else map
