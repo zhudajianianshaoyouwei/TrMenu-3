@@ -4,6 +4,7 @@ import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyPlayer
 import taboolib.common.platform.service.PlatformExecutor
 import taboolib.common.util.replaceWithOrder
+import taboolib.library.configuration.ConfigurationSection
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.chat.colored
 import taboolib.module.lang.Language
@@ -14,7 +15,6 @@ import trplugins.menu.module.display.icon.Icon
 import trplugins.menu.module.display.icon.IconProperty
 import trplugins.menu.module.display.layout.Layout
 import trplugins.menu.module.internal.script.FunctionParser
-import trplugins.menu.util.ignoreCase
 import trplugins.menu.util.parseGradients
 import trplugins.menu.util.parseRainbow
 import java.util.UUID
@@ -126,13 +126,7 @@ class MenuSession(
         val preColor = MenuSettings.PRE_COLOR
         val funced = FunctionParser.parse(placeholderPlayer, string) { type, value ->
             when (type) {
-                "node", "nodes", "n" -> menu?.conf?.get(parse(menu!!.conf.ignoreCase(value))).let {
-                    if (it is List<*>) {
-                        it.joinToString("\n")
-                    } else {
-                        it.toString()
-                    }
-                }
+                "node", "nodes", "n" -> parseNode(menu?.conf, value)
                 else -> null
             }
         }
@@ -144,6 +138,35 @@ class MenuSession(
 
     fun parse(string: List<String>): List<String> {
         return string.map { parse(it) }
+    }
+
+    private fun parseNode(conf: ConfigurationSection?, node: String): String? {
+        if (conf == null) {
+            return null
+        }
+        var key = node
+        val arguments: Array<String>? = if (key.contains('_')) {
+            val index = key.indexOf('_')
+            key = node.substring(0, index)
+            if (index + 1 < node.length) {
+                node.substring(index + 1).split('_').toTypedArray()
+            } else {
+                null
+            }
+        } else {
+            null
+        }
+        return conf[parse(conf.getKeys(true).find { it.equals(key, ignoreCase = true) } ?: key)].let {
+            val value = if (it is List<*>) {
+                it.joinToString("\n")
+            } else {
+                it.toString()
+            }
+            if (arguments != null) {
+                value.replaceWithOrder(*arguments)
+            }
+            value
+        }
     }
 
 
