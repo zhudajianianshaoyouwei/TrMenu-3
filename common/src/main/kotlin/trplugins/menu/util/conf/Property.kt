@@ -241,7 +241,12 @@ enum class Property(val default: String, val regex: Regex) {
     /**
      * 菜单内置脚本
      */
-    FUNCTIONS("Functions", "(fun(ction)?|script)s?");
+    FUNCTIONS("Functions", "(fun(ction)?|script)s?"),
+
+    /**
+     * 菜单内置国际化
+     */
+    LANG("Lang", "lang(uage)?|internationalization|i18n");
 
     constructor(default: String, regex: String) : this(default, Regex("(?i)$regex"))
 

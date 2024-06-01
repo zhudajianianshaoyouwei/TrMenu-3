@@ -5,6 +5,7 @@ import org.bukkit.entity.Player
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.pluginId
 import taboolib.common.platform.function.submit
+import taboolib.library.configuration.ConfigurationSection
 import taboolib.module.configuration.Configuration
 import taboolib.platform.util.cancelNextChat
 import trplugins.menu.api.event.MenuOpenEvent
@@ -25,7 +26,8 @@ class Menu(
     val settings: MenuSettings,
     val layout: MenuLayout,
     val icons: Set<Icon>,
-    conf: Configuration
+    conf: Configuration,
+    private val langKey: String? = null,
 ) {
 
     companion object {
@@ -190,6 +192,13 @@ class Menu(
 
     fun getIcon(id: String): Icon? {
         return icons.find { it.id == id }
+    }
+
+    fun getLocaleSection(locale: String): ConfigurationSection? {
+        if (langKey == null) {
+            return null
+        }
+        return conf.getConfigurationSection("$langKey.$locale") ?: conf.getConfigurationSection("$langKey.default")
     }
 
     private fun forViewers(block: (Player) -> Unit) {

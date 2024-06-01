@@ -66,7 +66,8 @@ object MenuSerializer : ISerializer {
         // 加载菜单配置
         val conf = Configuration.loadFromFile(file, type)
 
-        val languages: Set<String> = conf.getConfigurationSection("Lang")?.getKeys(false) ?: emptySet()
+        val langKey = Property.LANG.getKey(conf)
+        val languages: Set<String> = conf.getConfigurationSection(langKey)?.getKeys(false) ?: emptySet()
 
         // 读取菜单设置
         val settings = serializeSetting(conf, languages)
@@ -89,7 +90,7 @@ object MenuSerializer : ISerializer {
             }
         }
         // 返回菜单
-        Menu(id, settings.result as MenuSettings, layout.result as MenuLayout, icons.asIcons(), conf).also {
+        Menu(id, settings.result as MenuSettings, layout.result as MenuLayout, icons.asIcons(), conf, langKey).also {
             result.result = it
             return result
         }

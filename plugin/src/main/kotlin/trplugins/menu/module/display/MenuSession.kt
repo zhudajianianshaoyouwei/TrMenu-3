@@ -127,6 +127,7 @@ class MenuSession(
         val funced = FunctionParser.parse(placeholderPlayer, string) { type, value ->
             when (type) {
                 "node", "nodes", "n" -> parseNode(menu?.conf, value)
+                "lang" -> parseNode(menu?.getLocaleSection(locale), value)
                 else -> null
             }
         }
