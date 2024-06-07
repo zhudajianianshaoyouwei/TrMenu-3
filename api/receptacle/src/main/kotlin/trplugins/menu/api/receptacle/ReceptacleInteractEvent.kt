@@ -15,9 +15,7 @@ class ReceptacleInteractEvent<Element>(val player: Player, val receptacle: Recep
 
     fun refresh() {
         if (receptacleClickType.isItemMoveable()) {
-            receptacle.layout.hotBarSlots.forEach { receptacle.refresh(it) }
-            receptacle.layout.mainInvSlots.forEach { receptacle.refresh(it) }
-            receptacle.layout.containerSlots.forEach { receptacle.refresh(it) }
+            receptacle.refresh()
         } else {
             receptacle.refresh(slot)
         }
