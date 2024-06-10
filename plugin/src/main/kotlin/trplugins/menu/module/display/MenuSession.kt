@@ -165,8 +165,9 @@ class MenuSession(
             }
             if (arguments != null) {
                 value.replaceWithOrder(*arguments)
+            } else {
+                value
             }
-            value
         }
     }
 
