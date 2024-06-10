@@ -5,8 +5,8 @@ import org.bukkit.entity.Player
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.pluginId
 import taboolib.common.platform.function.submit
-import taboolib.library.configuration.ConfigurationSection
 import taboolib.module.configuration.Configuration
+import taboolib.module.lang.Type
 import taboolib.platform.util.cancelNextChat
 import trplugins.menu.api.event.MenuOpenEvent
 import trplugins.menu.api.event.MenuPageChangeEvent
@@ -194,11 +194,15 @@ class Menu(
         return icons.find { it.id == id }
     }
 
-    fun getLocaleSection(locale: String): ConfigurationSection? {
+    fun getLocaleValue(locale: String, key: String): Any? {
         if (langKey == null) {
             return null
         }
-        return conf.getConfigurationSection("$langKey.$locale") ?: conf.getConfigurationSection("$langKey.default")
+        return conf.getConfigurationSection("$langKey.$locale")?.let { provided ->
+            provided.getKeys(true).find { it.equals(key, ignoreCase = true) }?.let { provided[it] }
+        } ?: conf.getConfigurationSection("$langKey.default")?.let { default ->
+            default.getKeys(true).find { it.equals(key, ignoreCase = true) }?.let { default[it] }
+        }
     }
 
     private fun forViewers(block: (Player) -> Unit) {

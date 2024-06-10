@@ -126,8 +126,14 @@ class MenuSession(
         val preColor = MenuSettings.PRE_COLOR
         val funced = FunctionParser.parse(placeholderPlayer, string) { type, value ->
             when (type) {
-                "node", "nodes", "n" -> parseNode(menu?.conf, value)
-                "lang" -> parseNode(menu?.getLocaleSection(locale), value)
+                "node", "nodes", "n" -> parseNode(value) { key ->
+                    val config = menu?.conf ?: return@parseNode null
+                    val foundKey = config.getKeys(true).find { it.equals(key, ignoreCase = true) } ?: return@parseNode null
+                    config[foundKey]
+                }
+                "lang" -> parseNode(value) { key ->
+                    menu?.getLocaleValue(locale, key)
+                }
                 else -> null
             }
         }
@@ -141,10 +147,7 @@ class MenuSession(
         return string.map { parse(it) }
     }
 
-    private fun parseNode(conf: ConfigurationSection?, node: String): String? {
-        if (conf == null) {
-            return null
-        }
+    private fun parseNode(node: String, valueSupplier: (String) -> Any?): String? {
         var key = node
         val arguments: Array<String>? = if (key.contains('_')) {
             val index = key.indexOf('_')
@@ -157,16 +160,16 @@ class MenuSession(
         } else {
             null
         }
-        return conf[parse(conf.getKeys(true).find { it.equals(key, ignoreCase = true) } ?: key)].let {
+
+        valueSupplier.invoke(parse(key)).let {
             val value = if (it is List<*>) {
                 it.joinToString("\n")
-            } else {
-                it.toString()
-            }
+            } else it?.toString() ?: return null
+
             if (arguments != null) {
-                value.replaceWithOrder(*arguments)
+                return value.replaceWithOrder(*arguments)
             } else {
-                value
+                return value
             }
         }
     }
