@@ -4,10 +4,14 @@ import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemFlag
 import taboolib.common.platform.function.pluginId
+import taboolib.common.platform.function.warning
 import taboolib.common.util.asList
 import taboolib.library.configuration.ConfigurationSection
 import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.Type
+import taboolib.module.lang.Language
+import taboolib.module.lang.TypeList
+import taboolib.module.lang.TypeText
 import taboolib.module.nms.ItemTag
 import taboolib.module.nms.ItemTagData
 import trplugins.menu.TrMenu.actionHandle
@@ -67,7 +71,14 @@ object MenuSerializer : ISerializer {
         val conf = Configuration.loadFromFile(file, type)
 
         val langKey = Property.LANG.getKey(conf)
-        val languages: Set<String> = conf.getConfigurationSection(langKey)?.getKeys(false) ?: emptySet()
+        val languages: Map<String, ConfigurationSection> = when (val section = conf.getConfigurationSection(langKey)) {
+            is ConfigurationSection -> {
+                val map = mutableMapOf<String, ConfigurationSection>()
+                section.getKeys(false).forEach { locale -> section.getConfigurationSection(locale)?.also { map[locale] = it } }
+                map
+            }
+            else -> emptyMap()
+        }
 
         // 读取菜单设置
         val settings = serializeSetting(conf, languages)
@@ -89,8 +100,29 @@ object MenuSerializer : ISerializer {
                 return result
             }
         }
+
+        // 读取菜单语言
+        val lang: Map<String, HashMap<String, taboolib.module.lang.Type>>? = if (languages.isEmpty()) null else {
+            val map = HashMap<String, HashMap<String, taboolib.module.lang.Type>>()
+            languages.forEach { entry ->
+                val nodes = serializeLocaleNodes(entry.key, entry.value, HashMap())
+                if (nodes.isNotEmpty()) {
+                    map[entry.key.lowercase()] = nodes
+                }
+            }
+            map
+        }
+
         // 返回菜单
-        Menu(id, settings.result as MenuSettings, layout.result as MenuLayout, icons.asIcons(), conf, langKey).also {
+        Menu(
+            id,
+            settings.result as MenuSettings,
+            layout.result as MenuLayout,
+            icons.asIcons(),
+            conf,
+            if (languages.isNotEmpty()) langKey else null,
+            lang
+        ).also {
             result.result = it
             return result
         }
@@ -100,10 +132,10 @@ object MenuSerializer : ISerializer {
      * Ⅱ. 载入菜单设置 MenuSettings
      */
     override fun serializeSetting(conf: Configuration): SerialzeResult {
-        return serializeSetting(conf, emptySet())
+        return serializeSetting(conf, emptyMap())
     }
 
-    private fun serializeSetting(conf: Configuration, languages: Set<String>): SerialzeResult {
+    private fun serializeSetting(conf: Configuration, languages: Map<String, ConfigurationSection>): SerialzeResult {
         val result = SerialzeResult(SerialzeResult.Type.MENU_SETTING)
         val options = Property.OPTIONS.ofSection(conf)
         val bindings = Property.BINDINGS.ofSection(conf)
@@ -167,12 +199,10 @@ object MenuSerializer : ISerializer {
         )
 
         // i18n
-        languages.forEach { locale ->
-            conf.getConfigurationSection("Lang.$locale")?.also {
-                val titleI18n = Property.TITLE.of(it)
-                if (titleI18n != null) {
-                    settings.addI18nTitle(locale, CycleList(Property.asList(titleI18n)))
-                }
+        languages.forEach { entry ->
+            val titleI18n = Property.TITLE.of(entry.value)
+            if (titleI18n != null) {
+                settings.addI18nTitle(entry.key, CycleList(Property.asList(titleI18n)))
             }
         }
 
@@ -212,17 +242,17 @@ object MenuSerializer : ISerializer {
      * Ⅳ. 载入图标功能 Icons
      */
     override fun serializeIcons(conf: Configuration, layout: MenuLayout): SerialzeResult {
-        return serializeIcons(conf, emptySet(), layout)
+        return serializeIcons(conf, emptyMap(), layout)
     }
 
-    fun serializeIcons(conf: Configuration, languages: Set<String>, layout: MenuLayout): SerialzeResult {
+    fun serializeIcons(conf: Configuration, languages: Map<String, ConfigurationSection>, layout: MenuLayout): SerialzeResult {
         val result = SerialzeResult(SerialzeResult.Type.ICON)
 
         // i18n
         val iconsI18n: Map<String, ConfigurationSection>? = if (languages.isEmpty()) null else {
             val map = mutableMapOf<String, ConfigurationSection>()
-            languages.forEach { locale ->
-                conf.getConfigurationSection("Lang.$locale")?.also { Property.ICONS.ofSection(it)?.also { icons -> map[locale] = icons } }
+            languages.forEach { entry ->
+                Property.ICONS.ofSection(entry.value)?.also { map[entry.key] = it }
             }
             if (map.isEmpty()) null else map
         }
@@ -381,5 +411,69 @@ object MenuSerializer : ISerializer {
     val line: (List<String>) -> List<String> =
         { origin -> mutableListOf<String>().also { list -> origin.forEach { list.addAll(it.split("\n")) } } }
 
+    // Method body taken from Taboolib, licensed under the MIT License
+    //
+    // Copyright (c) 2018 Bkm016
+    private fun serializeLocaleNodes(code: String, file: ConfigurationSection, nodes: HashMap<String, taboolib.module.lang.Type>, root: String = ""): HashMap<String, taboolib.module.lang.Type> {
+        file.getKeys(false).forEach { node ->
+            val key = "$root$node"
+            when (val obj = file[node]) {
+                // 标准文本
+                is String -> {
+                    nodes[key] = TypeText(obj)
+                }
+                // 列表
+                is List<*> -> {
+                    val list = obj.mapNotNull { sub ->
+                        if (sub is Map<*, *>) {
+                            serializeLocaleNode(code, sub.map { it.key.toString() to it.value!! }.toMap(), key)
+                        } else {
+                            TypeText(sub.toString())
+                        }
+                    }
+                    // Only load as TypeList a list with more than 1 element
+                    if (list.size == 1) {
+                        nodes[key] = list[0]
+                    } else {
+                        nodes[key] = TypeList(list)
+                    }
+                }
+                // 嵌套
+                is ConfigurationSection -> {
+                    // Only load sections with specified type
+                    // Not detecting "type" since is a word that can be used on any locale section
+                    if (obj.contains("==")) {
+                        val type = serializeLocaleNode(code, obj.getValues(false).map { it.key to it.value!! }.toMap(), key)
+                        if (type != null) {
+                            nodes[key] = type
+                        }
+                    } else {
+                        serializeLocaleNodes(code, obj, nodes, "$key.")
+                    }
+                }
+                // 其他
+                else -> warning("Unsupported language node: $key ($code)")
+            }
+        }
+        return nodes
+    }
 
+    // Method body taken from Taboolib, licensed under the MIT License
+    //
+    // Copyright (c) 2018 Bkm016
+    private fun serializeLocaleNode(code: String, map: Map<String, Any>, node: String?): taboolib.module.lang.Type? {
+        return if (map.containsKey("type") || map.containsKey("==")) {
+            val type = (map["type"] ?: map["=="]).toString().lowercase()
+            val typeInstance = Language.languageType[type]?.getDeclaredConstructor()?.newInstance()
+            if (typeInstance != null) {
+                typeInstance.init(map)
+            } else {
+                warning("Unsupported language type: $node > $type ($code)")
+            }
+            typeInstance
+        } else {
+            warning("Missing language type: $map ($code)")
+            null
+        }
+    }
 }

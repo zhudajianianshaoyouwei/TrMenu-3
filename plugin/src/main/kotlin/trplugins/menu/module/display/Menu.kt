@@ -28,6 +28,7 @@ class Menu(
     val icons: Set<Icon>,
     conf: Configuration,
     private val langKey: String? = null,
+    lang: Map<String, HashMap<String, Type>>? = null
 ) {
 
     companion object {
@@ -37,6 +38,9 @@ class Menu(
     }
 
     var conf: Configuration = conf
+        internal set
+
+    var lang: Map<String, HashMap<String, Type>>? = lang
         internal set
 
     val viewers: MutableSet<String> = mutableSetOf()
@@ -192,6 +196,17 @@ class Menu(
 
     fun getIcon(id: String): Icon? {
         return icons.find { it.id == id }
+    }
+
+    fun getLocaleNode(locale: String, key: String): Type? {
+        if (lang == null) {
+            return null
+        }
+        return lang?.get(locale)?.let { provided ->
+            provided[key]
+        } ?: lang?.get("default")?.let { default ->
+            default[key]
+        }
     }
 
     fun getLocaleValue(locale: String, key: String): Any? {
