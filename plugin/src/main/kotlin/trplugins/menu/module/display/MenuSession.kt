@@ -2,9 +2,10 @@ package trplugins.menu.module.display
 
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyPlayer
+import taboolib.common.platform.function.submit
+import taboolib.common.platform.function.submitAsync
 import taboolib.common.platform.service.PlatformExecutor
 import taboolib.common.util.replaceWithOrder
-import taboolib.library.configuration.ConfigurationSection
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.chat.colored
 import taboolib.module.lang.Language
@@ -87,6 +88,13 @@ class MenuSession(
     private val temporaries = mutableSetOf<PlatformExecutor.PlatformTask>()
 
     var locale: String = kotlin.run {
+        if (langPlayer.isNotBlank()) {
+            // Avoid ConcurrentModificationException
+            submitAsync(delay = 2L) {
+                locale = parse(langPlayer)
+            }
+        }
+
         val code = try {
             viewer.locale
         } catch (ignored: NoSuchMethodError) {
@@ -102,7 +110,7 @@ class MenuSession(
                 icon.defIcon.display.cache.remove(id)
                 icon.subs.elements.forEach { sub -> sub.display.cache.remove(id) }
             } }
-            field = value.lowercase()
+            field = Language.languageCodeTransfer[value.lowercase()]?.lowercase() ?: value.lowercase()
         }
 
     /**
@@ -289,6 +297,7 @@ class MenuSession(
 
         @JvmField
         val SESSIONS = mutableMapOf<UUID, MenuSession>()
+        var langPlayer: String = ""
 
         fun getSession(player: Player): MenuSession {
             return SESSIONS.computeIfAbsent(player.uniqueId) { MenuSession(player, null, 0, arrayOf()) }

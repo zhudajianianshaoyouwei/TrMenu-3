@@ -2,6 +2,7 @@ package trplugins.menu.module.internal.listener
 
 import org.bukkit.event.player.PlayerLocaleChangeEvent
 import taboolib.common.platform.event.SubscribeEvent
+import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.display.session
 
 /**
@@ -12,7 +13,9 @@ object ListenerLocale {
 
     @SubscribeEvent
     fun onLocaleChange(e: PlayerLocaleChangeEvent) {
-        e.player.session().locale = e.locale
+        if (MenuSession.langPlayer.isBlank()) {
+            e.player.session().locale = e.locale
+        }
     }
 
 }
