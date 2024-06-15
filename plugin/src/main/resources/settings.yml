@@ -12,6 +12,19 @@ Options:
   Placeholders:
     JavaScript-Parse: false
 
+Language:
+  Default: 'zh_CN'
+  # Parse the provided text as player language
+  # Leave it blank to use player locale instead
+  Player: ''
+  CodeTransfer:
+    zh_hans_cn: 'zh_CN'
+    zh_hant_cn: 'zh_TW'
+    en_ca: 'en_US'
+    en_au: 'en_US'
+    en_gb: 'en_US'
+    en_nz: 'en_US'
+
 Database:
   # Local: SQLITE
   # External: SQL, MONGODB

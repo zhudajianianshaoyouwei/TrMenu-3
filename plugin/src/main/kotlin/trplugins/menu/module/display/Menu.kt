@@ -6,6 +6,7 @@ import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.pluginId
 import taboolib.common.platform.function.submit
 import taboolib.module.configuration.Configuration
+import taboolib.module.lang.Type
 import taboolib.platform.util.cancelNextChat
 import trplugins.menu.api.event.MenuOpenEvent
 import trplugins.menu.api.event.MenuPageChangeEvent
@@ -25,7 +26,9 @@ class Menu(
     val settings: MenuSettings,
     val layout: MenuLayout,
     val icons: Set<Icon>,
-    conf: Configuration
+    conf: Configuration,
+    private val langKey: String? = null,
+    lang: Map<String, HashMap<String, Type>>? = null
 ) {
 
     companion object {
@@ -35,6 +38,9 @@ class Menu(
     }
 
     var conf: Configuration = conf
+        internal set
+
+    var lang: Map<String, HashMap<String, Type>>? = lang
         internal set
 
     val viewers: MutableSet<String> = mutableSetOf()
@@ -140,13 +146,14 @@ class Menu(
      * 加载容器标题 & 自动更新
      */
     private fun loadTitle(session: MenuSession) {
-        session.receptacle?.title(settings.title.next(session.id)?.let { session.parse(it) } ?: pluginId, update = false)
+        val title = settings.title(session)
+        session.receptacle?.title(title.next(session.id)?.let { session.parse(it) } ?: pluginId, update = false)
         
         val setTitle = {
-            session.receptacle?.title(settings.title.next(session.id)?.let { session.parse(it) } ?: pluginId)
+            session.receptacle?.title(title.next(session.id)?.let { session.parse(it) } ?: pluginId)
         }
 
-        if (settings.titleUpdate > 0 && settings.title.cyclable()) {
+        if (settings.titleUpdate > 0 && title.cyclable()) {
             session.arrange(submit(delay = 10, period = settings.titleUpdate.toLong(), async = true) {
                 setTitle()
             })
@@ -189,6 +196,28 @@ class Menu(
 
     fun getIcon(id: String): Icon? {
         return icons.find { it.id == id }
+    }
+
+    fun getLocaleNode(locale: String, key: String): Type? {
+        if (lang == null) {
+            return null
+        }
+        return lang?.get(locale)?.let { provided ->
+            provided[key]
+        } ?: lang?.get("default")?.let { default ->
+            default[key]
+        }
+    }
+
+    fun getLocaleValue(locale: String, key: String): Any? {
+        if (langKey == null) {
+            return null
+        }
+        return conf.getConfigurationSection("$langKey.$locale")?.let { provided ->
+            provided.getKeys(true).find { it.equals(key, ignoreCase = true) }?.let { provided[it] }
+        } ?: conf.getConfigurationSection("$langKey.default")?.let { default ->
+            default.getKeys(true).find { it.equals(key, ignoreCase = true) }?.let { default[it] }
+        }
     }
 
     private fun forViewers(block: (Player) -> Unit) {

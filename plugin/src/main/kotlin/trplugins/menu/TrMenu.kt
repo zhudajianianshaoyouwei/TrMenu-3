@@ -8,12 +8,10 @@ import taboolib.module.configuration.Configuration
 import taboolib.module.kether.Kether
 import taboolib.module.lang.Language
 import taboolib.module.lang.sendLang
-import taboolib.module.nms.nmsProxy
 import taboolib.platform.BukkitPlugin
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.receptacle.provider.PlatformProvider
 import trplugins.menu.api.receptacle.vanilla.window.NMS
-import trplugins.menu.api.receptacle.vanilla.window.NMSImpl
 import trplugins.menu.module.conf.Loader
 import trplugins.menu.module.conf.prop.RunningPerformance
 import trplugins.menu.module.display.MenuSession
@@ -68,6 +66,15 @@ object TrMenu : Plugin() {
     }
 
     private fun onSettingsReload() {
+        Language.default = SETTINGS.getString("Language.Default") ?: "zh_CN"
+        MenuSession.langPlayer = SETTINGS.getString("Language.Player") ?: ""
+        SETTINGS.getConfigurationSection("Language.CodeTransfer")?.also {
+            Language.languageCodeTransfer.clear()
+            it.getKeys(false).forEach { lang ->
+                Language.languageCodeTransfer[lang] = it.getString(lang) ?: Language.default
+            }
+        }
+
         performance = kotlin.runCatching {
             RunningPerformance.valueOf(SETTINGS.getString("Options.Running-Performance") ?: "Normal")
         }.getOrNull() ?: RunningPerformance.NORMAL

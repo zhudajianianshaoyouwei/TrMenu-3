@@ -37,7 +37,7 @@ object FunctionParser {
                         "meta", "m" -> Metadata.getMeta(player)[value].toString()
                         "data", "d" -> Metadata.getData(player)[value].toString()
                         "globaldata", "gdata", "g" -> runCatching { Metadata.globalData[value].toString() }.getOrElse { "null" }
-                        "lang", "triton" -> parseLangText(player, value)
+                        "triton" -> parseLangText(player, value)
 
                         else -> block(type, value) ?: "{${it.value}}"
                     }

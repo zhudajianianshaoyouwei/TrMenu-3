@@ -2,9 +2,13 @@ package trplugins.menu.module.display
 
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyPlayer
+import taboolib.common.platform.function.submit
+import taboolib.common.platform.function.submitAsync
 import taboolib.common.platform.service.PlatformExecutor
 import taboolib.common.util.replaceWithOrder
+import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.chat.colored
+import taboolib.module.lang.Language
 import taboolib.platform.compat.replacePlaceholder
 import trplugins.menu.api.event.MenuCloseEvent
 import trplugins.menu.api.receptacle.vanilla.window.WindowReceptacle
@@ -12,7 +16,6 @@ import trplugins.menu.module.display.icon.Icon
 import trplugins.menu.module.display.icon.IconProperty
 import trplugins.menu.module.display.layout.Layout
 import trplugins.menu.module.internal.script.FunctionParser
-import trplugins.menu.util.ignoreCase
 import trplugins.menu.util.parseGradients
 import trplugins.menu.util.parseRainbow
 import java.util.UUID
@@ -84,6 +87,31 @@ class MenuSession(
     // 临时任务（切换页码时允许删除）
     private val temporaries = mutableSetOf<PlatformExecutor.PlatformTask>()
 
+    var locale: String = kotlin.run {
+        if (langPlayer.isNotBlank()) {
+            // Avoid ConcurrentModificationException
+            submitAsync(delay = 2L) {
+                locale = parse(langPlayer)
+            }
+        }
+
+        val code = try {
+            viewer.locale
+        } catch (ignored: NoSuchMethodError) {
+            viewer.getProperty<String>("entity/locale")!!
+        }.lowercase()
+
+        Language.languageCodeTransfer[code]?.lowercase() ?: code
+    }
+        set(value) {
+            if (field == value.lowercase()) return
+            // Clear display cache
+            Menu.menus.forEach { menu -> menu.icons.forEach { icon ->
+                icon.defIcon.display.cache.remove(id)
+                icon.subs.elements.forEach { sub -> sub.display.cache.remove(id) }
+            } }
+            field = Language.languageCodeTransfer[value.lowercase()]?.lowercase() ?: value.lowercase()
+        }
 
     /**
      * 取得当前会话的布局
@@ -106,7 +134,14 @@ class MenuSession(
         val preColor = MenuSettings.PRE_COLOR
         val funced = FunctionParser.parse(placeholderPlayer, string) { type, value ->
             when (type) {
-                "node", "nodes", "n" -> menu?.conf?.get(parse(menu!!.conf.ignoreCase(value))).toString()
+                "node", "nodes", "n" -> parseNode(value) { key ->
+                    val config = menu?.conf ?: return@parseNode null
+                    val foundKey = config.getKeys(true).find { it.equals(key, ignoreCase = true) } ?: return@parseNode null
+                    config[foundKey]
+                }
+                "lang" -> parseNode(value) { key ->
+                    menu?.getLocaleValue(locale, key)
+                }
                 else -> null
             }
         }
@@ -118,6 +153,33 @@ class MenuSession(
 
     fun parse(string: List<String>): List<String> {
         return string.map { parse(it) }
+    }
+
+    private fun parseNode(node: String, valueSupplier: (String) -> Any?): String? {
+        var key = node
+        val arguments: Array<String>? = if (key.contains('_')) {
+            val index = key.indexOf('_')
+            key = node.substring(0, index)
+            if (index + 1 < node.length) {
+                node.substring(index + 1).split('_').toTypedArray()
+            } else {
+                null
+            }
+        } else {
+            null
+        }
+
+        valueSupplier.invoke(parse(key)).let {
+            val value = if (it is List<*>) {
+                it.joinToString("\n")
+            } else it?.toString() ?: return null
+
+            if (arguments != null) {
+                return value.replaceWithOrder(*arguments)
+            } else {
+                return value
+            }
+        }
     }
 
 
@@ -235,6 +297,7 @@ class MenuSession(
 
         @JvmField
         val SESSIONS = mutableMapOf<UUID, MenuSession>()
+        var langPlayer: String = ""
 
         fun getSession(player: Player): MenuSession {
             return SESSIONS.computeIfAbsent(player.uniqueId) { MenuSession(player, null, 0, arrayOf()) }

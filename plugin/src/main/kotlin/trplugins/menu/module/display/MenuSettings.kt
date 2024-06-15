@@ -56,6 +56,19 @@ class MenuSettings(
             }
         }
 
+    private val titleI18n = HashMap<String, CycleList<String>>()
+
+    fun addI18nTitle(locale: String, title: CycleList<String>) {
+        titleI18n[locale] = title
+    }
+
+    fun title(session: MenuSession): CycleList<String> {
+        if (titleI18n.isEmpty()) {
+            return title
+        }
+        return titleI18n[session.locale] ?: title
+    }
+
     /**
      * 匹配菜单绑定的命令
      *

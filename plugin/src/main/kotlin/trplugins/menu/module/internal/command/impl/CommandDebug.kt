@@ -171,7 +171,7 @@ object CommandDebug : CommandExpression {
                     &6HidePINV: ${menu.settings.hidePlayerInventory}
                     &6Bounds: ${menu.settings.boundCommands.joinToString(", ")} / ${menu.settings.boundItems.contentToString()}
                 &eIcons:
-                    ${menu.icons.joinToString { "&7[ &f${it.id} &7] &8${it.update} ;" }}
+                    ${menu.icons.joinToString { "&7[ &f${it.id} &7];" }}
                     
                 &a&l「&8--------------------------------------------------&a&l」
             """.trimIndent().split("\n")
