@@ -112,13 +112,13 @@ class Menu(
     /**
      * 本菜单内切换页码
      */
-    fun page(viewer: Player, page: Int) {
+    fun page(viewer: Player, page: Int, title: String? = null) {
         if (page < 0 || page > layout.getSize()) return
         val session = MenuSession.getSession(viewer)
         val previous = session.layout()!!
         val layout = layout[page]
         val receptacle: WindowReceptacle
-        val override = previous.isSimilar(layout) && session.receptacle != null
+        val override = previous.isSimilar(layout) && session.receptacle != null && title == null
 
         val menuPageChangeEvent = MenuPageChangeEvent(session, session.page, page, override)
         menuPageChangeEvent.call()
@@ -139,7 +139,16 @@ class Menu(
         if (override) {
             receptacle.refresh()
             session.updateActiveSlots()
-        } else receptacle.open(viewer)
+        } else {
+            if (title == null) {
+                if (!settings.title(session).cyclable()) {
+                    loadTitle(session)
+                }
+            } else {
+                session.receptacle?.title(title, update = false)
+            }
+            receptacle.open(viewer)
+        }
     }
 
     /**
