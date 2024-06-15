@@ -4,9 +4,12 @@
 
 ---
 
-### 🔔 Infomation
+### 🔔 What's new in this fork?
 
 - **Support 1.8.9 ~ 1.20.4**
+- **Fix Skull display**
+- **[International Language](https://github.com/Dreeam-qwq/TrMenu/pull/64)**
+- **Something more...**
 
  **Notice: I maintain this fork only based on my interests.**
 
