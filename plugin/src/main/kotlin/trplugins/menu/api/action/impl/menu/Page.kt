@@ -22,9 +22,10 @@ class Page(handle: ActionHandle) : ActionBase(handle) {
     override fun onExecute(contents: ActionContents, player: ProxyPlayer, placeholderPlayer: ProxyPlayer) {
         val session = player.session()
         val menu = session.menu ?: return
-        val page = min(contents.stringContent().parseContent(placeholderPlayer).toIntOrNull() ?: 0, menu.layout.getSize() - 1)
+        val split = contents.stringContent().parseContent(placeholderPlayer).split(' ', limit = 2)
+        val page = min(split[0].toIntOrNull() ?: 0, menu.layout.getSize() - 1)
 
-        menu.page(player.cast(), max(0, page))
+        menu.page(player.cast(), max(0, page), if (split.size > 1) split[1] else null)
     }
 
 }
