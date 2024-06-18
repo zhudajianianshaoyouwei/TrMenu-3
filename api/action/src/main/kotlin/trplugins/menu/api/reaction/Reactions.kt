@@ -13,14 +13,35 @@ data class Reactions(val handle: ActionHandle, private val reacts: MutableList<R
     fun eval(player: ProxyPlayer): Boolean {
         if (isEmpty()) return true
 
-        return handle.runAction(player, getActions(player))
+        return handle.runAction(player, getIterator(player))
     }
 
-    fun getActions(player: ProxyPlayer): List<ActionEntry> {
-        return mutableListOf<ActionEntry>().run {
-            reacts.sortedBy { it.priority }.forEach { addAll(it.getActions(player)) }
-            this
+    fun getIterator(player: ProxyPlayer): Iterator<ActionEntry> {
+        if (reacts.isEmpty()) {
+            return emptyList<ActionEntry>().iterator()
         }
+        val sorted = reacts.sortedBy { it.priority }
+        val iterator = object : Iterator<ActionEntry> {
+            var position: Int = 0
+            var current: Iterator<ActionEntry> = sorted.first().getIterator(player)
+
+            override fun hasNext(): Boolean {
+                if (current.hasNext()) {
+                    return true
+                } else if (position + 1 < sorted.size) {
+                    position++
+                    current = sorted[position].getIterator(player)
+                    return hasNext()
+                } else {
+                    return false
+                }
+            }
+
+            override fun next(): ActionEntry {
+                return current.next()
+            }
+        }
+        return iterator
     }
 
     fun isEmpty(): Boolean {

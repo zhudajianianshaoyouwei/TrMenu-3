@@ -72,20 +72,28 @@ class ActionHandle(
     }
 
     fun runAction(player: ProxyPlayer, actions: List<ActionEntry>): Boolean {
+        return runAction(player, actions.iterator())
+    }
+
+    fun runAction(player: ProxyPlayer, actions: Iterator<ActionEntry>): Boolean {
         val run = mutableListOf<ActionEntry>()
         var result = true
         var delay = 0L
 
         run filter@{
-            actions.filter { it.option.evalChance() }.forEach {
+            while (actions.hasNext()) {
+                val action = actions.next()
+                if (!action.option.evalChance()) {
+                    continue
+                }
                 when {
-                    it.base is Break && it.option.evalCondition(player) -> {
+                    action.base is Break && action.option.evalCondition(player) -> {
                         result = false
                         return@filter
                     }
-                    it.base is Delay -> delay += it.base.getDelay(player, it.contents.stringContent())
-                    delay > 0 -> submit(delay = delay) { it.execute(player) }
-                    else -> run.add(it)
+                    action.base is Delay -> delay += action.base.getDelay(player, action.contents.stringContent())
+                    delay > 0 -> submit(delay = delay) { action.execute(player) }
+                    else -> run.add(action)
                 }
             }
         }

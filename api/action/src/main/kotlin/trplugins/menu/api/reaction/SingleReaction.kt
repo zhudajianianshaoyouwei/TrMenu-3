@@ -18,7 +18,7 @@ class SingleReaction(
         return actions.isEmpty()
     }
 
-    override fun getActions(player: ProxyPlayer): List<ActionEntry> {
-        return actions
+    override fun getIterator(player: ProxyPlayer): Iterator<ActionEntry> {
+        return actions.iterator()
     }
 }

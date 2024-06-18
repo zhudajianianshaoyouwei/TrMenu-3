@@ -13,7 +13,7 @@ abstract class Reaction(val handle: ActionHandle, var priority: Int) {
 
     abstract fun isEmpty(): Boolean
 
-    abstract fun getActions(player: ProxyPlayer): List<ActionEntry>
+    abstract fun getIterator(player: ProxyPlayer): Iterator<ActionEntry>
 
     companion object {
         fun of(handle: ActionHandle, priority: Int, any: Any): Reaction? {
