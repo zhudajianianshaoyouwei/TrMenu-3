@@ -21,9 +21,9 @@ class ConditionalReaction(handle: ActionHandle,
         return accept.isEmpty() && deny.isEmpty()
     }
 
-    override fun getActions(player: ProxyPlayer): List<ActionEntry> {
-        return if (evalCondition(player)) accept.getActions(player)
-        else deny.getActions(player)
+    override fun getIterator(player: ProxyPlayer): Iterator<ActionEntry> {
+        return if (evalCondition(player)) accept.getIterator(player)
+        else deny.getIterator(player)
     }
 
     private fun evalCondition(player: ProxyPlayer): Boolean {
