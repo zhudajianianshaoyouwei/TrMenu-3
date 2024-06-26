@@ -1,18 +1,26 @@
 package trplugins.menu.api.action.impl.func
 
+import org.bukkit.Color
 import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.LeatherArmorMeta
+import org.bukkit.inventory.meta.MapMeta
+import org.bukkit.inventory.meta.PotionMeta
 import taboolib.common.platform.ProxyPlayer
 import taboolib.common.util.replaceWithOrder
+import taboolib.library.xseries.XEnchantment
 import taboolib.library.xseries.XMaterial
+import taboolib.module.nms.MinecraftVersion
 import trplugins.menu.api.action.ActionHandle
 import trplugins.menu.api.action.base.ActionBase
 import trplugins.menu.api.action.base.ActionContents
 import trplugins.menu.module.display.session
 import trplugins.menu.util.Regexs
 import trplugins.menu.util.bukkit.ItemHelper
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * TrMenu
@@ -92,6 +100,49 @@ class EditItem(handle: ActionHandle) : ActionBase(handle) {
             item.itemMeta = meta
         }
 
+        fun enchantment(item: ItemStack, enchant: Enchantment, level: Int) {
+            when (method) {
+                1 -> {
+                    Enchantment.values().forEach { item.removeEnchantment(it) }
+                    item.addUnsafeEnchantment(enchant, level)
+                }
+                2 -> item.removeEnchantment(enchant)
+                3 -> item.addUnsafeEnchantment(enchant, level)
+            }
+        }
+
+        fun color(item: ItemStack, color: Color?) {
+            val meta = item.itemMeta ?: return
+            if (method == 3) {
+                when {
+                    meta is LeatherArmorMeta -> meta.setColor(meta.color.mixColors(color))
+                    MinecraftVersion.majorLegacy < 11100 -> return
+                    meta is PotionMeta -> {
+                        if (meta.color == null) {
+                            meta.color = color
+                        } else {
+                            meta.color = meta.color!!.mixColors(color)
+                        }
+                    }
+                    meta is MapMeta -> {
+                        if (meta.color == null) {
+                            meta.color = color
+                        } else {
+                            meta.color = meta.color!!.mixColors(color)
+                        }
+                    }
+                }
+            } else {
+                when {
+                    meta is LeatherArmorMeta -> meta.setColor(color)
+                    MinecraftVersion.majorLegacy < 11100 -> return
+                    meta is PotionMeta -> meta.color = color
+                    meta is MapMeta -> meta.color = color
+                }
+            }
+            item.itemMeta = meta
+        }
+
         when (part.first) {
             1 -> { // Material
                 if (method == 1) {
@@ -138,6 +189,27 @@ class EditItem(handle: ActionHandle) : ActionBase(handle) {
                     item.forEach { (it as ItemStack?)?.let { item -> customModelData(item, model) } }
                 } else if (item is ItemStack) customModelData(item, model)
             }
+            6 -> { // Enchantment
+                val enchant = XEnchantment.matchXEnchantment(value[0]).getOrNull()?.enchant ?: return
+                val level = if (value.size == 1) 1 else value[1].toIntOrNull() ?: return
+                if (item is Array<*>) {
+                    item.forEach { (it as ItemStack?)?.let { item -> enchantment(item, enchant, level) } }
+                } else if (item is ItemStack) enchantment(item, enchant, level)
+            }
+            7 -> { // Color
+                val color = if (method == 2 || value.isEmpty()) null else {
+                    val values = if (value[0].contains(',')) value[0].split(',') else value
+                    if (values.size < 3) return
+                    Color.fromRGB(
+                        values[0].toIntOrNull() ?: return,
+                        values[1].toIntOrNull() ?: return,
+                        values[2].toIntOrNull() ?: return
+                    )
+                }
+                if (item is Array<*>) {
+                    item.forEach { (it as ItemStack?)?.let { item -> color(item, color) } }
+                } else if (item is ItemStack) color(item, color)
+            }
         }
     }
 
@@ -174,6 +246,8 @@ class EditItem(handle: ActionHandle) : ActionBase(handle) {
                 "lore", "description" -> 3
                 "flag", "flags" -> 4
                 "custommodeldata", "modeldata", "model" -> 5
+                "enchantment", "enchant" -> 6
+                "color" -> 7
                 else -> 0
             } to part.getOrElse(1) { "" }
         }
