@@ -61,9 +61,16 @@ object Metadata {
 
     fun pushData(player: Player, dataMap: DataMap = getData(player)) {
         getLocalePlayer(player).let {
-            if (it != null)
+            if (it != null) {
+                it.getConfigurationSection("TrMenu.Data")?.getKeys(true)?.forEach { key ->
+                    if (!dataMap.data.containsKey(key)) {
+                        it["TrMenu.Data.$key"] = null
+                    }
+                }
                 dataMap.data.forEach { (key, value) -> it["TrMenu.Data.$key"] = value }
-            else println("NullData: ${player.name}")
+            } else {
+                println("NullData: ${player.name}")
+            }
         }
         database.push(player)
     }
