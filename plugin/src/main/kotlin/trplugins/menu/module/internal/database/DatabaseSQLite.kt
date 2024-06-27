@@ -62,19 +62,30 @@ class DatabaseSQLite : Database() {
 
     override fun push(player: Player, indexPlayer: String) {
         val file = cache[indexPlayer] ?: return
+        val str = file.saveToString()
         if (table.workspace(dataSource) { select { where { "user" eq indexPlayer } } }.find()) {
-            table.workspace(dataSource) {
-                update {
-                    set("data", file.saveToString())
-                    where {
-                        "user" eq indexPlayer
+            if (str.isBlank()) {
+                table.workspace(dataSource) {
+                    delete {
+                        where {
+                            "user" eq indexPlayer
+                        }
                     }
-                }
-            }.run()
-        } else {
+                }.run()
+            } else {
+                table.workspace(dataSource) {
+                    update {
+                        set("data", str)
+                        where {
+                            "user" eq indexPlayer
+                        }
+                    }
+                }.run()
+            }
+        } else if (str.isNotBlank()) {
             table.workspace(dataSource) {
                 insert("user", "data") {
-                    value(indexPlayer, file.saveToString())
+                    value(indexPlayer, str)
                 }
             }.run()
         }
