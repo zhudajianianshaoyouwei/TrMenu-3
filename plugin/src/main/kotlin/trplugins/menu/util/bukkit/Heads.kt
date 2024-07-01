@@ -25,39 +25,31 @@ import java.util.*
  */
 object Heads {
 
-    private val MOJANG_API = arrayOf(
-        "https://api.mojang.com/users/profiles/minecraft/",
-        "https://sessionserver.mojang.com/session/minecraft/profile/"
-    )
-
     private val DEFAULT_HEAD = XMaterial.PLAYER_HEAD.parseItem()!!
-    private val CACHED_PLAYER_TEXTURE = mutableMapOf<String, String?>()
     private val CACHED_SKULLS = mutableMapOf<String, ItemStack>()
     private val VALUE = if (MinecraftVersion.major >= 1.20) "value" else "getValue"
     private val NAME = if (MinecraftVersion.major >= 1.20) "name" else "getName"
 
-    fun cacheSize(): Pair<Int, Int> {
-        return CACHED_SKULLS.size to CACHED_PLAYER_TEXTURE.size
+    fun cacheSize(): Int {
+        return CACHED_SKULLS.size
     }
 
-    fun getHead(id: String): ItemStack = CACHED_SKULLS.computeIfAbsent(id) {
+    fun getHead(id: String): ItemStack {
+        return if (id.length > 20) getCustomHead(id) else getPlayerHead(id)
+    }
+
+    private fun getCustomHead(id: String): ItemStack = CACHED_SKULLS.computeIfAbsent(id) {
         DEFAULT_HEAD.clone().apply {
             itemMeta = itemMeta?.let { m -> XSkull.applySkin(m, id) }
         }
     }.clone()
 
-    fun getPlayerHead(name: String): ItemStack {
-        if (!CACHED_SKULLS.containsKey(name)) {
-            CACHED_SKULLS[name] = DEFAULT_HEAD.clone()
-                .also { item -> playerTexture(name) { modifyTexture(it, item) } ?: return DEFAULT_HEAD }
+    private fun getPlayerHead(name: String): ItemStack {
+        if (HookPlugin.getSkinsRestorer().isHooked) {
+            val texture: String? = HookPlugin.getSkinsRestorer().getPlayerSkinTexture(name)
+            return texture?.let { getCustomHead(it) } ?: DEFAULT_HEAD
         }
-        return (CACHED_SKULLS[name] ?: DEFAULT_HEAD).clone()
-    }
-
-    fun getCustomTextureHead(texture: String): ItemStack {
-        return CACHED_SKULLS.computeIfAbsent(texture) {
-            modifyTexture(texture, DEFAULT_HEAD.clone())
-        }.clone()
+        return getCustomHead(name)
     }
 
     fun seekTexture(itemStack: ItemStack): String? {
@@ -71,65 +63,5 @@ object Heads {
             if (it.getProperty<String>(NAME) == "textures") return it.getProperty<String>(VALUE)
         }
         return null
-    }
-
-    /**
-     * PRIVATE UTILS
-     */
-    private fun playerTexture(name: String, block: (String) -> Unit): Unit? {
-        when {
-            HookPlugin.getSkinsRestorer().isHooked -> {
-                HookPlugin.getSkinsRestorer().getPlayerSkinTexture(name)?.also(block) ?: return null
-            }
-
-            Bukkit.getPlayer(name)?.isOnline == true -> {
-                Bukkit.getPlayer(name)!!.invokeMethod<GameProfile>("getProfile")?.properties?.get("textures")
-                    ?.find { it.getProperty<String>(VALUE) != null }?.getProperty<String>(VALUE)
-                    ?.also(block)
-                    ?: return null
-            }
-
-            else -> {
-                submit(async = true) {
-                    val profile = JsonParser().parse(fromURL("${MOJANG_API[0]}$name")) as? JsonObject
-                    if (profile == null) {
-                        console().sendMessage("§7[§3Texture§7] Texture player $name not found.")
-                        return@submit
-                    }
-                    val uuid = profile["id"].asString
-                    (JsonParser().parse(fromURL("${MOJANG_API[1]}$uuid")) as JsonObject).getAsJsonArray("properties")
-                        .forEach {
-                            if ("textures" == it.asJsonObject["name"].asString) {
-                                CACHED_PLAYER_TEXTURE[name] = it.asJsonObject["value"].asString.also(block)
-                            }
-                        }
-                }
-            }
-        }
-        return Unit
-    }
-
-    private fun modifyTexture(input: String, itemStack: ItemStack): ItemStack {
-        val meta = itemStack.itemMeta as SkullMeta
-        val profile = GameProfile(UUID.randomUUID(), "TrMenu")
-        val texture = if (input.length in 60..100) encodeTexture(input) else input
-
-        profile.properties.put("textures", Property("textures", texture, "TrMenu_TexturedSkull"))
-        meta.setProperty("profile", profile)
-        itemStack.itemMeta = meta
-        return itemStack
-    }
-
-    private fun encodeTexture(input: String): String {
-        val encoder = Base64.getEncoder()
-        return encoder.encodeToString("{\"textures\":{\"SKIN\":{\"url\":\"https://textures.minecraft.net/texture/$input\"}}}".toByteArray())
-    }
-
-    private fun fromURL(url: String): String {
-        return try {
-            String(URL(url).openStream().readBytes())
-        } catch (t: Throwable) {
-            ""
-        }
     }
 }

@@ -5,10 +5,6 @@ taboolib {
         contributors {
             name("Arasple")
             name("Score2")
-            name("lilingfeng")
-            name("Dreeam-qwq")
-            name("FxRayHughes")
-            name("TheFloodDragon")
         }
         dependencies {
             name("PlaceholderAPI").with("bukkit").optional(true)
