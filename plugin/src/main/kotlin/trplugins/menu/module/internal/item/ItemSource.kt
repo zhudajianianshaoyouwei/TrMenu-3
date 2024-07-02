@@ -18,7 +18,6 @@ object ItemSource {
         val identifier = string.split(":", "=", limit = 2)
         val name = identifier[0].replace("-", "").uppercase()
         val id = identifier[1]
-
         return when (name) {
             "HEADDATABASE", "HDB" -> {
                 if (id.equals("RANDOM", true)) HookPlugin.getHeadDatabase().getRandomHead()
@@ -36,6 +35,8 @@ object ItemSource {
             "MagicCosmeticsE","MAGICE"-> HookPlugin.getMagicCosmetics().getEquipped(id, session.placeholderPlayer)
             "MagicCosmeticsI","MAGICI"-> HookPlugin.getMagicCosmetics().getCosmeticItem(id)
             "MMOITEMS" -> HookPlugin.getMMOItems().getItem(id)
+            "MAGICGEM" -> HookPlugin.getMagicGem().getItem(id)
+            "NEIGEITEMS","NI" -> HookPlugin.getNeigeItem().getItem(id)
             else -> CustomItemSourceEvent(name, id, session).also { it.call() }.source
         }
     }

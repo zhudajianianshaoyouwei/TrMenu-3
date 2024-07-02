@@ -94,4 +94,12 @@ object HookPlugin {
         return get(HookMagicCosmetics::class.java)
     }
 
+    fun getMagicGem() : HookMagicGem {
+        return get(HookMagicGem::class.java)
+    }
+
+    fun getNeigeItem(): HookNeigeItems {
+        return get(HookNeigeItems::class.java)
+    }
+
 }

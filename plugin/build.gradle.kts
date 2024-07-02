@@ -20,6 +20,8 @@ taboolib {
             name("FastScript").with("bukkit").optional(true)
             name("Triton").with("bukkit").optional(true)
             name("MMOItems").with("bukkit").optional(true)
+            name("MagicGem").with("bukkit").optional(true)
+            name("NeigeItems").with("bukkit").optional(true)
         }
     }
     relocate("trplugins.menu", group.toString().lowercase())
@@ -36,6 +38,7 @@ repositories {
     maven("https://repo.oraxen.com/releases")
     maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
     maven("https://jitpack.io")
+    maven("https://r.irepo.space/maven/")
 }
 
 dependencies {
@@ -64,7 +67,7 @@ dependencies {
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.2") { isTransitive = false }
     compileOnly("io.th0rgal:oraxen:1.165.0") { isTransitive = false }
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.0.0") { isTransitive = false }
-    compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1") { isTransitive = false }
+    compileOnly("com.github.LoneDev6:api-itemsadder:3.6.3-beta-14") { isTransitive = false }
     compileOnly("org.geysermc.floodgate:api:2.2.3-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:core:v3.9.5") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:api:v3.9.5") { isTransitive = false }
@@ -72,6 +75,7 @@ dependencies {
     compileOnly("com.github.FrancoBM12:API-MagicCosmetics:2.2.7") { isTransitive = false }
     compileOnly("io.lumine:MythicLib-dist:1.6.2-SNAPSHOT") { isTransitive = false } // Required by MMOItems API
     compileOnly("net.Indyuce:MMOItems-API:6.10-SNAPSHOT") { isTransitive = false }
+    compileOnly("pers.neige.neigeitems:NeigeItems:1.17.24") { isTransitive = false }
 
     compileOnly(fileTree("libs"))
 }

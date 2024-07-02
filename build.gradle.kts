@@ -59,6 +59,7 @@ subprojects {
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             jvmTarget = "1.8"
+            freeCompilerArgs += listOf("-Xskip-prerelease-check","-Xallow-unstable-dependencies")
         }
     }
 
