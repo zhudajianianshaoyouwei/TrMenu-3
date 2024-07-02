@@ -2,7 +2,6 @@ package trplugins.menu.module.display
 
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyPlayer
-import taboolib.common.platform.function.submit
 import taboolib.common.platform.function.submitAsync
 import taboolib.common.platform.service.PlatformExecutor
 import taboolib.common.util.replaceWithOrder
@@ -46,8 +45,6 @@ class MenuSession(
         get() {
             return if (agent.isOnline) agent else viewer
         }
-
-    private var mark = System.currentTimeMillis()
 
     internal var implicitArguments: Array<String> = arrayOf()
 
@@ -255,16 +252,22 @@ class MenuSession(
             // 9-35 Inventory
             playerItemSlots.clear()
             viewer.inventory.contents.forEachIndexed { index, itemStack ->
-                if (itemStack != null) {
-                    val slot = when (index) {
+                /*
+
+                解决幽灵物品 by lilingfengdev
+
+                2024/7/2 备注
+                经过多次测试,显然,即使当前物品栏为null,也应该发包更新,但这样子会有多余更新(猜疑)
+                或者更新上一个slot?
+                 */
+                val slot = when (index) {
                         in 0..8 -> type.hotBarSlots[index]
                         in 9..35 -> type.mainInvSlots[index - 9]
                         else -> -1
-                    }
-                    if (slot > 0) {
-                        receptacle!!.setElement(itemStack, slot)
-                        playerItemSlots.add(slot)
-                    }
+                }
+                if (slot > 0) {
+                    receptacle!!.setElement(itemStack, slot)
+                    if (itemStack!=null) playerItemSlots.add(slot)
                 }
             }
         }
