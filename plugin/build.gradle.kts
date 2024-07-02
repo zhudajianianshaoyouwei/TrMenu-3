@@ -71,7 +71,7 @@ dependencies {
     compileOnly("org.geysermc.floodgate:api:2.2.3-SNAPSHOT") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:core:v3.9.5") { isTransitive = false }
     compileOnly("com.github.tritonmc.Triton:api:v3.9.5") { isTransitive = false }
-    compileOnly("de.tr7zw:item-nbt-api-plugin:2.12.2") { isTransitive = false }
+    compileOnly("de.tr7zw:item-nbt-api-plugin:2.13.1") { isTransitive = false }
     compileOnly("com.github.FrancoBM12:API-MagicCosmetics:2.2.7") { isTransitive = false }
     compileOnly("io.lumine:MythicLib-dist:1.6.2-SNAPSHOT") { isTransitive = false } // Required by MMOItems API
     compileOnly("net.Indyuce:MMOItems-API:6.10-SNAPSHOT") { isTransitive = false }
