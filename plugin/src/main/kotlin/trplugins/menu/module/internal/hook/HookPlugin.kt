@@ -6,7 +6,6 @@ import taboolib.common.platform.SkipTo
 import taboolib.common.platform.function.console
 import taboolib.module.lang.sendLang
 import trplugins.menu.module.internal.hook.impl.*
-import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
 
@@ -105,6 +104,10 @@ object HookPlugin {
 
     fun getEcoItem(): HookEcoItems {
         return get(HookEcoItems::class.java)
+    }
+
+    fun getMythicMobs(): HookMythicMobs {
+        return get(HookMythicMobs::class.java)
     }
 
 

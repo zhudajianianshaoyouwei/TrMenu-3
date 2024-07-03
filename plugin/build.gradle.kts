@@ -23,10 +23,12 @@ taboolib {
             name("MagicGem").with("bukkit").optional(true)
             name("NeigeItems").with("bukkit").optional(true)
             name("EcoItems").with("bukkit").optional(true)
+            name("MythicMobs").with("bukkit").optional(true)
             name("NBTAPI").with("bukkit").optional(false)
         }
     }
     relocate("trplugins.menu", group.toString().lowercase())
+    relocate("ink.ptms.um","${group.toString().lowercase()}.um")
 }
 
 repositories {
@@ -48,6 +50,7 @@ dependencies {
     taboo(project(":common"))
     taboo(project(":api:receptacle"))
     taboo(project(":api:action"))
+    taboo("ink.ptms:um:1.0.0-beta-34")
 
     // Libraries
     compileOnly("org.apache.commons:commons-lang3:3.14.0")
