@@ -39,7 +39,6 @@ class MenuSettings(
     companion object {
 
         val PRE_COLOR get() = TrMenu.SETTINGS.getBoolean("Menu.Icon.Item.Pre-Color")
-        val USE_LEGACY_NBT get() = TrMenu.SETTINGS.getBoolean("Menu.Icon.Item.Use-Legacy-NBT")
         val DEFAULT_NAME_COLOR get() = (TrMenu.SETTINGS.getString("Menu.Icon.Item.Default-Name-Color") ?: "&7").colored()
         val DEFAULT_LORE_COLOR get() = (TrMenu.SETTINGS.getString("Menu.Icon.Item.Default-Lore-Color") ?: "&7").colored()
 

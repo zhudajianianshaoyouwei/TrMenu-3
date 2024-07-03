@@ -17,7 +17,6 @@ import taboolib.module.nms.getName
 import taboolib.platform.util.isAir
 import taboolib.platform.util.sendLang
 import taboolib.type.BukkitEquipment
-import trplugins.menu.module.display.MenuSettings
 import trplugins.menu.module.internal.command.CommandExpression
 import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.module.internal.item.ItemRepository
@@ -98,7 +97,7 @@ object CommandItem : CommandExpression {
             return
         }
         val name = item.getName()
-        val stringJson: String = if (MenuSettings.USE_LEGACY_NBT or !HookPlugin.getNBTAPI().isHooked) {
+        val stringJson: String = if (!HookPlugin.getNBTAPI().isHooked) {
             val json = JsonObject()
             json.addProperty("type", item.type.name)
             json.addProperty("data", item.data!!.data)
