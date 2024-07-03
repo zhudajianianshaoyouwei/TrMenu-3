@@ -6,6 +6,7 @@ import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.module.internal.hook.impl.HookSkulls
 import trplugins.menu.module.internal.script.asItemStack
+import trplugins.menu.module.internal.script.jexl.JexlAgent
 import trplugins.menu.module.internal.script.js.JavaScriptAgent
 
 /**
@@ -28,6 +29,7 @@ object ItemSource {
                 else HookPlugin[HookSkulls::class.java].getSkull(id)
             }
             "JAVASCRIPT", "JS" -> JavaScriptAgent.eval(session, id).asItemStack()
+            "JEXL" -> JexlAgent.eval(session, id).asItemStack()
             "ORAXEN" -> HookPlugin.getOraxen().getItem(id)
             "ITEMSADDER", "IA" -> HookPlugin.getItemsAdder().getItem(id)
             "ZAPHKIEL", "ZL" -> HookPlugin.getZaphkiel().getItem(id)

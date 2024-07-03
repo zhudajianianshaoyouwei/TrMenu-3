@@ -1,4 +1,4 @@
-package trplugins.menu.module.internal.script.js
+package trplugins.menu.module.internal.script
 
 import com.francobm.magicosmetics.api.CosmeticType
 import com.francobm.magicosmetics.api.MagicAPI
@@ -11,6 +11,8 @@ import taboolib.common.platform.function.console
 import taboolib.library.xseries.XMaterial
 import taboolib.module.lang.sendLang
 import taboolib.platform.util.buildItem
+import trplugins.menu.module.internal.script.jexl.JexlAgent
+import trplugins.menu.module.internal.script.js.JavaScriptAgent
 
 object MagicAPI {
 
@@ -22,6 +24,7 @@ object MagicAPI {
     fun init() {
         if (Bukkit.getPluginManager().getPlugin("MagicCosmetics") != null) {
             JavaScriptAgent.putBinding("magicApi", this)
+            JexlAgent.putBinding("magicApi", this)
             console().sendLang("Plugin-Dependency-Hooked", "MagicCosmetics")
         }
     }

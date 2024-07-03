@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.ProxyPlayer
 import trplugins.menu.api.TrMenuAPI
 import trplugins.menu.module.display.MenuSession
+import trplugins.menu.module.internal.script.jexl.JexlAgent
 import trplugins.menu.module.internal.script.js.JavaScriptAgent
 import trplugins.menu.util.EvalResult
 
@@ -37,6 +38,8 @@ fun ProxyPlayer.evalScript(script: String?) =
 fun Player.evalScript(script: String?): EvalResult {
     script ?: return EvalResult(null)
     val (isJavaScript, js) = JavaScriptAgent.serialize(script)
-    return if (isJavaScript) JavaScriptAgent.eval(MenuSession.getSession(this), js!!)
+    if (isJavaScript) JavaScriptAgent.eval(MenuSession.getSession(this), js!!)
+    val (isJexlScript,jexl) = JexlAgent.serialize(script)
+    return if (isJexlScript) JexlAgent.eval(MenuSession.getSession(this), jexl!!)
     else TrMenuAPI.instantKether(this, script)
 }
