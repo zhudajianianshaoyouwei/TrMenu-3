@@ -29,12 +29,7 @@ object HookPlugin {
                 if (Modifier.isAbstract(`class`.modifiers)) return@forEach
                 if (`class`.superclass != HookAbstract::class.java) return@forEach
 
-                try {
-                    it.add(`class`.asSubclass(HookAbstract::class.java).getConstructor().newInstance())
-                } catch (e: InvocationTargetException) {
-                    // Handle the exception here
-                    console().sendLang("Error occurred during class instantiation: ${e.message},${e.cause}")
-                }
+                it.add(`class`.asSubclass(HookAbstract::class.java).getConstructor().newInstance())
             }
         }.toTypedArray()
     }
