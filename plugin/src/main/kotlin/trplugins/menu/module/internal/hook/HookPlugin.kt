@@ -102,4 +102,12 @@ object HookPlugin {
         return get(HookNeigeItems::class.java)
     }
 
+    fun getEcoItem(): HookEcoItems {
+        return get(HookEcoItems::class.java)
+    }
+
+    fun getCrucible(): HookCrucible {
+        return get(HookCrucible::class.java)
+    }
+
 }
