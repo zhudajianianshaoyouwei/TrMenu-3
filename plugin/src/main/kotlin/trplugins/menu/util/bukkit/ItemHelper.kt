@@ -91,7 +91,7 @@ object ItemHelper {
 
     fun fromJson(json: String): ItemStack? {
         try {
-            if (HookPlugin.getNBTAPI().isHooked) {
+            if (!MenuSettings.USE_LEGACY_NBT && HookPlugin.getNBTAPI().isHooked) {
                 return HookPlugin.getNBTAPI().fromJson(json)
             }
             val parse = JsonParser().parse(json)

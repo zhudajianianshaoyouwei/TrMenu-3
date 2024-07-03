@@ -23,7 +23,6 @@ taboolib {
             name("MagicGem").with("bukkit").optional(true)
             name("NeigeItems").with("bukkit").optional(true)
             name("EcoItems").with("bukkit").optional(true)
-            name("MythicCrucible").with("bukkit").optional(true)
 
         }
     }
@@ -42,7 +41,6 @@ repositories {
     maven("https://jitpack.io")
     maven("https://r.irepo.space/maven/")
     maven("https://repo.auxilor.io/repository/maven-public/")
-    maven("https://mvn.lumine.io/repository/maven-public/")
 
 }
 
@@ -66,7 +64,7 @@ dependencies {
     // Hook Plugins
     compileOnly("com.willfp:eco:6.71.3") { isTransitive = false }
     compileOnly("com.willfp:EcoItems:5.49.1") { isTransitive = false }
-    compileOnly("me.clip:placeholderapi:2.11.5") { isTransitive = false }
+    compileOnly("me.clip:placeholderapi:2.11.6") { isTransitive = false }
     compileOnly("ink.ptms:Zaphkiel:2.0.14") { isTransitive = false }
     compileOnly("ca.tweetzy:skulls:3.10.0") { isTransitive = false }
     compileOnly("com.github.MilkBowl:VaultAPI:8bad2c479f") { isTransitive = false }
@@ -83,10 +81,6 @@ dependencies {
     compileOnly("io.lumine:MythicLib-dist:1.6.2-SNAPSHOT") { isTransitive = false } // Required by MMOItems API
     compileOnly("net.Indyuce:MMOItems-API:6.10-SNAPSHOT") { isTransitive = false }
     compileOnly("pers.neige.neigeitems:NeigeItems:1.17.24") { isTransitive = false }
-    compileOnly("io.lumine:MythicLib-dist:1.6-SNAPSHOT") { isTransitive = false }
-    compileOnly("io.lumine:Mythic-Dist:5.3.5") { isTransitive = false }
-    compileOnly("io.lumine:MythicCrucible-Dist:2.1.0-SNAPSHOT") { isTransitive = false }
-
 
     compileOnly(fileTree("libs"))
 }

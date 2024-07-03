@@ -6,6 +6,7 @@ import taboolib.common.platform.SkipTo
 import taboolib.common.platform.function.console
 import taboolib.module.lang.sendLang
 import trplugins.menu.module.internal.hook.impl.*
+import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
 
@@ -28,7 +29,12 @@ object HookPlugin {
                 if (Modifier.isAbstract(`class`.modifiers)) return@forEach
                 if (`class`.superclass != HookAbstract::class.java) return@forEach
 
-                it.add(`class`.asSubclass(HookAbstract::class.java).getConstructor().newInstance())
+                try {
+                    it.add(`class`.asSubclass(HookAbstract::class.java).getConstructor().newInstance())
+                } catch (e: InvocationTargetException) {
+                    // Handle the exception here
+                    console().sendLang("Error occurred during class instantiation: ${e.message},${e.cause}")
+                }
             }
         }.toTypedArray()
     }
@@ -106,8 +112,5 @@ object HookPlugin {
         return get(HookEcoItems::class.java)
     }
 
-    fun getCrucible(): HookCrucible {
-        return get(HookCrucible::class.java)
-    }
 
 }
