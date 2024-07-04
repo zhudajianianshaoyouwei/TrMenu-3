@@ -56,7 +56,7 @@ object MenuSerializer : ISerializer {
         val id = file.nameWithoutExtension
         val result = SerialzeResult(SerialzeResult.Type.MENU)
         // 文件格式检测
-        if (!Type.values().any { it -> it.suffixes.any { file.extension.equals(it, true) } }) {
+        if (!Type.entries.any { it -> it.suffixes.any { file.extension.equals(it, true) } }) {
             result.state = SerialzeResult.State.IGNORE
             return result
         }
@@ -66,7 +66,7 @@ object MenuSerializer : ISerializer {
             return result
         }
         // 菜单类型
-        val type = Type.values().find { it -> it.suffixes.any { file.extension.equals(it, true) } }!!
+        val type = Type.entries.find { it -> it.suffixes.any { file.extension.equals(it, true) } }!!
         // 加载菜单配置
         val conf = Configuration.loadFromFile(file, type)
 

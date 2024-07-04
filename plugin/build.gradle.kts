@@ -24,6 +24,7 @@ taboolib {
             name("NeigeItems").with("bukkit").optional(true)
             name("EcoItems").with("bukkit").optional(true)
             name("MythicMobs").with("bukkit").optional(true)
+            name("HMCCosmetics").with("bukkit").optional(true)
             name("NBTAPI").with("bukkit").optional(false)
         }
     }
@@ -43,6 +44,7 @@ repositories {
     maven("https://jitpack.io")
     maven("https://r.irepo.space/maven/")
     maven("https://repo.auxilor.io/repository/maven-public/")
+    maven("https://repo.hibiscusmc.com/releases/")
 
 }
 

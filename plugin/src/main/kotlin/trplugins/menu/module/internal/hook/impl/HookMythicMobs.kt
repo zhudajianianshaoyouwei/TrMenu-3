@@ -7,15 +7,16 @@ import taboolib.platform.util.buildItem
 import trplugins.menu.module.internal.hook.HookAbstract
 
 /**
- * @author Rubenicos
- * @date 2024/5/7 08:30
+ * @author lilingfengdev
+ * @date 2024/7/4 11:04
  */
 class HookMythicMobs : HookAbstract() {
 
     private val empty = buildItem(XMaterial.BEDROCK) { name = "UNHOOKED_${super.name.uppercase()}" }
 
     fun getItem(material: String): ItemStack {
-        return Mythic.API.getItemStack(material) ?: empty
+        if (checkHooked()) return Mythic.API.getItemStack(material) ?: empty
+        return empty
     }
 
     fun getID(id: ItemStack): String {
