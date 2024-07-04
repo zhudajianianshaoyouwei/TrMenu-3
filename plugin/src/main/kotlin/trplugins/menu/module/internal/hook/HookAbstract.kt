@@ -4,6 +4,8 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import taboolib.common.platform.function.console
 import taboolib.module.lang.sendLang
+import trplugins.menu.module.internal.script.jexl.JexlAgent
+import trplugins.menu.module.internal.script.js.JavaScriptAgent
 
 /**
  * @author Arasple
@@ -12,6 +14,7 @@ import taboolib.module.lang.sendLang
 abstract class HookAbstract {
 
     open val name by lazy { getPluginName() }
+    open val namespace by lazy { name.lowercase() }
 
     fun getFastName(): String? {
         return null
@@ -22,6 +25,7 @@ abstract class HookAbstract {
     }
 
     val isHooked by lazy {
+        bindingScript()
         plugin != null && plugin!!.isEnabled
     }
 
@@ -38,6 +42,11 @@ abstract class HookAbstract {
 
     fun reportAbuse() {
         console().sendLang("Plugin-Dependency-Abuse", name)
+    }
+
+    private fun bindingScript() {
+        JavaScriptAgent.putBinding(namespace, this)
+        JexlAgent.putBinding(namespace, this)
     }
 
 }

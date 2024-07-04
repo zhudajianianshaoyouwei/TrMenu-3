@@ -2,9 +2,8 @@ package trplugins.menu.module.internal.hook.impl
 
 import de.tr7zw.nbtapi.NBT
 import org.bukkit.inventory.ItemStack
-import trplugins.menu.module.internal.hook.HookAbstract
 
-class HookNBTAPI : HookAbstract() {
+object HookNBTAPI{
 
     fun toJson(item: ItemStack): String {
         return NBT.itemStackToNBT(item).toString()

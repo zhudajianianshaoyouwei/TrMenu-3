@@ -15,6 +15,8 @@ class HookMagicCosmetics : HookAbstract() {
 
     private val notFound = buildItem(XMaterial.BEDROCK) { name = "NOT_FOUND_${super.name.uppercase()}" }
 
+    override val namespace = "magicAPI"
+
     override fun getPluginName(): String {
         return "MagicCosmetics"
     }

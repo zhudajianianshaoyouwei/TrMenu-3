@@ -19,6 +19,7 @@ import taboolib.platform.util.sendLang
 import taboolib.type.BukkitEquipment
 import trplugins.menu.module.internal.command.CommandExpression
 import trplugins.menu.module.internal.hook.HookPlugin
+import trplugins.menu.module.internal.hook.impl.HookNBTAPI
 import trplugins.menu.module.internal.item.ItemRepository
 import trplugins.menu.util.bukkit.ItemHelper
 
@@ -97,7 +98,7 @@ object CommandItem : CommandExpression {
             return
         }
         val name = item.getName()
-        val stringJson: String = HookPlugin.getNBTAPI().toJson(item)
+        val stringJson: String = HookNBTAPI.toJson(item)
         if (stringJson.length < 200) {
             player.sendLang("Command-Item-To-Json", stringJson)
         } else {

@@ -16,7 +16,7 @@ import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.ItemTag
 import taboolib.platform.util.ItemBuilder
 import trplugins.menu.module.display.MenuSettings
-import trplugins.menu.module.internal.hook.HookPlugin
+import trplugins.menu.module.internal.hook.impl.HookNBTAPI
 import trplugins.menu.util.parseJson
 import kotlin.math.min
 
@@ -94,7 +94,7 @@ object ItemHelper {
         try {
             // 自动判别老式/新式 NBT 标签
             if (!json.startsWith("{\"")) {
-                return HookPlugin.getNBTAPI().fromJson(json)
+                return HookNBTAPI.fromJson(json)
             }
             val parse = JsonParser().parse(json)
             if (parse is JsonObject) {
@@ -116,7 +116,7 @@ object ItemHelper {
                 }
                 val meta = parse["meta"]
                 val item = meta?.let { itemStack?.also { ItemTag.fromLegacyJson(it.toString()).saveTo(it) } } ?: itemStack
-                item?.let { warning("\"$json\" is deprecated. Please use ${HookPlugin.getNBTAPI().toJson(it)} instead.") }
+                item?.let { warning("\"$json\" is deprecated. Please use ${HookNBTAPI.toJson(it)} instead.") }
                 return item
             }
             return null
