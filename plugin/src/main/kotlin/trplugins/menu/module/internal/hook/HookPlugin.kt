@@ -106,10 +106,6 @@ object HookPlugin {
         return get(HookEcoItems::class.java)
     }
 
-    fun getMythicMobs(): HookMythicMobs {
-        return get(HookMythicMobs::class.java)
-    }
-
     fun getHMCCosmetics(): HookHMCCosmetics {
         return get(HookHMCCosmetics::class.java)
     }

@@ -40,7 +40,6 @@ object ItemSource {
             "MAGICGEM","MG" -> HookPlugin.getMagicGem().getItem(id)
             "NEIGEITEMS","NI" -> HookPlugin.getNeigeItem().getItem(id)
             "ECOITEMS","EI" -> HookPlugin.getEcoItem().getItem(id)
-            "MYTHICMOBS","MM" -> HookPlugin.getMythicMobs().getItem(id)
             "HMCCosmetics","HMC" -> HookPlugin.getHMCCosmetics().getItem(id)
             else -> CustomItemSourceEvent(name, id, session).also { it.call() }.source
         }
