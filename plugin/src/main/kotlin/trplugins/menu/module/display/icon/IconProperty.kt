@@ -32,10 +32,11 @@ class IconProperty(
 
     fun handleClick(type: ReceptacleClickType, session: MenuSession) {
         val reactions = action.entries
-            .filter { set ->
-                set.key.any { it == ReceptacleClickType.ALL || it == ReceptacleClickType.NUMBER_KEY && it.isNumberKeyClick() } || set.key.contains(
-                    type
-                )
+            .filter { entry ->
+                entry.key.contains(type) || entry.key.any {
+                    it == ReceptacleClickType.ALL ||
+                    it == ReceptacleClickType.NUMBER_KEY && type.isNumberKeyClick()
+                }
             }
             .map { it.value }
 
