@@ -11,6 +11,7 @@ Options:
 
   Placeholders:
     JavaScript-Parse: false
+    Jexl-Parse: false
 
 Language:
   Default: 'zh_CN'

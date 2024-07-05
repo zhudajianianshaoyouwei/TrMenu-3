@@ -10,6 +10,7 @@ import trplugins.menu.api.event.MenuOpenEvent
 import trplugins.menu.module.display.Menu
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.script.jexl.JexlAgent
 import trplugins.menu.module.internal.script.js.JavaScriptAgent
 import trplugins.menu.util.ignoreCase
 
@@ -20,6 +21,7 @@ import trplugins.menu.util.ignoreCase
 object HookPlaceholderAPI : PlaceholderExpansion {
 
     private val enabledParseJavaScript get() = TrMenu.SETTINGS.getBoolean("Options.Placeholders.JavaScript-Parse", false)
+    private val enabledParseJexlScript get() = TrMenu.SETTINGS.getBoolean("Options.Placeholders.Jexl-Parse", false)
 
     override val identifier = pluginId
 
@@ -40,6 +42,7 @@ object HookPlaceholderAPI : PlaceholderExpansion {
                 "menu" -> menu(session, args)
                 "locale" -> session.locale
                 "js" -> if (enabledParseJavaScript) if (args.size > 1) JavaScriptAgent.eval(session, args[1]).asString() else "" else "UNABLE_PARSE"
+                "jexl" -> if (enabledParseJexlScript) if (args.size > 1) JexlAgent.eval(session, args[1]).asString() else "" else "UNABLE_PARSE"
                 else -> ""
             } }.getOrNull().toString()
         }
