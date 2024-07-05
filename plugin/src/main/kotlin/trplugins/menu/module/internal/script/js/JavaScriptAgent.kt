@@ -6,6 +6,7 @@ import taboolib.common5.compileJS
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.hook.impl.HookNBTAPI
+import trplugins.menu.module.internal.script.Bindings
 import trplugins.menu.util.EvalResult
 import java.util.function.Function
 import javax.script.CompiledScript
@@ -131,9 +132,11 @@ object JavaScriptAgent {
             "gdataDouble", java.util.function.Function<Any, Any?> { session.parse("{gdata: $it}").toDoubleOrNull() ?: 0.0 },
         )
 
+        val rawCode = Bindings.bootloaderCode + script
+
         val compiledScript =
-            if (cacheScript) preCompile(script)
-            else script.compileJS()
+            if (cacheScript) preCompile(rawCode)
+            else rawCode.compileJS()
 
         return EvalResult(compiledScript?.eval(context))
 

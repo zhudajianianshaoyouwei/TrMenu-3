@@ -88,4 +88,5 @@ dependencies {
     compileOnly("com.willfp:eco:6.71.3") { isTransitive = false }
     compileOnly("com.willfp:EcoItems:5.49.1") { isTransitive = false }
     compileOnly(fileTree("libs"))
+    implementation(kotlin("reflect"))
 }
