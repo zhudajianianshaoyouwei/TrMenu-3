@@ -25,50 +25,50 @@ enum class ReceptacleClickType(
 
     ALL(-1, -1),
 
-    LEFT(0, 0, ClickType.LEFT.name),
+    LEFT(0, 0, "LEFT"),
 
-    RIGHT(0, 1, ClickType.RIGHT.name),
+    RIGHT(0, 1, "RIGHT"),
 
-    SHIFT_LEFT(1, 0, ClickType.SHIFT_LEFT.name),
+    SHIFT_LEFT(1, 0, "SHIFT_LEFT"),
 
-    SHIFT_RIGHT(1, 1, ClickType.SHIFT_RIGHT.name),
+    SHIFT_RIGHT(1, 1, "SHIFT_RIGHT"),
 
     OFFHAND(2, 40, "SWAP_OFFHAND"),
 
-    NUMBER_KEY(2, -1, ClickType.NUMBER_KEY.name, -1),
+    NUMBER_KEY(2, -1, "NUMBER_KEY", -1),
 
-    NUMBER_KEY_1(2, 0, ClickType.NUMBER_KEY.name, 0),
+    NUMBER_KEY_1(2, 0, "NUMBER_KEY", 0),
 
-    NUMBER_KEY_2(2, 1, ClickType.NUMBER_KEY.name, 1),
+    NUMBER_KEY_2(2, 1, "NUMBER_KEY", 1),
 
-    NUMBER_KEY_3(2, 2, ClickType.NUMBER_KEY.name, 2),
+    NUMBER_KEY_3(2, 2, "NUMBER_KEY", 2),
 
-    NUMBER_KEY_4(2, 3, ClickType.NUMBER_KEY.name, 3),
+    NUMBER_KEY_4(2, 3, "NUMBER_KEY", 3),
 
-    NUMBER_KEY_5(2, 4, ClickType.NUMBER_KEY.name, 4),
+    NUMBER_KEY_5(2, 4, "NUMBER_KEY", 4),
 
-    NUMBER_KEY_6(2, 5, ClickType.NUMBER_KEY.name, 5),
+    NUMBER_KEY_6(2, 5, "NUMBER_KEY", 5),
 
-    NUMBER_KEY_7(2, 6, ClickType.NUMBER_KEY.name, 6),
+    NUMBER_KEY_7(2, 6, "NUMBER_KEY", 6),
 
-    NUMBER_KEY_8(2, 7, ClickType.NUMBER_KEY.name, 7),
+    NUMBER_KEY_8(2, 7, "NUMBER_KEY", 7),
 
-    NUMBER_KEY_9(2, 8, ClickType.NUMBER_KEY.name, 8),
+    NUMBER_KEY_9(2, 8, "NUMBER_KEY", 8),
 
-    MIDDLE(3, 2, ClickType.MIDDLE.name),
+    MIDDLE(3, 2, "MIDDLE"),
 
     // clicked Item will be empty
-    DROP(4, 0, ClickType.DROP.name),
+    DROP(4, 0, "DROP"),
 
-    CONTROL_DROP(4, 1, ClickType.CONTROL_DROP.name),
+    CONTROL_DROP(4, 1, "CONTROL_DROP"),
 
-    ABROAD_LEFT_EMPTY(4, 0, ClickType.DROP.name, InventoryAction.DROP_ONE_SLOT),
+    ABROAD_LEFT_EMPTY(4, 0, "DROP", InventoryAction.DROP_ONE_SLOT),
 
-    ABROAD_RIGHT_EMPTY(4, 1, ClickType.CONTROL_DROP.name, InventoryAction.DROP_ALL_SLOT),
+    ABROAD_RIGHT_EMPTY(4, 1, "CONTROL_DROP", InventoryAction.DROP_ALL_SLOT),
 
-    ABROAD_LEFT_ITEM(0, 0, ClickType.LEFT.name, InventoryAction.DROP_ALL_CURSOR),
+    ABROAD_LEFT_ITEM(0, 0, "LEFT", InventoryAction.DROP_ALL_CURSOR),
 
-    ABROAD_RIGHT_ITEM(0, 1, ClickType.RIGHT.name, InventoryAction.DROP_ONE_CURSOR),
+    ABROAD_RIGHT_ITEM(0, 1, "RIGHT", InventoryAction.DROP_ONE_CURSOR),
 
     LEFT_MOUSE_DRAG_ADD(5, 1),
 
@@ -76,7 +76,7 @@ enum class ReceptacleClickType(
 
     MIDDLE_MOUSE_DRAG_ADD(5, 9),
 
-    DOUBLE_CLICK(6, 0, ClickType.DOUBLE_CLICK.name),
+    DOUBLE_CLICK(6, 0, "DOUBLE_CLICK"),
 
     UNKNOWN(-1, -1);
 
@@ -105,11 +105,11 @@ enum class ReceptacleClickType(
     }
 
     private fun isKeyboardClick(): Boolean {
-        return isNumberKeyClick() || this == DROP || this == CONTROL_DROP
+        return this == DROP || this == CONTROL_DROP || this == OFFHAND || isNumberKeyClick()
     }
 
     fun isNumberKeyClick(): Boolean {
-        return toBukkitType() == ClickType.NUMBER_KEY || this == OFFHAND
+        return NUMBER_KEY.typeName == typeName
     }
 
     private fun isDoubleClick(): Boolean {
