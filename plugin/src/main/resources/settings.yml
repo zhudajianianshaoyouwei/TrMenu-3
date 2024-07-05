@@ -87,3 +87,7 @@ RegisterCommands:
       - 'tell: &7Argument `example` Required!'
     arguments:
       example: 'open: example'
+
+Bindings:
+  Export-Hook-Plugin: true
+  Binding-Map:

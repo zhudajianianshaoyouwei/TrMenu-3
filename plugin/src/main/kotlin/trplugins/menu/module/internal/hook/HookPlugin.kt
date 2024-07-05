@@ -110,5 +110,8 @@ object HookPlugin {
         return get(HookHMCCosmetics::class.java)
     }
 
+    fun getMythicMobs(): HookMythicMobs {
+        return get(HookMythicMobs::class.java)
+    }
 
 }

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import taboolib.common.platform.function.console
 import taboolib.module.lang.sendLang
+import trplugins.menu.module.internal.script.Bindings
 import trplugins.menu.module.internal.script.jexl.JexlAgent
 import trplugins.menu.module.internal.script.js.JavaScriptAgent
 
@@ -24,8 +25,8 @@ abstract class HookAbstract {
         Bukkit.getPluginManager().getPlugin(name)
     }
 
-    val isHooked by lazy {
-        bindingScript()
+    open val isHooked by lazy {
+        if (Bindings.exportHook) bindingScript()
         plugin != null && plugin!!.isEnabled
     }
 
@@ -44,7 +45,7 @@ abstract class HookAbstract {
         console().sendLang("Plugin-Dependency-Abuse", name)
     }
 
-    private fun bindingScript() {
+    open fun bindingScript() {
         JavaScriptAgent.putBinding(namespace, this)
         JexlAgent.putBinding(namespace, this)
     }

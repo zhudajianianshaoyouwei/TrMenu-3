@@ -20,6 +20,7 @@ import trplugins.menu.module.internal.data.Metadata
 import trplugins.menu.module.internal.hook.HookPlugin
 import trplugins.menu.module.internal.inputer.Inputer.Companion.cancelWords
 import trplugins.menu.module.internal.listener.ListenerItemInteract.interactCooldown
+import trplugins.menu.module.internal.script.Bindings
 import trplugins.menu.module.internal.script.evalScript
 import trplugins.menu.module.internal.service.RegisterCommands
 import trplugins.menu.module.internal.service.Shortcuts
@@ -83,6 +84,7 @@ object TrMenu : Plugin() {
         interactCooldown.reload()
         Shortcuts.Type.load()
         RegisterCommands.load()
+        Bindings.load()
         Kether.isAllowToleranceParser = SETTINGS.getBoolean("Action.Kether.Allow-Tolerance-Parser", false)
         PlatformProvider.compute()
         NMS.javaStaticInventory = SETTINGS.getBoolean("Options.Static-Inventory.Java", false)
