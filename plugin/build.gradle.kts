@@ -25,7 +25,7 @@ taboolib {
             name("EcoItems").with("bukkit").optional(true)
             name("MythicMobs").with("bukkit").optional(true)
             name("HMCCosmetics").with("bukkit").optional(true)
-            name("NBTAPI").with("bukkit").optional(false)
+            name("NBTAPI").with("bukkit").optional(true).loadbefore(true)
         }
     }
     relocate("trplugins.menu", group.toString().lowercase())
