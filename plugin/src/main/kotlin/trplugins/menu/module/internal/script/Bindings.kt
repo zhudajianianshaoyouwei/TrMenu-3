@@ -7,7 +7,7 @@ object Bindings {
     var mozillaCompat = true
     var bootloaderCode="";
     fun load() {
-        val bindings = TrMenu.SETTINGS.getConfigurationSection("Bindings")
+        val bindings = TrMenu.SETTINGS.getConfigurationSection("Script")
         exportHook = bindings?.getBoolean("Export-Hook-Plugin", true) ?: true
         val builder = StringBuilder()
         mozillaCompat = bindings?.getBoolean("Mozilla-Compat", true) ?: true

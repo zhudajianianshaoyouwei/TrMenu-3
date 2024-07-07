@@ -60,6 +60,7 @@ Menu:
       Pre-Color: false
 
 Action:
+  Using-Component: true
   Inputer:
     Cancel-Words:
       - 'cancel|quit|end'
@@ -89,7 +90,7 @@ RegisterCommands:
     arguments:
       example: 'open: example'
 
-Bindings:
+Scripts:
   Export-Hook-Plugin: true
   Mozilla-Compat: true
   Binding-Map:

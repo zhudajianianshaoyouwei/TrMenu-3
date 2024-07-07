@@ -10,6 +10,7 @@ import taboolib.module.lang.Language
 import taboolib.module.lang.sendLang
 import taboolib.platform.BukkitPlugin
 import trplugins.menu.api.action.ActionHandle
+import trplugins.menu.api.action.impl.send.Tell
 import trplugins.menu.api.receptacle.provider.PlatformProvider
 import trplugins.menu.api.receptacle.vanilla.window.NMS
 import trplugins.menu.module.conf.Loader
@@ -86,6 +87,7 @@ object TrMenu : Plugin() {
         RegisterCommands.load()
         Bindings.load()
         Kether.isAllowToleranceParser = SETTINGS.getBoolean("Action.Kether.Allow-Tolerance-Parser", false)
+        Tell.use_component = SETTINGS.getBoolean("Action.Using-Component", true)
         PlatformProvider.compute()
         NMS.javaStaticInventory = SETTINGS.getBoolean("Options.Static-Inventory.Java", false)
         NMS.bedrockStaticInventory = SETTINGS.getBoolean("Options.Static-Inventory.Bedrock", false)

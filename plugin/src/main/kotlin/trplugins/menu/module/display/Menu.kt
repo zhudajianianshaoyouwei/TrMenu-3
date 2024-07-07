@@ -14,6 +14,7 @@ import trplugins.menu.api.receptacle.vanilla.window.WindowReceptacle
 import trplugins.menu.module.display.icon.Icon
 import trplugins.menu.module.display.layout.MenuLayout
 import trplugins.menu.module.internal.data.Metadata
+import trplugins.menu.module.internal.script.evalAction
 import trplugins.menu.module.internal.script.evalScript
 import java.util.function.Consumer
 
@@ -195,7 +196,7 @@ class Menu(
                     submit(delay = 5L, period = taskData.period, async = true) {
                         val asBoolean = sub.condition.evalScript(session).asBoolean(false)
                         if (asBoolean) {
-                            sub.actions.joinToString(" ").evalScript(session)
+                            session.placeholderPlayer.evalAction(sub.actions.joinToString(" "))
                         }
                     }
                 )

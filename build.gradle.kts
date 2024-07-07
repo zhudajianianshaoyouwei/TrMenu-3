@@ -29,6 +29,7 @@ subprojects {
         env {
             install(
                 UNIVERSAL, DATABASE, KETHER, METRICS, NMS, NMS_UTIL, UI,
+                CHAT,
                 EXPANSION_REDIS, EXPANSION_JAVASCRIPT,EXPANSION_JEXL, EXPANSION_PLAYER_DATABASE, EXPANSION_PLAYER_FAKE_OP,
                 BUKKIT_ALL,EXPANSION_FOLIA
             )
