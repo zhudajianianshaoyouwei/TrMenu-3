@@ -86,7 +86,5 @@ dependencies {
     compileOnly("pers.neige.neigeitems:NeigeItems:1.17.24") { isTransitive = false }
     compileOnly("com.willfp:eco:6.71.3") { isTransitive = false }
     compileOnly("com.willfp:EcoItems:5.49.1") { isTransitive = false }
-    compileOnly("com.hibiscusmc:HMCCosmetics:2.7.2") { isTransitive = false }
     compileOnly(fileTree("libs"))
-    implementation(kotlin("reflect"))
 }
