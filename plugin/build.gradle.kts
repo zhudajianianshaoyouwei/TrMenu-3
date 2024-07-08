@@ -45,14 +45,13 @@ repositories {
     maven("https://r.irepo.space/maven/")
     maven("https://repo.auxilor.io/repository/maven-public/")
     maven("https://repo.hibiscusmc.com/releases/")
-
 }
 
 dependencies {
     taboo(project(":common"))
     taboo(project(":api:receptacle"))
     taboo(project(":api:action"))
-    taboo("ink.ptms:um:1.0.2")
+    taboo("ink.ptms:um:1.0.5")
 
     // Libraries
     compileOnly("org.apache.commons:commons-lang3:3.14.0")
@@ -87,6 +86,7 @@ dependencies {
     compileOnly("pers.neige.neigeitems:NeigeItems:1.17.24") { isTransitive = false }
     compileOnly("com.willfp:eco:6.71.3") { isTransitive = false }
     compileOnly("com.willfp:EcoItems:5.49.1") { isTransitive = false }
+    compileOnly("com.hibiscusmc:HMCCosmetics:2.7.2") { isTransitive = false }
     compileOnly(fileTree("libs"))
     implementation(kotlin("reflect"))
 }
