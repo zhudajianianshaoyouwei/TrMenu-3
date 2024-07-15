@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBT
 import org.bukkit.inventory.ItemStack
 import trplugins.menu.module.internal.hook.HookAbstract
 
-object HookNBTAPI:HookAbstract(){
+class HookNBTAPI:HookAbstract(){
 
     fun toJson(item: ItemStack): String {
         return "{\"item\":${NBT.itemStackToNBT(item)}}"
