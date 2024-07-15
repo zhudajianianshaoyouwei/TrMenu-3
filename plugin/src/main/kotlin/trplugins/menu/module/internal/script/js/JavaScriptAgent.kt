@@ -5,7 +5,6 @@ import org.bukkit.Bukkit
 import taboolib.common5.compileJS
 import trplugins.menu.module.display.MenuSession
 import trplugins.menu.module.internal.data.Metadata
-import trplugins.menu.module.internal.hook.impl.HookNBTAPI
 import trplugins.menu.module.internal.script.Assist
 import trplugins.menu.module.internal.script.Bindings
 import trplugins.menu.util.EvalResult
@@ -30,7 +29,6 @@ object JavaScriptAgent {
     private val bindings = mutableMapOf(
         "bukkitServer" to Bukkit.getServer(),
         "utils" to Assist.INSTANCE,
-        "nbtapi" to HookNBTAPI,
     )
 
     fun putBinding(key: String, value: Any) {
