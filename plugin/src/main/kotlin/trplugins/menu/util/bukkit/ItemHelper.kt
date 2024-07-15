@@ -93,7 +93,7 @@ object ItemHelper {
     fun fromJson(json: String): ItemStack? {
         try {
             // 自动判别老式/新式 NBT 标签
-            if (!json.startsWith("{\"")) {
+            if (json.startsWith("{\"item\":")) {
                 return HookNBTAPI.fromJson(json)
             }
             val parse = JsonParser().parse(json)

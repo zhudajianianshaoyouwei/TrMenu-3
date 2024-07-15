@@ -47,8 +47,9 @@ object JavaScriptAgent {
     }
 
     fun preCompile(script: String): CompiledScript {
-        return compiledScripts.computeIfAbsent(script) {
-            script.compileJS()
+        val rawScript = Bindings.bootloaderCode + script
+        return compiledScripts.computeIfAbsent(rawScript) {
+            rawScript.compileJS()
         }
     }
 
