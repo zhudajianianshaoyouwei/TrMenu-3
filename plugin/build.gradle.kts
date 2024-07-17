@@ -26,6 +26,7 @@ taboolib {
             name("MythicMobs").with("bukkit").optional(true)
             name("HMCCosmetics").with("bukkit").optional(true)
             name("NBTAPI").with("bukkit").optional(true).loadbefore(true)
+            name("TrMenu-Graal").with("bukkit").optional(true)
         }
     }
     relocate("trplugins.menu", group.toString())
