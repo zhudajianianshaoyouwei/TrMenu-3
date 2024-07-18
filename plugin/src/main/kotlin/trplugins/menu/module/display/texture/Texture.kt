@@ -155,9 +155,9 @@ class Texture(
                 }
             } catch (e: Throwable) {
                 runCatching {
-                    XMaterial.values().find { it.name.equals(id.toString(), true) }
-                        ?: XMaterial.values().find { it -> it.legacy.any { it == id.toString() } }
-                        ?: XMaterial.values().maxByOrNull { similarDegree(id.toString(), it.name) }
+                    XMaterial.entries.find { it.name.equals(id.toString(), true) }
+                        ?: XMaterial.entries.find { it -> it.legacy.any { it == id.toString() } }
+                        ?: XMaterial.entries.maxByOrNull { similarDegree(id.toString(), it.name) }
                 }.getOrNull()?.parseItem()
                     ?: FALL_BACK
             }
