@@ -3,7 +3,8 @@ name: TrMenu Dev
 on:
   push:
   pull_request:
-
+  repository_dispatch:
+  workflow_dispatch:
 jobs:
   releaseJar:
     runs-on: ubuntu-latest
